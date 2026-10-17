@@ -1,0 +1,10 @@
+{
+  "warehouse": "Leeds",
+  "as_of": 1792108800,
+  "schema": {"fields": ["part_no", "description", "on_hand", "safety_stock", "cover_days", "inbound_po"]},
+  "rows": [
+    ["BRD-CTL-4", "Control board rev 4", 620, 1500, 3.1, "PO-7781"],
+    ["HSG-220", "Housing 220mm", 8400, 3000, 21.0, "PO-7790"],
+    ["FST-M4", "M4 fastener kit", 51000, 20000, 40.5, null]
+  ]
+}

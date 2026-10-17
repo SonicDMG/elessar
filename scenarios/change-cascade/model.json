@@ -1,0 +1,48 @@
+{
+  "entities": [
+    {"id": "vale",        "type": "Actor",   "anchor": {"badge": "B-2093"}},
+    {"id": "reyes",       "type": "Actor",   "anchor": {"badge": "B-5540"}},
+    {"id": "kwan",        "type": "Actor",   "anchor": {"badge": "B-9004"}},
+    {"id": "svc-ledger",  "type": "Service", "anchor": {"id": "svc-ledger"}},
+    {"id": "svc-fx",      "type": "Service", "anchor": {"id": "svc-fx"}},
+    {"id": "fx-staging",  "type": "Service", "anchor": {"id": "fx-staging"}},
+    {"id": "ch-4471",     "type": "Ticket",  "anchor": {"id": "CH-4471"}}
+  ],
+  "hypotheses": [
+    {"id": "planned", "label": "Planned change", "prior": 0.30,
+     "blurb": "A sanctioned change ran in its window and this is its expected, acceptable impact."},
+    {"id": "dependency", "label": "Dependency degraded", "prior": 0.20,
+     "blurb": "Something the Ledger API depends on (FX rates, most likely) got slow or broke."},
+    {"id": "misconfig", "label": "Misconfigured change", "prior": 0.12,
+     "blurb": "A change went out with a bad configuration and the Ledger API broke itself."},
+    {"id": "unsanctioned", "label": "Unsanctioned activity", "prior": 0.05,
+     "blurb": "Someone did something they were not supposed to do."}
+  ],
+  "edges": [
+    {"from": "ch-4471",            "to": "planned",      "w": 0.50},
+    {"from": "approved-change",    "to": "planned",      "w": 0.80},
+    {"from": "upstream-timeouts",  "to": "planned",      "w": 0.50, "kind": "inhibit"},
+    {"from": "prod-to-staging",    "to": "planned",      "w": 0.95, "kind": "inhibit"},
+    {"from": "config-advisory",    "to": "planned",      "w": 0.50, "kind": "inhibit"},
+
+    {"from": "svc-ledger",         "to": "dependency",   "w": 0.25},
+    {"from": "svc-fx",             "to": "dependency",   "w": 0.45},
+    {"from": "upstream-timeouts",  "to": "dependency",   "w": 0.55},
+    {"from": "fx-healthy",         "to": "dependency",   "w": 0.97, "kind": "inhibit"},
+    {"from": "prod-to-staging",    "to": "dependency",   "w": 0.85, "kind": "inhibit"},
+    {"from": "config-advisory",    "to": "dependency",   "w": 0.40, "kind": "inhibit"},
+
+    {"from": "svc-ledger",         "to": "misconfig",    "w": 0.15},
+    {"from": "fx-staging",         "to": "misconfig",    "w": 0.25},
+    {"from": "ch-4471",            "to": "misconfig",    "w": 0.30},
+    {"from": "upstream-timeouts",  "to": "misconfig",    "w": 0.20},
+    {"from": "prod-to-staging",    "to": "misconfig",    "w": 0.65},
+    {"from": "config-advisory",    "to": "misconfig",    "w": 0.80},
+
+    {"from_type": "Actor",         "to": "unsanctioned", "w": 0.35},
+    {"from": "off-hours",          "to": "unsanctioned", "w": 0.40},
+    {"from": "approved-change",    "to": "unsanctioned", "w": 0.60, "kind": "inhibit"},
+    {"from": "config-advisory",    "to": "unsanctioned", "w": 0.40, "kind": "inhibit"},
+    {"from": "authorized-implementer", "to": "unsanctioned", "w": 0.97, "kind": "inhibit"}
+  ]
+}

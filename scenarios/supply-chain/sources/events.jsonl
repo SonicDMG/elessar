@@ -1,0 +1,5 @@
+{"ts": "2026-10-12T08:10:00Z", "po": "PO-7781", "container": "MSCU7781234", "supplier": "KESTREL COMPONENTS LIMITED", "event": "DISPATCHED", "location": "Ningbo DC"}
+{"ts": "2026-10-12T09:00:00Z", "po": "PO-7790", "container": "TGHU5512020", "supplier": "ALDER & FINCH PLASTICS", "event": "DISPATCHED", "location": "Busan DC"}
+{"ts": "2026-10-13T15:40:00Z", "po": "PO-7781", "container": "MSCU7781234", "supplier": "KESTREL COMPONENTS LIMITED", "event": "GATE_IN", "location": "CNSHA"}
+{"ts": "2026-10-14T06:12:00Z", "po": "PO-7781", "container": "MSCU7781234", "supplier": "KESTREL COMPONENTS LIMITED", "event": "HOLD", "location": "CNSHA", "reason": "DOC", "note": "commercial invoice HS code does not match packing list"}
+{"ts": "2026-10-15T11:00:00Z", "po": "PO-7790", "container": "TGHU5512020", "supplier": "ALDER & FINCH PLASTICS", "event": "LOADED", "location": "KRPUS"}

@@ -1,0 +1,49 @@
+{
+  "object_types": {
+    "Actor":   {"title": "name", "keys": ["badge", "email"], "multi": ["last_seen"], "fuzzy": {"properties": ["name"], "threshold": 0.86}},
+    "Service": {"title": ["name", "host"], "keys": ["id"]},
+    "Ticket":  {"title": "summary", "keys": ["id"]}
+  },
+  "mappings": [
+    {"source": "directory", "type": "Actor", "props": {
+      "name":    {"from": "FULL_NAME", "transform": "name_last_first"},
+      "email":   {"from": "EMAIL", "transform": "lower"},
+      "badge":   "BADGE_ID",
+      "dept":    "DEPT",
+      "role":    "ROLE",
+      "shift":   "SHIFT",
+      "started": {"from": "START_DATE", "transform": "date_dmy"},
+      "employee_id": "EMP_ID"
+    }},
+
+    {"source": "activity", "type": "Actor", "props": {
+      "badge": "actor",
+      "last_seen": {"from": "t", "transform": "epoch_ms"}
+    }},
+    {"source": "activity", "type": "Service", "when": {"target": {"startswith": "svc-"}}, "props": {
+      "id": "target"
+    }},
+
+    {"source": "flow", "type": "Service", "props": {"id": "src.service", "env": "src.env", "ip": "src.ip"}},
+    {"source": "flow", "type": "Service", "props": {"id": "dst.service", "env": "dst.env", "ip": "dst.ip", "host": "dst.host"}},
+
+    {"source": "change", "type": "Ticket", "props": {
+      "id": "@id",
+      "kind": "@type",
+      "summary": "summary",
+      "status": "status",
+      "priority": "@priority",
+      "window_start": "window.@start",
+      "window_end": "window.@end",
+      "risk": "risk"
+    }},
+    {"source": "change", "type": "Service", "props": {"id": "ci", "name": "ci.@name"}},
+    {"source": "change", "type": "Actor", "props": {"email": "implementer.@email"}},
+    {"source": "change", "type": "Actor", "props": {"email": "assignee.@email"}},
+
+    {"source": "metrics", "type": "Service", "props": {"id": "device"}},
+
+    {"source": "advisory", "type": "Service", "when": {"type": "SERVICE"}, "props": {"id": "subject"}},
+    {"source": "advisory", "type": "Actor", "when": {"type": "PERSON"}, "props": {"name": "subject"}}
+  ]
+}

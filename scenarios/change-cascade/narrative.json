@@ -1,0 +1,5 @@
+{
+  "intro": "Connect the sources one at a time. Watch which pieces advance, which merge into named things, and which explanations get jumped off the board.",
+  "finale": "The obvious answer (a planned change) and the scary one (unsanctioned activity) were both wrong. It took flow telemetry plus a vendor advisory to show the change itself was misconfigured: production was calling the staging FX host.",
+  "insights": {}
+}

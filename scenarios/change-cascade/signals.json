@@ -1,0 +1,88 @@
+[
+  {
+    "id": "upstream-timeouts",
+    "label": "Ledger upstream timeouts",
+    "kind": "match",
+    "source": "metrics",
+    "where": {"device": "svc-ledger", "metric": "upstream_timeout_pct", "value": {"gt": 5}},
+    "strength": 0.9,
+    "implicates": {"types": ["Service"], "w": 0.8},
+    "explain": "More than 5% of the Ledger API's upstream calls timed out. It looks like a dependency problem, which is exactly why it misleads."
+  },
+  {
+    "id": "off-hours",
+    "label": "Off-hours changes & access",
+    "kind": "time_window",
+    "source": "activity",
+    "where": {"verb": {"in": ["DEPLOY", "ROLLBACK", "GRANT"]}},
+    "params": {"field": "t", "unit": "ms", "hours": [0, 5]},
+    "strength": 0.8,
+    "implicates": {"types": ["Actor"], "w": 0.6},
+    "explain": "Deploys, rollbacks and door grants between 00:00 and 05:00 UTC. On its own it can't tell an attacker from an on-call engineer."
+  },
+  {
+    "id": "approved-change",
+    "label": "Approved change in window",
+    "kind": "match",
+    "source": "change",
+    "where": {"@type": "change", "status": "approved"},
+    "strength": 0.9,
+    "implicates": {"w": 0.6},
+    "explain": "A change ticket was approved for this service with a window covering the incident."
+  },
+  {
+    "id": "prod-to-staging",
+    "label": "Prod traffic to staging",
+    "kind": "match",
+    "source": "flow",
+    "where": {"src.env": "prod", "dst.env": "staging"},
+    "strength": 0.95,
+    "implicates": {"types": ["Service"], "w": 0.8},
+    "explain": "Production calls going to a staging host. Nothing about a healthy system does this."
+  },
+  {
+    "id": "fx-healthy",
+    "label": "FX dependency healthy",
+    "kind": "match",
+    "source": "flow",
+    "where": {"dst.service": "svc-fx", "stats.rttMs": {"lt": 100}, "stats.errorPct": {"lt": 1}},
+    "strength": 0.9,
+    "implicates": {"types": ["Service"], "w": 0.5},
+    "explain": "Calls that actually reached the production FX service were fast and error-free, throughout."
+  },
+  {
+    "id": "config-advisory",
+    "label": "Known config defect",
+    "kind": "match",
+    "source": "advisory",
+    "where": {"type": "SERVICE", "confidence": {"gte": 0.5}},
+    "strength": {"field": "confidence"},
+    "implicates": {"types": ["Service"], "w": 0.7},
+    "explain": "A vendor bulletin: the FX client falls back to its staging endpoint when a region key is missing. Strength is the advisory's own confidence."
+  },
+  {
+    "id": "person-advisory",
+    "label": "Person flagged externally",
+    "kind": "match",
+    "source": "advisory",
+    "where": {"type": "PERSON"},
+    "strength": {"field": "confidence"},
+    "implicates": {"types": ["Actor"], "w": 0.7},
+    "explain": "An unverified partner tip names a person. It only reaches the board if you commit the fuzzy merge that says who they are."
+  },
+  {
+    "id": "authorized-implementer",
+    "label": "Deployer was the approved implementer",
+    "kind": "co_resolved",
+    "params": {
+      "type": "Actor",
+      "clauses": [
+        {"source": "activity", "where": {"verb": "DEPLOY"}},
+        {"source": "change", "where": {"@type": "change", "status": "approved", "implementer.@email": {"exists": true}}}
+      ]
+    },
+    "strength": 0.9,
+    "implicates": {"types": ["Actor"], "w": 0.5},
+    "explain": "The badge that deployed and the email on the approved change are the same person. The activity log only knows badges and the change system only knows emails, so this can't fire until the directory bridges them."
+  }
+]

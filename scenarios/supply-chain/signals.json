@@ -1,0 +1,57 @@
+[
+  {
+    "id": "container-hold",
+    "label": "Container on hold",
+    "kind": "match",
+    "source": "shipments",
+    "where": {"event": "HOLD"},
+    "strength": 0.9,
+    "implicates": {"types": ["Container", "Port"], "w": 0.8},
+    "explain": "The carrier reports the container held at the port. A hold says where, not why."
+  },
+  {
+    "id": "doc-reason",
+    "label": "Hold reason: documents",
+    "kind": "match",
+    "source": "shipments",
+    "where": {"event": "HOLD", "reason": "DOC"},
+    "strength": 0.85,
+    "implicates": {"types": ["Container"], "w": 0.6},
+    "explain": "The hold is coded DOC: the paperwork, not the port or the goods."
+  },
+  {
+    "id": "port-normal",
+    "label": "Port congestion normal",
+    "kind": "match",
+    "source": "port",
+    "where": {"congestion.@index": {"lt": 1.2}},
+    "strength": 0.9,
+    "implicates": {"types": ["Port"], "w": 0.6},
+    "explain": "The port authority rates congestion as normal (index under 1.2) with short berth waits."
+  },
+  {
+    "id": "stock-critical",
+    "label": "Stock cover critical",
+    "kind": "match",
+    "source": "inventory",
+    "where": {"cover_days": {"lt": 7}},
+    "strength": 0.9,
+    "implicates": {"types": ["Part"], "w": 0.8},
+    "explain": "Less than a week of cover left on a part. It says the shipment matters; it says nothing about why it is late."
+  },
+  {
+    "id": "supplier-on-time",
+    "label": "Supplier shipped on time",
+    "kind": "co_resolved",
+    "params": {
+      "type": "Supplier",
+      "clauses": [
+        {"source": "suppliers", "where": {"ON_TIME_RATE": {"gte": 0.9}}},
+        {"source": "shipments", "where": {"event": "DISPATCHED"}}
+      ]
+    },
+    "strength": 0.9,
+    "implicates": {"types": ["Supplier"], "w": 0.5},
+    "explain": "A reliable supplier, per master data, that dispatched on schedule, per the carrier. The two systems don't share a name for the supplier, so this only fires after you commit the merge."
+  }
+]

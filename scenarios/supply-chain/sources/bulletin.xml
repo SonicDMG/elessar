@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bulletin issued="2026-10-15T00:00:00Z" authority="Port Ops Exchange">
+  <port code="CNSHA" name="Port of Shanghai">
+    <congestion index="1.04" berth_wait_hrs="9" trend="stable"/>
+    <customs backlog_hrs="6"/>
+  </port>
+  <port code="KRPUS" name="Port of Busan">
+    <congestion index="1.31" berth_wait_hrs="31" trend="rising"/>
+    <customs backlog_hrs="4"/>
+  </port>
+</bulletin>

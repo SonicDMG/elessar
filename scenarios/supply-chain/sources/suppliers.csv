@@ -1,0 +1,4 @@
+SUP_ID,LEGAL_NAME,COUNTRY,TIER,ON_TIME_RATE,CONTACT
+S-118,"Kestrel Components Ltd.",CN,1,0.96,ops@kestrel.example
+S-131,"Alder & Finch Plastics Co.",KR,2,0.81,orders@alderfinch.example
+S-140,Brightwater Metals,VN,2,0.88,sales@brightwater.example

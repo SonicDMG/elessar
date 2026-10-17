@@ -1,0 +1,5 @@
+# Partner advisory export · format v3 · generated 2026-10-16T08:00Z
+# record=<id>; type=<SERVICE|PERSON>; subject=<free text>; ...
+record=AD-0007; type=SERVICE; subject=svc-ledger; title=FX client v3: fx.endpoint falls back to staging when region key is absent; confidence=0.74; basis=vendor bulletin VB-2210
+record=AD-0011; type=PERSON; subject=Marcus Vayle; title=Credential reuse observed on partner SSO; confidence=0.41; basis=partner SOC tip, unverified
+record=AD-0013; type=SERVICE; subject=svc-mail; title=Outbound relay backlog; confidence=0.30; basis=status page

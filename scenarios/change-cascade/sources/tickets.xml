@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<servicedesk export="2026-10-16T09:00:00Z" tz="UTC">
+  <ticket id="CH-4471" type="change" priority="P3">
+    <summary>Ledger config v42: rotate FX client endpoint</summary>
+    <status>approved</status>
+    <ci type="service" name="Ledger API">svc-ledger</ci>
+    <implementer email="m.vale@northwind.example"/>
+    <window start="2026-10-16T01:30:00Z" end="2026-10-16T03:00:00Z"/>
+    <risk>low</risk>
+  </ticket>
+  <ticket id="INC-9001" type="incident" priority="P1">
+    <summary>Ledger API 5xx and upstream timeouts</summary>
+    <status>resolved</status>
+    <ci type="service" name="Ledger API">svc-ledger</ci>
+    <assignee email="t.kwan@northwind.example"/>
+    <opened>2026-10-16T02:07:00Z</opened>
+    <resolved>2026-10-16T02:31:00Z</resolved>
+  </ticket>
+  <ticket id="CH-4460" type="change" priority="P4">
+    <summary>FX service TLS certificate renewal</summary>
+    <status>completed</status>
+    <ci type="service" name="FX Rates Service">svc-fx</ci>
+    <implementer email="n.idris@northwind.example"/>
+    <window start="2026-10-14T10:00:00Z" end="2026-10-14T11:00:00Z"/>
+    <risk>low</risk>
+  </ticket>
+</servicedesk>

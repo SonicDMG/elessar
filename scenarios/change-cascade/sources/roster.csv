@@ -1,0 +1,6 @@
+EMP_ID|FULL_NAME|EMAIL|DEPT|ROLE|BADGE_ID|SHIFT|START_DATE
+E-0115|Vale, Marcus|M.Vale@northwind.example|Platform Eng|On-call SRE|B-2093|night|04/11/2025
+E-0203|Reyes, Dalia|d.reyes@northwind.example|Facilities|Facilities Lead|B-5540|night|17/02/2021
+E-0311|Kwan, Theo|T.Kwan@northwind.example|Platform Eng|Incident Commander|B-9004|day|09/08/2022
+E-0409|Idris, Nour|n.idris@northwind.example|Data|Data Steward|B-3127|day|30/01/2024
+E-0042|Okonkwo, Jane|j.okonkwo@northwind.example|Research|Research Engineer|B-7781|day|12/05/2020

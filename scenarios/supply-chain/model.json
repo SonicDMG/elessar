@@ -1,0 +1,32 @@
+{
+  "entities": [
+    {"id": "kestrel",   "type": "Supplier",  "anchor": {"alias": "KESTREL COMPONENTS LIMITED"}},
+    {"id": "container", "type": "Container", "anchor": {"id": "MSCU7781234"}},
+    {"id": "cnsha",     "type": "Port",      "anchor": {"code": "CNSHA"}},
+    {"id": "board",     "type": "Part",      "anchor": {"part_no": "BRD-CTL-4"}}
+  ],
+  "hypotheses": [
+    {"id": "shortfall",  "label": "Supplier shortfall", "prior": 0.25,
+     "blurb": "The supplier couldn't make or ship the goods on time."},
+    {"id": "congestion", "label": "Port congestion", "prior": 0.25,
+     "blurb": "The port is backed up and the container is stuck in the queue."},
+    {"id": "documents",  "label": "Documentation hold", "prior": 0.12,
+     "blurb": "Customs is holding the container because the paperwork is wrong."}
+  ],
+  "edges": [
+    {"from": "kestrel",          "to": "shortfall",  "w": 0.50},
+    {"from": "board",            "to": "shortfall",  "w": 0.45},
+    {"from": "supplier-on-time", "to": "shortfall",  "w": 0.95, "kind": "inhibit"},
+    {"from": "doc-reason",       "to": "shortfall",  "w": 0.60, "kind": "inhibit"},
+
+    {"from": "cnsha",            "to": "congestion", "w": 0.50},
+    {"from": "container",        "to": "congestion", "w": 0.20},
+    {"from": "container-hold",   "to": "congestion", "w": 0.40},
+    {"from": "port-normal",      "to": "congestion", "w": 0.97, "kind": "inhibit"},
+    {"from": "doc-reason",       "to": "congestion", "w": 0.80, "kind": "inhibit"},
+
+    {"from": "container",        "to": "documents",  "w": 0.45},
+    {"from": "container-hold",   "to": "documents",  "w": 0.40},
+    {"from": "doc-reason",       "to": "documents",  "w": 0.90}
+  ]
+}

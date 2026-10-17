@@ -1,0 +1,268 @@
+"""Scenario packs: load, validate, lay out.
+
+A pack is a directory of data files. This module is the only place that knows
+the pack format; the engine downstream only sees the validated structure.
+"""
+import json
+import os
+
+from . import pipeline, signals as sigmod
+
+FILES = ("manifest.json", "mapping.json", "signals.json", "model.json", "narrative.json")
+BAND_ROWS = {"hypothesis": 2, "entity": 5, "signal": 8}
+BOARD_HEIGHT = 9
+MAX_BAND = 9
+PALETTE = ["#7ee787", "#f0883e", "#58a6ff", "#d2a8ff", "#f778ba", "#e3b341", "#56d4dd", "#ff7b72"]
+
+
+class PackError(Exception):
+    def __init__(self, pack_dir, errors):
+        super().__init__(f"{pack_dir}: {len(errors)} error(s)")
+        self.pack_dir = pack_dir
+        self.errors = errors
+
+
+def _read_json(path, errors):
+    try:
+        with open(path, encoding="utf-8") as f:
+            return json.load(f)
+    except FileNotFoundError:
+        errors.append(f"missing {os.path.basename(path)}")
+    except json.JSONDecodeError as e:
+        errors.append(f"{os.path.basename(path)}: invalid JSON at line {e.lineno}: {e.msg}")
+    return None
+
+
+def _check_where(where, ctx, errors):
+    for field, cond in (where or {}).items():
+        if isinstance(cond, dict):
+            bad = set(cond) - pipeline.CONDITION_OPS
+            if bad:
+                errors.append(f"{ctx}: unknown operator(s) {sorted(bad)} on '{field}'")
+
+
+def _spread(n, m):
+    return [int((i + 0.5) * m / n) for i in range(n)]
+
+
+def layout(signals, entities, hypotheses):
+    widest = max(len(signals), len(entities), len(hypotheses))
+    width = 2 * widest + 1
+    odd = list(range(1, width - 1, 2))
+    even = list(range(0, width - 2, 2))
+    nodes = []
+    for band, items, prefix, cols in (
+        ("hypothesis", hypotheses, "H", odd),
+        ("entity", entities, "E", even),
+        ("signal", signals, "S", odd),
+    ):
+        for i, (item, slot) in enumerate(zip(items, _spread(len(items), len(cols)))):
+            nodes.append({
+                "id": item["id"],
+                "code": f"{prefix}{i + 1}",
+                "band": band,
+                "label": item.get("label") or item["id"],
+                "col": cols[slot],
+                "base_row": BAND_ROWS[band],
+            })
+    return {"width": width, "height": BOARD_HEIGHT, "nodes": nodes}
+
+
+def load_pack(pack_dir):
+    errors, warnings = [], []
+    docs = {name: _read_json(os.path.join(pack_dir, name), errors) for name in FILES}
+    if errors:
+        raise PackError(pack_dir, errors)
+    manifest, mapping, sigs, model, narrative = (docs[n] for n in FILES)
+
+    # --- manifest
+    pid = manifest.get("id") or os.path.basename(pack_dir.rstrip("/"))
+    sources = {}
+    for i, s in enumerate(manifest.get("sources", [])):
+        sid = s.get("id")
+        if not sid:
+            errors.append(f"manifest: source #{i + 1} has no id")
+            continue
+        if sid in sources:
+            errors.append(f"manifest: duplicate source id '{sid}'")
+        if s.get("format") not in pipeline.PARSERS:
+            errors.append(f"manifest: source '{sid}' has unknown format '{s.get('format')}' (known: {sorted(pipeline.PARSERS)})")
+        transport = s.setdefault("transport", "file")
+        if transport == "file":
+            path = os.path.join(pack_dir, s.get("file", ""))
+            if not s.get("file") or not os.path.isfile(path):
+                errors.append(f"manifest: source '{sid}' file not found: {s.get('file')}")
+            s["path"] = path
+        elif transport == "http":
+            if not str(s.get("url", "")).startswith(("http://", "https://")):
+                errors.append(f"manifest: source '{sid}' needs an http(s) url")
+        else:
+            errors.append(f"manifest: source '{sid}' has unknown transport '{transport}'")
+        conf = s.setdefault("confidence", 0.9)
+        if not 0 <= conf <= 1:
+            errors.append(f"manifest: source '{sid}' confidence must be 0..1")
+        s.setdefault("color", PALETTE[i % len(PALETTE)])
+        s.setdefault("latency_ms", 150)
+        s.setdefault("name", sid)
+        sources[sid] = s
+    if not sources:
+        errors.append("manifest: no sources")
+
+    # --- mapping
+    types = mapping.get("object_types", {})
+    for tname, t in types.items():
+        if "title" not in t:
+            errors.append(f"mapping: object type '{tname}' needs a title property")
+        if t.get("fuzzy") and not t["fuzzy"].get("properties"):
+            errors.append(f"mapping: object type '{tname}' fuzzy config needs properties")
+    mapped_props = {t: set() for t in types}
+    maps = mapping.get("mappings", [])
+    for mi, m in enumerate(maps):
+        ctx = f"mapping #{mi + 1} ({m.get('source')} -> {m.get('type')})"
+        if m.get("source") not in sources:
+            errors.append(f"{ctx}: unknown source")
+        if m.get("type") not in types:
+            errors.append(f"{ctx}: unknown object type")
+        if not m.get("props"):
+            errors.append(f"{ctx}: no props")
+        _check_where(m.get("when"), ctx, errors)
+        for prop, spec in (m.get("props") or {}).items():
+            _, tfs = pipeline._prop_spec(spec)
+            for tf in tfs:
+                if tf not in pipeline.TRANSFORMS:
+                    errors.append(f"{ctx}: unknown transform '{tf}' on '{prop}' (known: {sorted(pipeline.TRANSFORMS)})")
+            if m.get("type") in mapped_props:
+                mapped_props[m["type"]].add(prop)
+    for tname, t in types.items():
+        for key in t.get("keys", []):
+            if key not in mapped_props[tname]:
+                warnings.append(f"mapping: key '{key}' on '{tname}' is never mapped")
+
+    # --- signals
+    sig_ids = set()
+    for s in sigs:
+        sid = s.get("id")
+        ctx = f"signal '{sid}'"
+        if not sid or sid in sig_ids:
+            errors.append(f"signals: missing or duplicate id '{sid}'")
+        sig_ids.add(sid)
+        if s.get("kind") not in sigmod.KINDS:
+            errors.append(f"{ctx}: unknown kind '{s.get('kind')}' (known: {sorted(sigmod.KINDS)})")
+            continue
+        for src in sigmod.required_sources(s):
+            if src not in sources:
+                errors.append(f"{ctx}: unknown source '{src}'")
+        _check_where(s.get("where"), ctx, errors)
+        if s["kind"] == "co_resolved":
+            if s.get("params", {}).get("type") not in types:
+                errors.append(f"{ctx}: co_resolved needs a known params.type")
+            for c in s.get("params", {}).get("clauses", []):
+                _check_where(c.get("where"), ctx, errors)
+        if s["kind"] == "time_window" and len(s.get("params", {}).get("hours", [])) != 2:
+            errors.append(f"{ctx}: time_window needs params.hours [start, end]")
+        imp = s.setdefault("implicates", {"w": 0.5})
+        for t in imp.get("types", []):
+            if t not in types:
+                errors.append(f"{ctx}: implicates unknown type '{t}'")
+        if not 0 <= imp.get("w", 0) <= 1:
+            errors.append(f"{ctx}: implicates.w must be 0..1")
+
+    # --- model
+    ents, hyps = model.get("entities", []), model.get("hypotheses", [])
+    ent_ids = {e.get("id") for e in ents}
+    hyp_ids = {h.get("id") for h in hyps}
+    for e in ents:
+        if e.get("type") not in types:
+            errors.append(f"model: entity '{e.get('id')}' has unknown type '{e.get('type')}'")
+        if len(e.get("anchor", {})) != 1:
+            errors.append(f"model: entity '{e.get('id')}' needs exactly one anchor property")
+        e.setdefault("leak", 0.02)
+    for h in hyps:
+        if not 0 <= h.get("prior", -1) <= 1:
+            errors.append(f"model: hypothesis '{h.get('id')}' needs a prior in 0..1")
+    all_ids = [x.get("id") for x in list(sigs) + ents + hyps]
+    dupes = {x for x in all_ids if all_ids.count(x) > 1}
+    if dupes:
+        errors.append(f"model: ids must be unique across signals, entities and hypotheses: {sorted(dupes)}")
+    for band, items in (("signals", sigs), ("entities", ents), ("hypotheses", hyps)):
+        if len(items) > MAX_BAND:
+            errors.append(f"model: at most {MAX_BAND} {band} (got {len(items)})")
+    if not hyps:
+        errors.append("model: at least one hypothesis")
+
+    edges = []
+    for i, e in enumerate(model.get("edges", [])):
+        ctx = f"model edge #{i + 1}"
+        if e.get("to") not in hyp_ids:
+            errors.append(f"{ctx}: 'to' must be a hypothesis (got '{e.get('to')}'); signal->entity links come from signals.json implicates")
+        kind = e.get("kind", "support")
+        if kind not in ("support", "inhibit"):
+            errors.append(f"{ctx}: kind must be support or inhibit")
+        if not 0 <= e.get("w", -1) <= 1:
+            errors.append(f"{ctx}: w must be 0..1")
+        if "from_type" in e:
+            if e["from_type"] not in types:
+                errors.append(f"{ctx}: unknown from_type '{e['from_type']}'")
+            for ent in ents:
+                if ent.get("type") == e["from_type"]:
+                    edges.append({"from": ent["id"], "to": e["to"], "w": e["w"], "kind": kind, "via_type": e["from_type"]})
+        elif e.get("from") in sig_ids or e.get("from") in ent_ids:
+            edges.append({"from": e["from"], "to": e["to"], "w": e["w"], "kind": kind})
+        else:
+            errors.append(f"{ctx}: 'from' must be a signal or entity id (got '{e.get('from')}')")
+
+    if errors:
+        raise PackError(pack_dir, errors)
+
+    # --- parse every source once to catch format errors and dead field paths
+    for sid, s in sources.items():
+        if s["transport"] != "file":
+            continue
+        try:
+            with open(s["path"], encoding="utf-8") as f:
+                recs = pipeline.parse(sid, s["format"], f.read(), s.get("options"))
+        except Exception as e:  # report any parser failure as a pack error
+            raise PackError(pack_dir, [f"source '{sid}' failed to parse as {s['format']}: {e}"])
+        if not recs:
+            warnings.append(f"source '{sid}' parsed to zero records")
+            continue
+        for mi, m in enumerate(maps):
+            if m["source"] != sid:
+                continue
+            for prop, spec in m["props"].items():
+                field, _ = pipeline._prop_spec(spec)
+                if all(pipeline.get_path(r["data"], field) in (None, "") for r in recs):
+                    warnings.append(f"mapping #{mi + 1}: field '{field}' never appears in '{sid}'")
+
+    return {
+        "id": pid,
+        "dir": pack_dir,
+        "title": manifest.get("title", pid),
+        "premise": manifest.get("premise", ""),
+        "sources": sources,
+        "source_order": [s["id"] for s in manifest["sources"]],
+        "object_types": types,
+        "mappings": list(enumerate(maps)),
+        "signals": sigs,
+        "entities": ents,
+        "hypotheses": hyps,
+        "edges": edges,
+        "narrative": narrative,
+        "layout": layout(sigs, ents, hyps),
+        "warnings": warnings,
+    }
+
+
+def discover(root):
+    """Return {pack_id: pack} and {dir_name: [errors]} for every pack under root."""
+    packs, failures = {}, {}
+    for name in sorted(os.listdir(root)):
+        path = os.path.join(root, name)
+        if not os.path.isdir(path) or not os.path.isfile(os.path.join(path, "manifest.json")):
+            continue
+        try:
+            pack = load_pack(path)
+            packs[pack["id"]] = pack
+        except PackError as e:
+            failures[name] = e.errors
+    return packs, failures

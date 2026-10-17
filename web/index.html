@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ELESSAR</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=VT323&family=IBM+Plex+Mono:wght@400;600&display=swap">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="top">
+    <div class="brand">ELESSAR<span>seeing stone</span></div>
+    <label class="pick">scenario <select id="scenario"></select></label>
+    <p id="premise" class="premise"></p>
+    <div class="hud">
+      <span class="score">score <b id="score">0</b></span>
+      <label title="Boost each object by the hypotheses it supports, then re-infer. Not Bayesian: here to show what it distorts."><input type="checkbox" id="feedback"> relevance feedback</label>
+      <button id="reset">reset</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="stage">
+      <div class="stage-row">
+        <div class="bands"><span class="b-hypothesis">HYPOTHESES</span><span class="b-entity">OBJECTS</span><span class="b-signal">SIGNALS</span></div>
+        <div class="board-wrap" id="wrap">
+          <canvas id="glow" class="glow"></canvas>
+          <canvas id="board"></canvas>
+          <div class="scan"></div>
+          <div id="tip" class="tip" hidden></div>
+        </div>
+      </div>
+      <div id="captured" class="captured"></div>
+      <div id="toasts" class="toasts"></div>
+      <p class="legend">
+        Belief moves a piece up its lane in diagonal checkers moves: one square at 33%, two at 66%.
+        <span class="dot b-signal"></span>signals
+        <span class="dot b-entity"></span>objects
+        <span class="dot b-hypothesis"></span>hypotheses
+        <span class="dot grey"></span>unresolved / quiet
+        <span class="dot red"></span>inhibits.
+        Gold halo: crownable (≥ 85%). Keys 1–9 toggle sources.
+      </p>
+    </section>
+
+    <aside class="panel">
+      <nav class="tabs">
+        <button data-tab="object" class="on">Object</button>
+        <button data-tab="merges">Merges <span id="mergecount" class="badge" hidden></span></button>
+        <button data-tab="log">Log</button>
+      </nav>
+      <div id="tab-object" class="tab"></div>
+      <div id="tab-merges" class="tab" hidden></div>
+      <div id="tab-log" class="tab" hidden></div>
+    </aside>
+  </main>
+
+  <section id="rack" class="rack"></section>
+
+  <div id="modal" class="modal" hidden>
+    <div class="modal-card">
+      <button class="close" aria-label="close">×</button>
+      <div class="modal-body"></div>
+    </div>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+{
+  "source": "metricsd",
+  "resolution": "5m",
+  "schema": {"fields": ["ts", "device", "metric", "value", "unit"]},
+  "rows": [
+    [1792114800, "svc-ledger", "upstream_timeout_pct", 0.2, "%"],
+    [1792115400, "svc-ledger", "upstream_timeout_pct", 0.3, "%"],
+    [1792116000, "svc-ledger", "upstream_timeout_pct", 37.8, "%"],
+    [1792116300, "svc-ledger", "upstream_timeout_pct", 41.2, "%"],
+    [1792116900, "svc-ledger", "upstream_timeout_pct", 39.9, "%"],
+    [1792117500, "svc-ledger", "upstream_timeout_pct", 0.6, "%"],
+    [1792114800, "svc-ledger", "p99_ms", 118, "ms"],
+    [1792115400, "svc-ledger", "p99_ms", 121, "ms"],
+    [1792116000, "svc-ledger", "p99_ms", 3980, "ms"],
+    [1792116300, "svc-ledger", "p99_ms", 4210, "ms"],
+    [1792116900, "svc-ledger", "p99_ms", 4105, "ms"],
+    [1792117500, "svc-ledger", "p99_ms", 131, "ms"],
+    [1792114800, "svc-fx", "p99_ms", 82, "ms"],
+    [1792115400, "svc-fx", "p99_ms", 85, "ms"],
+    [1792116000, "svc-fx", "p99_ms", 80, "ms"],
+    [1792116300, "svc-fx", "p99_ms", 84, "ms"],
+    [1792116900, "svc-fx", "p99_ms", 81, "ms"],
+    [1792117500, "svc-fx", "p99_ms", 83, "ms"]
+  ]
+}

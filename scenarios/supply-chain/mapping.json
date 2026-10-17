@@ -1,0 +1,28 @@
+{
+  "object_types": {
+    "Supplier":  {"title": "legal_name", "keys": ["id", "alias"], "fuzzy": {"properties": ["legal_name", "alias"], "threshold": 0.86}},
+    "Container": {"title": "id", "keys": ["id"], "multi": ["event", "location"]},
+    "Port":      {"title": "name", "keys": ["code"]},
+    "Part":      {"title": "description", "keys": ["part_no"]}
+  },
+  "mappings": [
+    {"source": "shipments", "type": "Supplier",  "props": {"alias": "supplier"}},
+    {"source": "shipments", "type": "Container", "props": {"id": "container", "po": "po", "event": "event", "location": "location", "hold_note": "note"}},
+    {"source": "shipments", "type": "Port", "when": {"event": {"in": ["GATE_IN", "HOLD", "LOADED"]}}, "props": {"code": "location"}},
+
+    {"source": "inventory", "type": "Part", "props": {
+      "part_no": "part_no", "description": "description", "on_hand": "on_hand",
+      "safety_stock": "safety_stock", "cover_days": "cover_days", "inbound_po": "inbound_po"
+    }},
+
+    {"source": "port", "type": "Port", "props": {
+      "code": "@code", "name": "@name", "congestion_index": "congestion.@index",
+      "berth_wait_hrs": "congestion.@berth_wait_hrs", "customs_backlog_hrs": "customs.@backlog_hrs"
+    }},
+
+    {"source": "suppliers", "type": "Supplier", "props": {
+      "id": "SUP_ID", "legal_name": "LEGAL_NAME", "country": "COUNTRY", "tier": "TIER",
+      "on_time_rate": "ON_TIME_RATE", "contact": {"from": "CONTACT", "transform": "lower"}
+    }}
+  ]
+}

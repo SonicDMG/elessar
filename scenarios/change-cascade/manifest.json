@@ -1,0 +1,77 @@
+{
+  "id": "change-cascade",
+  "title": "Change Cascade",
+  "premise": "At 02:00 UTC the Ledger API started timing out and payments failed for 25 minutes. Six systems each saw part of it. None of them agree on what anything is called. What explains it?",
+  "sources": [
+    {
+      "id": "activity",
+      "name": "Access & Activity Log",
+      "kind": "Activity log",
+      "format": "jsonl",
+      "file": "sources/events.jsonl",
+      "confidence": 0.9,
+      "latency_ms": 240,
+      "color": "#f0883e",
+      "blurb": "One JSON object per line. Epoch milliseconds. Knows badge IDs, never names."
+    },
+    {
+      "id": "metrics",
+      "name": "Metrics Mesh",
+      "kind": "Metrics / sensors",
+      "format": "columnar",
+      "file": "sources/series.json",
+      "options": {"fields": "schema.fields", "rows": "rows"},
+      "confidence": 0.92,
+      "latency_ms": 200,
+      "color": "#f778ba",
+      "blurb": "Column-oriented: a schema, then bare arrays. Epoch seconds, service IDs, no context."
+    },
+    {
+      "id": "change",
+      "name": "Change & Ticket System",
+      "kind": "Change management",
+      "format": "xml",
+      "file": "sources/tickets.xml",
+      "options": {"records": "ticket"},
+      "confidence": 0.95,
+      "latency_ms": 280,
+      "color": "#d2a8ff",
+      "blurb": "XML export. Facts hide in attributes; people are lowercase emails."
+    },
+    {
+      "id": "directory",
+      "name": "People Directory",
+      "kind": "Directory / roster",
+      "format": "csv",
+      "file": "sources/roster.csv",
+      "options": {"delimiter": "|"},
+      "confidence": 0.97,
+      "latency_ms": 180,
+      "color": "#7ee787",
+      "blurb": "HR export. Pipe-delimited, names as 'LAST, First', dates as dd/mm/yyyy, email case all over the place."
+    },
+    {
+      "id": "flow",
+      "name": "Flow Telemetry",
+      "kind": "Traffic / flow telemetry",
+      "format": "nested-json",
+      "file": "sources/telemetry.json",
+      "options": {"records": "data.flows"},
+      "confidence": 0.9,
+      "latency_ms": 320,
+      "color": "#58a6ff",
+      "blurb": "A collector's query response: metadata envelope, camelCase, records three levels deep."
+    },
+    {
+      "id": "advisory",
+      "name": "Partner Advisory Feed",
+      "kind": "External advisory",
+      "format": "kv",
+      "file": "sources/records.txt",
+      "confidence": 0.8,
+      "latency_ms": 400,
+      "color": "#e3b341",
+      "blurb": "key=value lines from outside the company. Free-text subjects, misspelled names, self-reported confidence."
+    }
+  ]
+}

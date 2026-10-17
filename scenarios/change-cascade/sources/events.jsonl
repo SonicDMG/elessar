@@ -1,0 +1,8 @@
+{"t": 1792104000000, "actor": "B-5540", "target": "door-c2", "verb": "GRANT", "detail": "facilities walkround", "ip": "10.2.0.31"}
+{"t": 1792113300000, "actor": "B-5540", "target": "door-c2", "verb": "GRANT", "detail": "plant room check", "ip": "10.2.0.31"}
+{"t": 1792115520000, "actor": "B-2093", "target": "bastion-1", "verb": "LOGIN", "detail": "ssh session opened", "ip": "10.8.0.14"}
+{"t": 1792115880000, "actor": "B-2093", "target": "svc-ledger", "verb": "DEPLOY", "detail": "config v42 (fx.endpoint rotate)", "ip": "10.8.0.14"}
+{"t": 1792116540000, "actor": "B-9004", "target": "bastion-1", "verb": "LOGIN", "detail": "paged: INC-9001", "ip": "10.8.0.22"}
+{"t": 1792117260000, "actor": "B-9004", "target": "svc-ledger", "verb": "ROLLBACK", "detail": "config v42 -> v41", "ip": "10.8.0.22"}
+{"t": 1792139400000, "actor": "B-3127", "target": "warehouse-db", "verb": "LOGIN", "detail": "daily report", "ip": "10.6.1.40"}
+{"t": 1792141320000, "actor": "B-7781", "target": "lab-gpu", "verb": "LOGIN", "detail": "notebook session", "ip": "10.7.3.12"}
