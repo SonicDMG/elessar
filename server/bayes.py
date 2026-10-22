@@ -33,10 +33,10 @@ def noisy_or(leak, supports, inhibitors):
     }
 
 
-def infer(signals, entities, hypotheses, edges, feedback=False):
+def infer(signals, participants, hypotheses, edges, feedback=False):
     """
     signals:    {id: activation}
-    entities:   {id: {"leak", "present", "parents": [{"from", "w"}]}}  (parents are signals)
+    participants:   {id: {"leak", "present", "parents": [{"from", "w"}]}}  (parents are signals)
     hypotheses: {id: {"prior"}}
     edges:      [{"from", "to", "w", "kind": "support"|"inhibit"}]  (to a hypothesis)
 
@@ -47,8 +47,8 @@ def infer(signals, entities, hypotheses, edges, feedback=False):
     stages = [dict(p)]
     out = {}
 
-    def entity_pass(boost=None):
-        for eid, e in entities.items():
+    def participant_pass(boost=None):
+        for eid, e in participants.items():
             if not e["present"]:
                 p[eid] = 0.0
                 out[eid] = None
@@ -80,16 +80,16 @@ def infer(signals, entities, hypotheses, edges, feedback=False):
             p[hid] = out[hid]["final"]
         stages.append(dict(p))
 
-    entity_pass()
+    participant_pass()
     stages.append(dict(p))
     hypothesis_pass()
 
     if feedback:
         boost = {}
         for e in edges:
-            if e["kind"] == "support" and e["from"] in entities and e["to"] in hypotheses:
+            if e["kind"] == "support" and e["from"] in participants and e["to"] in hypotheses:
                 boost[e["from"]] = max(boost.get(e["from"], 0.0), p[e["to"]] * e["w"])
-        entity_pass(boost)
+        participant_pass(boost)
         stages.append(dict(p))
         hypothesis_pass()
 

@@ -14,8 +14,13 @@
     <label class="pick">scenario <select id="scenario"></select></label>
     <p id="premise" class="premise"></p>
     <div class="hud">
+      <div class="engine" title="Which evidence engine drives the board. Both are always shown in Details.">
+        <span class="dim">evidence</span>
+        <button data-engine="rules">rules</button><button data-engine="jev">jev</button>
+        <span id="jev-status" class="dim small"></span>
+      </div>
       <span class="score">score <b id="score">0</b></span>
-      <label title="Boost each object by the hypotheses it supports, then re-infer. Not Bayesian: here to show what it distorts."><input type="checkbox" id="feedback"> relevance feedback</label>
+      <label title="Boost each participant by the hypotheses it supports, then re-infer. Not Bayesian: here to show what it distorts."><input type="checkbox" id="feedback"> relevance feedback</label>
       <button id="reset">reset</button>
     </div>
   </header>
@@ -23,7 +28,8 @@
   <main>
     <section class="stage">
       <div class="stage-row">
-        <div class="bands"><span class="b-hypothesis">HYPOTHESES</span><span class="b-entity">OBJECTS</span><span class="b-signal">SIGNALS</span></div>
+        <aside id="offboard" class="offboard"></aside>
+        <div class="bands"><span class="b-hypothesis">HYPOTHESES</span><span class="b-participant">PARTICIPANTS</span><span class="b-signal">SIGNALS</span></div>
         <div class="board-wrap" id="wrap">
           <canvas id="glow" class="glow"></canvas>
           <canvas id="board"></canvas>
@@ -31,28 +37,41 @@
           <div id="tip" class="tip" hidden></div>
         </div>
       </div>
-      <div id="captured" class="captured"></div>
-      <div id="toasts" class="toasts"></div>
       <p class="legend">
         Belief moves a piece up its lane in diagonal checkers moves: one square at 33%, two at 66%.
         <span class="dot b-signal"></span>signals
-        <span class="dot b-entity"></span>objects
+        <span class="dot b-participant"></span>participants
         <span class="dot b-hypothesis"></span>hypotheses
         <span class="dot grey"></span>unresolved / quiet
         <span class="dot red"></span>inhibits.
-        Gold halo: crownable (≥ 85%). Keys 1–9 toggle sources.
+        Gold halo: crownable (≥ 85%). Pieces that leave the board hop off its left edge into the column beside it, with the reason, and can always come back.
+        Keys 1–9 toggle sources.
       </p>
     </section>
 
-    <aside class="panel">
+    <aside class="panel" id="panel">
+      <div class="panel-resizer" id="resizer" title="Drag to resize · double-click to reset"></div>
+      <div id="toasts" class="toasts"></div>
       <nav class="tabs">
-        <button data-tab="object" class="on">Object</button>
+        <button data-tab="object" class="on">Details</button>
         <button data-tab="merges">Merges <span id="mergecount" class="badge" hidden></span></button>
         <button data-tab="log">Log</button>
+        <button data-tab="agent">Agent</button>
       </nav>
       <div id="tab-object" class="tab"></div>
       <div id="tab-merges" class="tab" hidden></div>
       <div id="tab-log" class="tab" hidden></div>
+      <div id="tab-agent" class="tab agent" hidden>
+        <div id="agent-log" class="agent-log"></div>
+        <form id="agent-form" class="agent-form">
+          <textarea id="agent-input" rows="2" placeholder="Ask the agent about the board…"></textarea>
+          <div class="agent-bar">
+            <span id="agent-meta" class="dim small"></span>
+            <button type="button" id="agent-new" class="link">new conversation</button>
+            <button type="submit" class="gold">ask</button>
+          </div>
+        </form>
+      </div>
     </aside>
   </main>
 

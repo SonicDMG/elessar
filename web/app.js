@@ -71,11 +71,18 @@ function render(animate) {
   $("#premise").textContent = state.scenario.premise;
   $("#score").textContent = state.score;
   $("#feedback").checked = state.feedback;
+  document.querySelectorAll("[data-engine]").forEach((b) => {
+    b.classList.toggle("on", b.dataset.engine === state.engine);
+    b.disabled = b.dataset.engine === "jev" && !state.jev.available;
+  });
+  $("#jev-status").textContent = state.jev.available
+    ? `${state.jev.calls} calls · ${state.jev.cached} cached · $${state.jev.cost.toFixed(5)}`
+    : "jev off: no OPENROUTER_API_KEY";
   const n = state.merges.pending.length;
   $("#mergecount").hidden = !n;
   $("#mergecount").textContent = n;
   P.renderRack($("#rack"), state, act, peek);
-  P.renderCaptured($("#captured"), state);
+  P.renderOffboard($("#offboard"), state, act, (id) => { selected = id; board.select(id); setTab("object"); });
   renderPanel();
 }
 
@@ -83,11 +90,56 @@ function renderPanel() {
   P.renderObject($("#tab-object"), state, selected, act);
   P.renderMerges($("#tab-merges"), state, act);
   P.renderLog($("#tab-log"), state);
+  renderAgentTab();
+}
+
+function renderAgentTab() {
+  P.renderAgent($("#agent-log"), $("#agent-meta"), state, {
+    ask: askAgent,
+    decide: (pid, decision) => act({ action: "agent_decide", proposal: pid, decision }),
+    selectCode: (code) => {
+      const n = state.nodes.find((x) => x.code === code);
+      if (!n) return;
+      board.highlight([n.id], 4000);
+      selected = n.id;
+      board.select(n.id);
+      P.renderObject($("#tab-object"), state, selected, act);
+    },
+  });
+  const log = $("#agent-log");
+  log.scrollTop = log.scrollHeight;
+}
+
+let asking = false;
+async function askAgent(text) {
+  const message = (text ?? $("#agent-input").value).trim();
+  if (!message || asking) return;
+  asking = true;
+  $("#agent-input").value = "";
+  setTab("agent");
+  const log = $("#agent-log");
+  log.insertAdjacentHTML("beforeend", `<div class="msg user">${escapeHtml(message)}</div><div class="msg bot thinking">The agent is reading the board…</div>`);
+  log.scrollTop = log.scrollHeight;
+  try {
+    const r = await getJSON("/api/agent", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ scenario: scenarioId, message, selected }),
+    });
+    state = r.state;
+    if (r.turn.highlights.length) board.highlight(r.turn.highlights);
+    render(false);
+  } catch (e) {
+    log.querySelector(".thinking")?.remove();
+    P.toast($("#toasts"), { kind: "error", title: "Agent", text: e.message, points: 0 });
+  } finally {
+    asking = false;
+  }
 }
 
 function setTab(name) {
   document.querySelectorAll(".tabs button").forEach((b) => b.classList.toggle("on", b.dataset.tab === name));
-  for (const t of ["object", "merges", "log"]) $(`#tab-${t}`).hidden = t !== name;
+  for (const t of ["object", "merges", "log", "agent"]) $(`#tab-${t}`).hidden = t !== name;
   if (state) renderPanel();
 }
 
@@ -104,13 +156,53 @@ function finale() {
   $("#modal").hidden = false;
 }
 
+// Side panel width: drag its left edge; double-click to reset. Remembered per browser.
+const PANEL_DEFAULT = 370;
+function setPanelWidth(px, save) {
+  const w = Math.round(Math.max(280, Math.min(px, window.innerWidth * 0.6, 760)));
+  document.documentElement.style.setProperty("--panel-w", `${w}px`);
+  if (save) {
+    try { localStorage.setItem("elessar.panelWidth", String(w)); } catch (e) { /* storage unavailable */ }
+  }
+}
+try {
+  const saved = Number(localStorage.getItem("elessar.panelWidth"));
+  if (saved) setPanelWidth(saved, false);
+} catch (e) { /* storage unavailable */ }
+
+$("#resizer").addEventListener("pointerdown", (e) => {
+  const handle = e.currentTarget;
+  handle.setPointerCapture(e.pointerId);
+  handle.classList.add("dragging");
+  document.body.classList.add("resizing");
+  const move = (ev) => setPanelWidth(window.innerWidth - ev.clientX, false);
+  const up = (ev) => {
+    handle.releasePointerCapture(ev.pointerId);
+    handle.classList.remove("dragging");
+    document.body.classList.remove("resizing");
+    handle.removeEventListener("pointermove", move);
+    handle.removeEventListener("pointerup", up);
+    setPanelWidth(window.innerWidth - ev.clientX, true);
+  };
+  handle.addEventListener("pointermove", move);
+  handle.addEventListener("pointerup", up);
+});
+$("#resizer").addEventListener("dblclick", () => setPanelWidth(PANEL_DEFAULT, true));
+
 document.querySelectorAll(".tabs button").forEach((b) => b.addEventListener("click", () => setTab(b.dataset.tab)));
 $("#reset").addEventListener("click", () => act({ action: "reset" }));
+$("#agent-form").addEventListener("submit", (e) => { e.preventDefault(); askAgent(); });
+$("#agent-input").addEventListener("keydown", (e) => {
+  if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); askAgent(); }
+});
+$("#agent-new").addEventListener("click", () => act({ action: "agent_reset" }));
+document.querySelectorAll("[data-engine]").forEach((b) =>
+  b.addEventListener("click", () => act({ action: "engine", engine: b.dataset.engine })));
 $("#feedback").addEventListener("change", (e) => act({ action: "feedback", on: e.target.checked }));
 $("#modal .close").addEventListener("click", () => { $("#modal").hidden = true; });
 $("#modal").addEventListener("click", (e) => { if (e.target.id === "modal") $("#modal").hidden = true; });
 document.addEventListener("keydown", (e) => {
-  if (e.target.tagName === "SELECT" || e.target.tagName === "INPUT") return;
+  if (e.target.tagName === "SELECT" || e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
   if (e.key === "Escape") {
     if (!$("#modal").hidden) $("#modal").hidden = true;
     else { selected = null; board.select(null); renderPanel(); }

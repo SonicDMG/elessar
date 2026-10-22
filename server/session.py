@@ -9,7 +9,7 @@ import time
 import urllib.request
 from datetime import datetime, timezone
 
-from . import bayes, pipeline, resolve, signals as sigmod
+from . import agent, bayes, jev, pipeline, resolve, signals as sigmod
 
 STEP_AT = (0.33, 0.66)
 CROWNABLE = 0.85
@@ -19,12 +19,12 @@ JUDGEMENTS = {"trust": 1.0, "discount": 0.5, "dismiss": 0.0}
 
 INSIGHTS = {
     "shape_shock": (50, "Shape Shock", "Raw sources agree on nothing: delimiters, timestamps, naming, nesting. Fusion starts by mapping each one onto a single ontology."),
-    "first_link": (100, "First Link", "A signal attached to an object because one of its records resolved into that object. Links come from resolution, not hand-wiring."),
-    "identity_resolved": (150, "Identity Resolved: {label}", "Another source shared a key with this object, so their fragments merged automatically. It now has a name."),
+    "first_link": (100, "First Link", "A signal attached to a participant because one of its records resolved into that participant. Links come from resolution, not hand-wiring."),
+    "identity_resolved": (150, "Identity Resolved: {label}", "Another source shared a key with this participant, so their fragments merged automatically. It now has a name."),
     "merge_committed": (150, "Merge Committed", "A fuzzy match is only a proposal. You decided these are the same thing, and you can still revert it."),
-    "fusion_signal": (150, "Fusion-Only Signal: {label}", "This rule needs facts from different sources on one object. It could not fire until resolution joined them."),
+    "fusion_signal": (150, "Fusion-Only Signal: {label}", "This rule needs facts from different sources on one participant. It could not fire until resolution joined them."),
     "inhibited": (100, "Inhibited", "Evidence can argue against a hypothesis: {source} cut {target} by {pct}%."),
-    "explained_away": (200, "Explained Away: {label}", "Inhibitors and competing hypotheses pushed this explanation off the board."),
+    "explained_away": (200, "Explained Away: {label}", "Inhibitors and competing hypotheses moved this explanation off the board, into the column on the left. The reason is next to it, and you can bring it back."),
     "crowned": (500, "Crowned: {label}", "The posterior backs your call at {p}%."),
     "crowned_premature": (0, "Called Early: {label}", "Logged, not scored: the posterior is only {p}%. Connect more sources or revisit your judgements."),
     "crowned_contradicted": (0, "Overruled: {label}", "Logged, not scored: the board favors {best} at {best_p}%."),
@@ -40,11 +40,23 @@ def step_for(p):
     return sum(p >= t for t in STEP_AT)
 
 
+def _capture_reason(b, p, names):
+    """One sentence saying why a hypothesis was moved to the side of the board."""
+    cuts = sorted(b["inhibit"], key=lambda i: -i["w"] * i["p"])
+    parts = [f"{names.get(i['from'], i['from'])} cut it by {round(i['w'] * i['p'] * 100)}%"
+             for i in cuts if i["w"] * i["p"] >= 0.05][:3]
+    text = f"Explained away at {round(p * 100)}%: " + "; ".join(parts) + "."
+    if b.get("divisor", 1.0) > 1.0:
+        text += f" Competing explanations then divided what was left by {b['divisor']:.2f}."
+    return text
+
+
 class Session:
     def __init__(self, pack, base_url):
         self.pack = pack
         self.base_url = base_url
         self.lock = threading.Lock()
+        self.agent_lock = threading.Lock()
         self._parsed = {}
         self.reset()
 
@@ -55,11 +67,43 @@ class Session:
         self.rejected = set()
         self.judgements = {}     # signal id -> trust | discount | dismiss
         self.crown = None
+        self.kept = set()        # hypotheses the user keeps on the board despite being explained away
+        self.participant_sources = {} # participant id -> sources it had when last on the board
         self.feedback = False
+        self.engine = "rules"    # which evidence engine drives the board: rules | jev
+        self.jev = {}            # "signal|source|index" -> Jev result for that record
+        self.jev_stats = {"calls": 0, "cached": 0, "errors": 0, "cost": 0.0}
         self.earned = {}         # insight key -> points
         self.audit = []
         self.peeked = set()
+        self.agent = agent.Agent(self)
         self.state = self.compute()
+
+    def clone(self):
+        """A throwaway copy for what-ifs: same data and decisions, separate state."""
+        c = type(self).__new__(type(self))
+        c.pack, c.base_url = self.pack, self.base_url
+        c.lock, c.agent_lock = threading.Lock(), threading.Lock()
+        c._parsed = dict(self._parsed)
+        c.connected, c.errors = dict(self.connected), dict(self.errors)
+        c.committed, c.rejected = list(self.committed), set(self.rejected)
+        c.judgements, c.crown, c.kept = dict(self.judgements), self.crown, set(self.kept)
+        c.participant_sources = dict(self.participant_sources)
+        c.feedback, c.engine = self.feedback, self.engine
+        c.jev, c.jev_stats = dict(self.jev), dict(self.jev_stats)
+        c.earned, c.audit, c.peeked = dict(self.earned), list(self.audit), set(self.peeked)
+        c.agent = agent.Agent(c)
+        c.state = self.state
+        return c
+
+    def public_state(self):
+        """State plus the parts that change outside a recompute (agent, log)."""
+        return {**self.state, "agent": self.agent.view(), "audit": self.audit[-80:],
+                "score": sum(self.earned.values()), "earned": sorted(self.earned)}
+
+    def ask_agent(self, message, selected=None):
+        with self.agent_lock:
+            return self.agent.ask(message, selected)
 
     # ------------------------------------------------------------ fetching
 
@@ -111,13 +155,13 @@ class Session:
         clusters, cluster_of = resolve.resolve(fragments, pack["object_types"], committed_pairs, pack["source_order"])
         pending = resolve.proposals(clusters, by_frag, pack["object_types"], self.rejected)
 
-        # entity slots -> clusters
-        ent_cluster = {e["id"]: resolve.anchor(e, clusters, by_frag) for e in pack["entities"]}
-        frag_entity = {}
-        for eid, c in ent_cluster.items():
+        # participant slots -> clusters
+        part_cluster = {e["id"]: resolve.anchor(e, clusters, by_frag) for e in pack["participants"]}
+        frag_participant = {}
+        for eid, c in part_cluster.items():
             if c:
                 for fid in c["fragments"]:
-                    frag_entity.setdefault(fid, set()).add(eid)
+                    frag_participant.setdefault(fid, set()).add(eid)
 
         ctx = {
             "records": records,
@@ -129,39 +173,47 @@ class Session:
 
         # signals
         acts, sig_detail = {}, {}
-        ent_parents = {e["id"]: [] for e in pack["entities"]}
-        ent_types = {e["id"]: e["type"] for e in pack["entities"]}
+        part_parents = {e["id"]: [] for e in pack["participants"]}
+        part_types = {e["id"]: e["type"] for e in pack["participants"]}
         for sig in pack["signals"]:
             req = sigmod.required_sources(sig)
             available = all(s in self.connected for s in req)
-            hits = sigmod.evaluate(sig, ctx) if available else []
+            rule_hits = sigmod.evaluate(sig, ctx) if available else []
+            rule_strength = sigmod.strength(sig, rule_hits) if rule_hits else 0.0
+            jv = self._jev_view(sig, records, rule_hits) if sig.get("jev") and available else None
+            use_jev = self.engine == "jev" and jv is not None and jv["complete"]
+            if use_jev:
+                hits = [sigmod._record_hit(record_index[(sig["source"], r["index"])], frags_by_record)
+                        for r in jv["records"] if r["jev_hit"]]
+                strength = jv["strength"]
+            else:
+                hits, strength = rule_hits, rule_strength
             conf = min(pack["sources"][s]["confidence"] for s in req)
-            strength = sigmod.strength(sig, hits) if hits else 0.0
             judgement = self.judgements.get(sig["id"], "trust")
             a = conf * strength * JUDGEMENTS[judgement] if hits else 0.0
             acts[sig["id"]] = a
 
             imp = sig["implicates"]
-            allowed = set(imp.get("types") or ent_types.values())
+            allowed = set(imp.get("types") or part_types.values())
             linked = {}
             hit_out = []
             for h in hits:
-                ents = set()
+                parts = set()
                 for fid in h["fragments"]:
-                    ents |= frag_entity.get(fid, set())
-                ents = {e for e in ents if ent_types[e] in allowed}
-                for e in ents:
+                    parts |= frag_participant.get(fid, set())
+                parts = {e for e in parts if part_types[e] in allowed}
+                for e in parts:
                     linked[e] = linked.get(e, 0) + 1
                 hit_out.append({
                     "records": [{"source": r["source"], "pointer": r["pointer"], "excerpt": r["excerpt"]} for r in h["records"]],
-                    "entities": sorted(ents),
+                    "participants": sorted(parts),
                 })
             most = max(linked.values()) if linked else 0
             links = []
             for e, n in sorted(linked.items()):
                 w = imp["w"] * n / most
-                ent_parents[e].append({"from": sig["id"], "w": w})
-                links.append({"entity": e, "hits": n, "w": w})
+                part_parents[e].append({"from": sig["id"], "w": w})
+                links.append({"participant": e, "hits": n, "w": w})
 
             sig_detail[sig["id"]] = {
                 "status": "dormant" if not available else ("firing" if hits else "quiet"),
@@ -171,18 +223,22 @@ class Session:
                 "explain": sig.get("explain", ""),
                 "confidence": conf,
                 "strength": strength,
+                "engine_used": "jev" if use_jev else "rules",
+                "rule_strength": rule_strength,
+                "rule_hit_count": len(rule_hits),
+                "jev": jv,
                 "judgement": judgement,
                 "hits": hit_out,
                 "links": links,
                 "implicates": imp,
             }
 
-        entities_in = {
-            e["id"]: {"leak": e["leak"], "present": ent_cluster[e["id"]] is not None, "parents": ent_parents[e["id"]]}
-            for e in pack["entities"]
+        participants_in = {
+            e["id"]: {"leak": e["leak"], "present": part_cluster[e["id"]] is not None, "parents": part_parents[e["id"]]}
+            for e in pack["participants"]
         }
         hyps_in = {h["id"]: {"prior": h["prior"]} for h in pack["hypotheses"]}
-        p, breakdown, stages = bayes.infer(acts, entities_in, hyps_in, pack["edges"], self.feedback)
+        p, breakdown, stages = bayes.infer(acts, participants_in, hyps_in, pack["edges"], self.feedback)
 
         # nodes
         layout = {n["id"]: n for n in pack["layout"]["nodes"]}
@@ -192,8 +248,8 @@ class Session:
             nodes.append({**layout[sig["id"]], "p": p[sig["id"]], "step": step_for(p[sig["id"]]),
                           "present": True, "status": d["status"], "detail": d})
 
-        for e in pack["entities"]:
-            c = ent_cluster[e["id"]]
+        for e in pack["participants"]:
+            c = part_cluster[e["id"]]
             detail = {"type": e["type"], "anchor": e["anchor"], "breakdown": breakdown.get(e["id"])}
             if c:
                 for vals in c["props"].values():
@@ -209,19 +265,37 @@ class Session:
                     "merges": [pid for pid in self.committed if any(f in c["fragments"] for f in pid.split("|"))],
                 })
                 status = "resolved" if c["title"] else "unresolved"
+                self.participant_sources[e["id"]] = list(c["sources"])
             else:
                 status = "absent"
+            offboard = None
+            if not c and e["id"] in self.participant_sources:
+                srcs = self.participant_sources[e["id"]]
+                names = ", ".join(pack["sources"][s]["name"] for s in srcs)
+                status = "removed"
+                offboard = {"kind": "removed", "restore": "reconnect", "sources": srcs,
+                            "reason": f"No connected source describes it any more. It came from: {names}."}
             label = (c and c["title"]) or e.get("label") if status == "resolved" else next(iter(e["anchor"].values()))
             nodes.append({**layout[e["id"]], "label": label, "p": p[e["id"]], "step": step_for(p[e["id"]]),
-                          "present": c is not None, "status": status, "detail": detail})
+                          "present": c is not None, "status": status, "offboard": offboard, "detail": detail})
 
+        names = {n["id"]: f"{n['code']} {n['label']}" for n in pack["layout"]["nodes"]}
         best = max(pack["hypotheses"], key=lambda h: p[h["id"]])
         for h in pack["hypotheses"]:
             b = breakdown[h["id"]]
             ph = p[h["id"]]
             captured = ph <= CAPTURE_P and b["inhibit_factor"] <= CAPTURE_INHIBIT
-            nodes.append({**layout[h["id"]], "p": ph, "step": step_for(ph), "present": not captured,
-                          "status": "captured" if captured else ("crownable" if ph >= CROWNABLE else "open"),
+            kept = captured and h["id"] in self.kept
+            reason = _capture_reason(b, ph, names) if captured else None
+            if captured and not kept:
+                status = "captured"
+            elif kept:
+                status = "kept"
+            else:
+                status = "crownable" if ph >= CROWNABLE else "open"
+            nodes.append({**layout[h["id"]], "p": ph, "step": step_for(ph), "present": not captured or kept,
+                          "status": status, "kept": kept, "kept_reason": reason if kept else None,
+                          "offboard": {"kind": "captured", "restore": "keep", "reason": reason} if captured and not kept else None,
                           "crowned": bool(self.crown and self.crown["hypothesis"] == h["id"]),
                           "leading": h["id"] == best["id"],
                           "detail": {"blurb": h.get("blurb", ""), "prior": h["prior"], "breakdown": b}})
@@ -230,7 +304,7 @@ class Session:
         draw = []
         for sig in pack["signals"]:
             for link in sig_detail[sig["id"]]["links"]:
-                draw.append({"from": sig["id"], "to": link["entity"], "kind": "support", "w": link["w"],
+                draw.append({"from": sig["id"], "to": link["participant"], "kind": "support", "w": link["w"],
                              "flow": link["w"] * acts[sig["id"]]})
         for e in pack["edges"]:
             draw.append({"from": e["from"], "to": e["to"], "kind": e["kind"], "w": e["w"], "flow": e["w"] * p.get(e["from"], 0.0)})
@@ -266,6 +340,8 @@ class Session:
             "merges": {"pending": pending, "committed": committed_info},
             "object_types": pack["object_types"],
             "feedback": self.feedback,
+            "engine": self.engine,
+            "jev": {"available": jev.available(), "model": jev.MODEL, **self.jev_stats},
             "crown": self.crown,
             "score": sum(self.earned.values()),
             "earned": sorted(self.earned),
@@ -292,12 +368,12 @@ class Session:
     def _diff(self, before, after, events):
         bn = {n["id"]: n for n in before["nodes"]}
         names = {n["id"]: f"{n['code']} {n['label']}" for n in after["nodes"]}
-        if any(e["flow"] > 0 and e["to"] in bn and bn[e["to"]]["band"] == "entity" and bn[e["from"]]["band"] == "signal"
+        if any(e["flow"] > 0 and e["to"] in bn and bn[e["to"]]["band"] == "participant" and bn[e["from"]]["band"] == "signal"
                for e in after["edges"]):
             self._earn("first_link", "first_link", events)
         for n in after["nodes"]:
             old = bn[n["id"]]
-            if n["band"] == "entity" and n["status"] == "resolved" and old["status"] != "resolved":
+            if n["band"] == "participant" and n["status"] == "resolved" and old["status"] != "resolved":
                 self._earn(f"identity_resolved:{n['id']}", "identity_resolved", events, label=names[n["id"]])
             if n["band"] == "signal" and n["status"] == "firing" and old["status"] != "firing" \
                     and n["detail"]["kind"] == "co_resolved":
@@ -323,16 +399,36 @@ class Session:
         action = payload.get("action")
         before = self.state
         events = []
+        if action == "agent_reset":
+            self.agent = agent.Agent(self)
+            return {"state": self.public_state(), "events": []}
+        if action == "agent_decide":
+            prop = self.agent.decide(payload["proposal"], payload["decision"])
+            self._log("agent", f"you {prop['status']} the agent's proposal to {prop['label']}")
+            if prop["status"] != "approved":
+                return {"state": self.public_state(), "events": []}
+            payload = prop["payload"]
+            action = payload["action"]
         if action == "connect":
-            sid = payload["source"]
-            try:
-                raw, ms, size = self.fetch(sid)
-                self.connected[sid] = {"raw": raw, "latency_ms": ms, "bytes": size, "at": _now()}
-                self.errors.pop(sid, None)
-                self._log("connect", f"{sid}: {size} bytes in {ms} ms from {self.source_url(sid)}")
-            except Exception as e:  # surface any fetch failure on the source card
-                self.errors[sid] = str(e)
-                self._log("connect-failed", f"{sid}: {e}")
+            self._connect(payload["source"])
+        elif action == "engine":
+            if payload["engine"] not in ("rules", "jev"):
+                raise ValueError("engine must be rules or jev")
+            self.engine = payload["engine"]
+            self._log("engine", f"evidence engine -> {self.engine}")
+            if self.engine == "jev":
+                for sid in list(self.connected):
+                    self._ask_jev(sid)
+        elif action == "reconnect":
+            for sid in payload["sources"]:
+                if sid not in self.connected:
+                    self._connect(sid)
+        elif action == "keep":
+            self.kept.add(payload["hypothesis"])
+            self._log("keep-on-board", f"{payload['hypothesis']}: kept on the board despite the evidence")
+        elif action == "release":
+            self.kept.discard(payload["hypothesis"])
+            self._log("release", f"{payload['hypothesis']}: the board may move it aside again")
         elif action == "disconnect":
             self.connected.pop(payload["source"], None)
             self._log("disconnect", payload["source"])
@@ -364,16 +460,115 @@ class Session:
             self._crown(payload["hypothesis"], events)
         elif action == "reset":
             self.reset()
-            return {"state": self.state, "events": [{"kind": "reset", "title": "Board reset", "text": "", "points": 0}]}
+            return {"state": self.public_state(), "events": [{"kind": "reset", "title": "Board reset", "text": "", "points": 0}]}
         else:
             raise ValueError(f"unknown action '{action}'")
 
         self.state = self.compute()
         self._diff(before, self.state, events)
-        self.state["score"] = sum(self.earned.values())
-        self.state["earned"] = sorted(self.earned)
-        self.state["audit"] = self.audit[-80:]
-        return {"state": self.state, "events": events}
+        return {"state": self.public_state(), "events": events}
+
+    def _connect(self, sid):
+        try:
+            raw, ms, size = self.fetch(sid)
+            self.connected[sid] = {"raw": raw, "latency_ms": ms, "bytes": size, "at": _now()}
+            self.errors.pop(sid, None)
+            self._log("connect", f"{sid}: {size} bytes in {ms} ms from {self.source_url(sid)}")
+            self._ask_jev(sid)
+        except Exception as e:  # surface any fetch failure on the source card
+            self.errors[sid] = str(e)
+            self._log("connect-failed", f"{sid}: {e}")
+
+    # ------------------------------------------------------------ Jev
+
+    def _jev_signals(self, sid):
+        return [s for s in self.pack["signals"] if s.get("jev") and s.get("source") == sid]
+
+    def _ask_jev(self, sid):
+        """Ask Jev every opted-in signal's question about each candidate record
+        of one source: one request per record, all of its questions together."""
+        sigs = self._jev_signals(sid)
+        if not sigs or not jev.available():
+            return
+        name = self.pack["sources"][sid]["name"]
+        jobs = []
+        for r in self._records(sid):
+            qs = {}
+            for sig in sigs:
+                spec = sig["jev"]
+                if f"{sig['id']}|{sid}|{r['index']}" in self.jev or not pipeline.matches(r["data"], spec.get("where")):
+                    continue
+                q = {"type": "noul", "instructions": spec["question"]}
+                if spec.get("criteria"):
+                    q["criteria"] = spec["criteria"]
+                qs[sig["id"].replace("-", "_")] = q
+            if qs:
+                jobs.append((r["index"], {"source": name, "record": r["data"]}, qs))
+        if not jobs:
+            return
+        results = jev.ask_many(jobs)
+        stats = {"calls": 0, "cached": 0, "errors": 0, "cost": 0.0}
+        latencies = []
+        for idx, res in results.items():
+            if "error" in res:
+                stats["errors"] += 1
+            elif res["cached"]:
+                stats["cached"] += 1
+            else:
+                stats["calls"] += 1
+                stats["cost"] += res["cost"] or 0.0
+                latencies.append(res["ms"])
+            for sig in sigs:
+                key = sig["id"].replace("-", "_")
+                answer = (res.get("answers") or {}).get(key)
+                if answer is None and "error" not in res:
+                    continue
+                self.jev[f"{sig['id']}|{sid}|{idx}"] = {
+                    "noul": answer.get("noul") if answer else None,
+                    "model": res.get("model"),
+                    "ms": res.get("ms"),
+                    "cached": res.get("cached", False),
+                    "error": res.get("error"),
+                }
+        for k, v in stats.items():
+            self.jev_stats[k] += v
+        avg = f", avg {sum(latencies) // len(latencies)} ms" if latencies else ""
+        self._log("jev", f"{sid}: {len(jobs)} records, {stats['calls']} calls, {stats['cached']} cached, "
+                         f"{stats['errors']} errors, ${stats['cost']:.5f}{avg}")
+
+    def _jev_view(self, sig, records, rule_hits):
+        """What Jev said about each candidate record, next to what the rule said."""
+        spec = sig["jev"]
+        sid = sig["source"]
+        threshold = spec.get("threshold", 0.5)
+        rule_keys = {(r["source"], r["index"]) for h in rule_hits for r in h["records"]}
+        out = []
+        for r in records.get(sid, []):
+            if not pipeline.matches(r["data"], spec.get("where")):
+                continue
+            res = self.jev.get(f"{sig['id']}|{sid}|{r['index']}") or {}
+            noul = res.get("noul")
+            out.append({
+                "index": r["index"], "source": sid, "pointer": r["pointer"], "excerpt": r["excerpt"],
+                "noul": noul, "error": res.get("error"), "model": res.get("model"),
+                "rule_hit": (sid, r["index"]) in rule_keys,
+                "jev_hit": noul is not None and noul >= threshold,
+            })
+        scored = [r for r in out if r["noul"] is not None]
+        hits = [r for r in scored if r["jev_hit"]]
+        return {
+            "question": spec["question"],
+            "criteria": spec.get("criteria"),
+            "where": spec.get("where"),
+            "threshold": threshold,
+            "records": out,
+            "complete": bool(out) and len(scored) == len(out),
+            "asked": bool(scored),
+            "strength": max((r["noul"] for r in hits), default=0.0),
+            "hit_count": len(hits),
+            "disagreements": sum(1 for r in scored if r["rule_hit"] != r["jev_hit"]),
+            "model": next((r["model"] for r in scored if r["model"]), None),
+        }
 
     def _crown(self, hid, events):
         nodes = {n["id"]: n for n in self.state["nodes"]}

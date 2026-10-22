@@ -1,9 +1,11 @@
 // The checkers board: piece positions, move animation, edges, hit testing.
-import { TILE, COLORS, drawBoard, drawPiece, drawHalo, drawSelection, linePoints, rgba } from "./sprites.js";
+import { TILE, COLORS, drawBoard, drawPiece, drawHalo, drawPin, drawSelection, linePoints, rgba } from "./sprites.js";
 
 const MOVE_MS = 240;
 const STAGE_MS = 420;
 const STEP_AT = [0.33, 0.66];
+const OFF_MIN = 220; // off-board column: minimum width, and how much spare width it may take
+const OFF_GROW = 180;
 
 const stepFor = (p) => STEP_AT.filter((t) => p >= t).length;
 
@@ -13,9 +15,10 @@ function squareFor(node, step) {
   return { c: node.col + (step === 1 ? 1 : 0), r: node.base_row - step };
 }
 
-function pieceMode(n) {
+export function pieceMode(n) {
+  if (n.offboard) return n.band === "hypothesis" ? "solid" : "grey";
   if (n.band === "signal") return n.status === "dormant" ? "hollow" : n.status === "quiet" ? "grey" : "solid";
-  if (n.band === "entity") return n.status === "unresolved" ? "grey" : "solid";
+  if (n.band === "participant") return n.status === "unresolved" ? "grey" : "solid";
   return "solid";
 }
 
@@ -40,12 +43,18 @@ export class Board {
       this.select(id);
       this.onSelect(id);
     });
-    window.addEventListener("resize", () => this._fit());
+    // refit whenever the stage changes size: window resize or the panel being dragged
+    new ResizeObserver(() => this._fit()).observe(canvas.parentElement.parentElement);
     requestAnimationFrame((t) => this._frame(t));
   }
 
   select(id) {
     this.selected = id;
+  }
+
+  // The agent points at pieces: they pulse white for a while.
+  highlight(ids, ms = 9000) {
+    this.highlights = { ids: new Set(ids), until: performance.now() + ms };
   }
 
   setState(state, animate) {
@@ -58,31 +67,44 @@ export class Board {
     if (first) {
       this.pieces.clear();
       this.particles = [];
-      this.canvas.width = this.glow.width = width * TILE;
-      this.canvas.height = this.glow.height = height * TILE;
+      this.k = 0;
       this._fit();
     }
     const now = performance.now();
     const prevNodes = prev && !first ? new Map(prev.nodes.map((n) => [n.id, n])) : new Map();
+    const where = (n) => (!n ? "hidden" : n.present ? "on" : n.offboard ? "side" : "hidden");
 
     for (const n of state.nodes) {
       let pc = this.pieces.get(n.id);
-      const final = squareFor(n, n.step);
+      const place = where(n);
       if (!pc || first || !animate) {
-        pc = { id: n.id, x: final.c * TILE, y: final.r * TILE, queue: [], move: null, alpha: n.present ? 1 : 0, fade: null, flash: 0, step: n.step };
+        const at = squareFor(n, n.step);
+        pc = { id: n.id, x: at.c * TILE, y: at.r * TILE, queue: [], move: null, alpha: place === "on" ? 1 : 0,
+               fade: null, flash: 0, step: n.step };
         this.pieces.set(n.id, pc);
         continue;
       }
       const old = prevNodes.get(n.id);
+      const was = where(old);
 
-      // presence changes: drop in from above, or hop off the board
-      if (n.present && !(old && old.present)) {
+      if (place === "hidden" && was !== "hidden") pc.queue.push({ leave: true, at: now });
+      if (place !== "on" && was !== "on") continue;
+
+      // arriving on the board: drop in from above, or hop back in from the
+      // off-board column on the left
+      if (place === "on" && was !== "on") {
         const sq = squareFor(n, 0);
-        pc.x = sq.c * TILE; pc.y = sq.r * TILE - 24; pc.alpha = 0; pc.step = 0; pc.queue = [];
-        pc.queue.push({ c: sq.c, r: sq.r, at: now, drop: true });
+        pc.queue = [];
+        if (was === "side") {
+          pc.x = -TILE; pc.y = sq.r * TILE; pc.alpha = 0;
+          pc.queue.push({ c: sq.c, r: sq.r, at: now, hop: true, fade: "in" });
+        } else {
+          pc.x = sq.c * TILE; pc.y = sq.r * TILE - 24; pc.alpha = 0;
+          pc.queue.push({ c: sq.c, r: sq.r, at: now, drop: true });
+        }
+        pc.step = 0;
       }
-      const leaving = !n.present && old && old.present;
-      if (!n.present && !leaving) continue;
+      const leaving = place === "side";
 
       // one diagonal move per step change, scheduled stage by stage
       let step = pc.step;
@@ -102,9 +124,10 @@ export class Board {
         pc.queue.push({ c: sq.c, r: sq.r, at: base + state.stages.length * STAGE_MS });
       }
       pc.step = n.step;
-      if (leaving) pc.queue.push({ leave: true, at: base + (state.stages.length + 1) * STAGE_MS });
+      // leaving: hop off the left edge toward the off-board column
+      if (leaving) pc.queue.push({ c: -1, r: squareFor(n, n.step).r, at: base + (state.stages.length + 1) * STAGE_MS, hop: true, fade: "out" });
 
-      if (n.band === "entity" && old) {
+      if (n.band === "participant" && old) {
         if (n.status === "resolved" && old.status !== "resolved") pc.flashAt = now + STAGE_MS;
         const before = new Set((old.detail && old.detail.sources) || []);
         for (const s of (n.detail && n.detail.sources) || []) {
@@ -114,7 +137,7 @@ export class Board {
     }
   }
 
-  // fusion sparks: pixels fly from the source's side of the board into the object
+  // fusion sparks: pixels fly from the source's side of the board into the participant
   _sparks(sourceId, node, now) {
     const { width, height } = this.state.scenario.board;
     const count = this.state.sources.length;
@@ -130,30 +153,54 @@ export class Board {
     }
   }
 
+  // Fill the space the stage gives us. The scale may be fractional, so the
+  // canvas is drawn at a whole number of device pixels per board pixel (at or
+  // above the target) and the browser scales it down slightly. That keeps
+  // every board pixel the same size instead of a mix of 3s and 4s.
   _fit() {
     if (!this.state) return;
     const { width, height } = this.state.scenario.board;
     const wrap = this.canvas.parentElement;
-    const availW = wrap.parentElement.clientWidth - 4;
-    // leave room for the header, captured tray, toasts and source rack
-    const availH = window.innerHeight - 360;
-    const fit = Math.min(Math.floor(availW / (width * TILE)), Math.floor(availH / (height * TILE)));
-    const scale = Math.max(2, Math.min(5, fit));
-    this.scale = scale;
-    wrap.style.width = `${width * TILE * scale}px`;
-    wrap.style.height = `${height * TILE * scale}px`;
+    const row = wrap.parentElement;
+    const off = row.querySelector(".offboard");
+    const others = [...row.children].filter((c) => c !== wrap && c !== off);
+    const gap = parseFloat(getComputedStyle(row).columnGap) || 0;
+    const fixed = others.reduce((w, c) => w + c.offsetWidth + gap, 0) + (off ? OFF_MIN + gap : 0);
+    const availW = Math.max(0, row.clientWidth - fixed - 2);
+    const availH = Math.max(0, row.clientHeight - 2);
+    const scale = Math.max(1.5, Math.min(availW / (width * TILE), availH / (height * TILE)));
+    const cssW = Math.floor(width * TILE * scale);
+    const cssH = Math.floor(height * TILE * scale);
+
+    // whatever width the board can't use goes to the off-board column
+    if (off) off.style.width = `${Math.round(OFF_MIN + Math.min(OFF_GROW, Math.max(0, availW - cssW)))}px`;
+
+    const k = Math.max(1, Math.ceil(scale * (window.devicePixelRatio || 1)));
+    if (k !== this.k || this.canvas.width !== width * TILE * k) {
+      this.k = k;
+      for (const c of [this.canvas, this.glow]) {
+        c.width = width * TILE * k;
+        c.height = height * TILE * k;
+      }
+      this.ctx.setTransform(k, 0, 0, k, 0, 0);
+      this.gctx.setTransform(k, 0, 0, k, 0, 0);
+    }
+    wrap.style.width = `${cssW}px`;
+    wrap.style.height = `${cssH}px`;
     for (const c of [this.canvas, this.glow]) {
-      c.style.width = `${width * TILE * scale}px`;
-      c.style.height = `${height * TILE * scale}px`;
+      c.style.width = `${cssW}px`;
+      c.style.height = `${cssH}px`;
     }
     wrap.style.setProperty("--scan", `${scale}px`);
+    row.style.setProperty("--board-h", `${cssH}px`);
   }
 
   _hit(e) {
     if (!this.state) return null;
     const r = this.canvas.getBoundingClientRect();
-    const x = ((e.clientX - r.left) / r.width) * this.canvas.width;
-    const y = ((e.clientY - r.top) / r.height) * this.canvas.height;
+    const { width, height } = this.state.scenario.board;
+    const x = ((e.clientX - r.left) / r.width) * width * TILE;
+    const y = ((e.clientY - r.top) / r.height) * height * TILE;
     for (const [id, pc] of this.pieces) {
       const n = this.nodes.get(id);
       if (!n || !n.present || pc.alpha < 0.5) continue;
@@ -170,7 +217,8 @@ export class Board {
     const n = this.nodes.get(id);
     const wrapRect = this.canvas.parentElement.getBoundingClientRect();
     this.tooltip.hidden = false;
-    this.tooltip.innerHTML = `<b>${n.code}</b> ${escapeHtml(n.label)}<br><span>${Math.round(n.p * 100)}% · ${n.status}</span>`;
+    const note = n.kept ? "kept on the board by you" : n.status;
+    this.tooltip.innerHTML = `<b>${n.code}</b> ${escapeHtml(n.label)}<br><span>${Math.round(n.p * 100)}% · ${note}</span>`;
     this.tooltip.style.left = `${e.clientX - wrapRect.left + 14}px`;
     this.tooltip.style.top = `${e.clientY - wrapRect.top + 10}px`;
   }
@@ -189,8 +237,10 @@ export class Board {
         const t = Math.min(1, (now - m.t0) / m.dur);
         const e = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
         pc.x = m.x0 + (m.x1 - m.x0) * e;
-        pc.y = m.y0 + (m.y1 - m.y0) * e - (m.drop ? 0 : Math.sin(t * Math.PI) * 5);
+        pc.y = m.y0 + (m.y1 - m.y0) * e - (m.drop ? 0 : Math.sin(t * Math.PI) * (m.hop ? 16 : 5));
         if (m.drop) pc.alpha = Math.min(1, t * 2);
+        if (m.fade === "in") pc.alpha = Math.min(1, t * 1.5);
+        if (m.fade === "out") pc.alpha = 1 - t;
         if (t >= 1) { pc.x = m.x1; pc.y = m.y1; pc.move = null; }
         continue;
       }
@@ -201,7 +251,9 @@ export class Board {
           pc.fade = { t0: now, y: pc.y };
           continue;
         }
-        pc.move = { x0: pc.x, y0: pc.y, x1: next.c * TILE, y1: next.r * TILE, t0: now, dur: next.drop ? 380 : MOVE_MS, drop: next.drop };
+        pc.move = { x0: pc.x, y0: pc.y, x1: next.c * TILE, y1: next.r * TILE, t0: now,
+                    dur: next.drop ? 380 : next.hop ? 560 : MOVE_MS, drop: next.drop, hop: next.hop, fade: next.fade };
+        if (!next.drop && !next.fade) pc.alpha = 1;
       }
     }
   }
@@ -222,10 +274,12 @@ export class Board {
       if (!n || pc.alpha <= 0.01) continue;
       const x = Math.round(pc.x), y = Math.round(pc.y);
       if (n.band === "hypothesis" && n.status === "crownable" && !n.crowned) drawHalo(ctx, x, y, now);
+      if (this.highlights && now < this.highlights.until && this.highlights.ids.has(pc.id)) drawHalo(ctx, x, y, now * 1.6, COLORS.white);
       drawPiece(ctx, x, y, {
         color: COLORS[n.band], p: n.p, code: n.code, mode: pieceMode(n),
         king: !!n.crowned, alpha: pc.alpha, flash: pc.flash,
       });
+      if (n.kept) drawPin(ctx, x, y);
       if (pc.id === this.selected) drawSelection(ctx, x, y, COLORS.white);
       else if (pc.id === this.hover) drawSelection(ctx, x, y, "rgba(232,241,255,0.45)");
     }
@@ -272,7 +326,7 @@ export class Board {
 
   _glow(now) {
     const g = this.gctx;
-    g.clearRect(0, 0, this.glow.width, this.glow.height);
+    g.clearRect(0, 0, this.state.scenario.board.width * TILE, this.state.scenario.board.height * TILE);
     for (const pc of this.pieces.values()) {
       const n = this.nodes.get(pc.id);
       if (!n || pc.alpha < 0.05 || pieceMode(n) !== "solid") continue;

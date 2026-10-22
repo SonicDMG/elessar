@@ -9,7 +9,7 @@ export const COLORS = {
   dark: "#11161c",
   light: "#171e26",
   signal: "#ffb23f",
-  entity: "#3fd8ff",
+  participant: "#3fd8ff",
   hypothesis: "#ff5fd2",
   grey: "#4a5663",
   red: "#ff4d4d",
@@ -53,7 +53,7 @@ const FONT = {
   "8": ["111", "101", "111", "101", "111"],
   "9": ["111", "101", "111", "001", "111"],
   S: ["011", "100", "010", "001", "110"],
-  E: ["111", "100", "110", "100", "111"],
+  P: ["111", "101", "111", "100", "100"],
   H: ["101", "101", "111", "101", "101"],
   "?": ["111", "001", "010", "000", "010"],
 };
@@ -155,9 +155,9 @@ function drawPieceLayer(ctx, x, y, { color, p, mode, pips, gold, flash, code }) 
 }
 
 /** A pulsing gold ring for crownable hypotheses. */
-export function drawHalo(ctx, x, y, t) {
+export function drawHalo(ctx, x, y, t, color = COLORS.gold) {
   const a = 0.35 + 0.35 * Math.sin(t / 220);
-  ctx.fillStyle = rgba(COLORS.gold, a);
+  ctx.fillStyle = rgba(color, a);
   for (let ry = 0; ry < 16; ry++) {
     for (let rx = 0; rx < 16; rx++) {
       if (PIECE[ry][rx] !== ".") continue;
@@ -177,7 +177,7 @@ export function drawSelection(ctx, x, y, color) {
   for (const [dx, dy] of pts) ctx.fillRect(x + dx, y + dy, 1, 1);
 }
 
-const BAND_TINT = { 0: "hypothesis", 1: "hypothesis", 2: "hypothesis", 3: "entity", 4: "entity", 5: "entity", 6: "signal", 7: "signal", 8: "signal" };
+const BAND_TINT = { 0: "hypothesis", 1: "hypothesis", 2: "hypothesis", 3: "participant", 4: "participant", 5: "participant", 6: "signal", 7: "signal", 8: "signal" };
 
 export function drawBoard(ctx, w, h) {
   for (let r = 0; r < h; r++) {
@@ -196,6 +196,16 @@ export function drawBoard(ctx, w, h) {
     ctx.fillStyle = "rgba(255,255,255,0.06)";
     for (let x = 0; x < w * TILE; x += 2) ctx.fillRect(x, r * TILE, 1, 1);
   }
+}
+
+/** A small pin: the user is keeping this piece on the board. */
+export function drawPin(ctx, x, y) {
+  ctx.fillStyle = COLORS.white;
+  ctx.fillRect(x + 12, y, 3, 2);
+  ctx.fillStyle = COLORS.red;
+  ctx.fillRect(x + 13, y, 1, 1);
+  ctx.fillStyle = "rgba(232,241,255,0.7)";
+  ctx.fillRect(x + 13, y + 2, 1, 2);
 }
 
 /** Integer points on a line (Bresenham). */

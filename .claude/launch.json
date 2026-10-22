@@ -4,8 +4,22 @@
     {
       "name": "elessar",
       "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "server.app"],
+      "runtimeArgs": [
+        "-m",
+        "server.app"
+      ],
       "port": 8777
+    },
+    {
+      "name": "elessar-alt",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "server.app",
+        "--port",
+        "8791"
+      ],
+      "port": 8791
     }
   ]
 }

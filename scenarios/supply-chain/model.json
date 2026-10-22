@@ -1,5 +1,5 @@
 {
-  "entities": [
+  "participants": [
     {"id": "kestrel",   "type": "Supplier",  "anchor": {"alias": "KESTREL COMPONENTS LIMITED"}},
     {"id": "container", "type": "Container", "anchor": {"id": "MSCU7781234"}},
     {"id": "cnsha",     "type": "Port",      "anchor": {"code": "CNSHA"}},

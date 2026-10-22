@@ -9,7 +9,7 @@ import os
 from . import pipeline, signals as sigmod
 
 FILES = ("manifest.json", "mapping.json", "signals.json", "model.json", "narrative.json")
-BAND_ROWS = {"hypothesis": 2, "entity": 5, "signal": 8}
+BAND_ROWS = {"hypothesis": 2, "participant": 5, "signal": 8}
 BOARD_HEIGHT = 9
 MAX_BAND = 9
 PALETTE = ["#7ee787", "#f0883e", "#58a6ff", "#d2a8ff", "#f778ba", "#e3b341", "#56d4dd", "#ff7b72"]
@@ -45,15 +45,15 @@ def _spread(n, m):
     return [int((i + 0.5) * m / n) for i in range(n)]
 
 
-def layout(signals, entities, hypotheses):
-    widest = max(len(signals), len(entities), len(hypotheses))
+def layout(signals, participants, hypotheses):
+    widest = max(len(signals), len(participants), len(hypotheses))
     width = 2 * widest + 1
     odd = list(range(1, width - 1, 2))
     even = list(range(0, width - 2, 2))
     nodes = []
     for band, items, prefix, cols in (
         ("hypothesis", hypotheses, "H", odd),
-        ("entity", entities, "E", even),
+        ("participant", participants, "P", even),
         ("signal", signals, "S", odd),
     ):
         for i, (item, slot) in enumerate(zip(items, _spread(len(items), len(cols)))):
@@ -160,6 +160,16 @@ def load_pack(pack_dir):
                 _check_where(c.get("where"), ctx, errors)
         if s["kind"] == "time_window" and len(s.get("params", {}).get("hours", [])) != 2:
             errors.append(f"{ctx}: time_window needs params.hours [start, end]")
+        if "jev" in s:
+            spec = s["jev"]
+            if s["kind"] not in ("match", "time_window"):
+                errors.append(f"{ctx}: a jev block works on match and time_window signals only")
+            if not isinstance(spec, dict) or not str(spec.get("question", "")).strip():
+                errors.append(f"{ctx}: jev needs a question")
+            elif not 0 <= spec.get("threshold", 0.5) <= 1:
+                errors.append(f"{ctx}: jev.threshold must be 0..1")
+            else:
+                _check_where(spec.get("where"), ctx + " jev", errors)
         imp = s.setdefault("implicates", {"w": 0.5})
         for t in imp.get("types", []):
             if t not in types:
@@ -168,23 +178,25 @@ def load_pack(pack_dir):
             errors.append(f"{ctx}: implicates.w must be 0..1")
 
     # --- model
-    ents, hyps = model.get("entities", []), model.get("hypotheses", [])
-    ent_ids = {e.get("id") for e in ents}
+    if "entities" in model:
+        errors.append("model: 'entities' was renamed to 'participants'; rename the key")
+    parts, hyps = model.get("participants", []), model.get("hypotheses", [])
+    part_ids = {e.get("id") for e in parts}
     hyp_ids = {h.get("id") for h in hyps}
-    for e in ents:
+    for e in parts:
         if e.get("type") not in types:
-            errors.append(f"model: entity '{e.get('id')}' has unknown type '{e.get('type')}'")
+            errors.append(f"model: participant '{e.get('id')}' has unknown type '{e.get('type')}'")
         if len(e.get("anchor", {})) != 1:
-            errors.append(f"model: entity '{e.get('id')}' needs exactly one anchor property")
+            errors.append(f"model: participant '{e.get('id')}' needs exactly one anchor property")
         e.setdefault("leak", 0.02)
     for h in hyps:
         if not 0 <= h.get("prior", -1) <= 1:
             errors.append(f"model: hypothesis '{h.get('id')}' needs a prior in 0..1")
-    all_ids = [x.get("id") for x in list(sigs) + ents + hyps]
+    all_ids = [x.get("id") for x in list(sigs) + parts + hyps]
     dupes = {x for x in all_ids if all_ids.count(x) > 1}
     if dupes:
-        errors.append(f"model: ids must be unique across signals, entities and hypotheses: {sorted(dupes)}")
-    for band, items in (("signals", sigs), ("entities", ents), ("hypotheses", hyps)):
+        errors.append(f"model: ids must be unique across signals, participants and hypotheses: {sorted(dupes)}")
+    for band, items in (("signals", sigs), ("participants", parts), ("hypotheses", hyps)):
         if len(items) > MAX_BAND:
             errors.append(f"model: at most {MAX_BAND} {band} (got {len(items)})")
     if not hyps:
@@ -194,7 +206,7 @@ def load_pack(pack_dir):
     for i, e in enumerate(model.get("edges", [])):
         ctx = f"model edge #{i + 1}"
         if e.get("to") not in hyp_ids:
-            errors.append(f"{ctx}: 'to' must be a hypothesis (got '{e.get('to')}'); signal->entity links come from signals.json implicates")
+            errors.append(f"{ctx}: 'to' must be a hypothesis (got '{e.get('to')}'); signal->participant links come from signals.json implicates")
         kind = e.get("kind", "support")
         if kind not in ("support", "inhibit"):
             errors.append(f"{ctx}: kind must be support or inhibit")
@@ -203,13 +215,13 @@ def load_pack(pack_dir):
         if "from_type" in e:
             if e["from_type"] not in types:
                 errors.append(f"{ctx}: unknown from_type '{e['from_type']}'")
-            for ent in ents:
-                if ent.get("type") == e["from_type"]:
-                    edges.append({"from": ent["id"], "to": e["to"], "w": e["w"], "kind": kind, "via_type": e["from_type"]})
-        elif e.get("from") in sig_ids or e.get("from") in ent_ids:
+            for part in parts:
+                if part.get("type") == e["from_type"]:
+                    edges.append({"from": part["id"], "to": e["to"], "w": e["w"], "kind": kind, "via_type": e["from_type"]})
+        elif e.get("from") in sig_ids or e.get("from") in part_ids:
             edges.append({"from": e["from"], "to": e["to"], "w": e["w"], "kind": kind})
         else:
-            errors.append(f"{ctx}: 'from' must be a signal or entity id (got '{e.get('from')}')")
+            errors.append(f"{ctx}: 'from' must be a signal or participant id (got '{e.get('from')}')")
 
     if errors:
         raise PackError(pack_dir, errors)
@@ -244,11 +256,11 @@ def load_pack(pack_dir):
         "object_types": types,
         "mappings": list(enumerate(maps)),
         "signals": sigs,
-        "entities": ents,
+        "participants": parts,
         "hypotheses": hyps,
         "edges": edges,
         "narrative": narrative,
-        "layout": layout(sigs, ents, hyps),
+        "layout": layout(sigs, parts, hyps),
         "warnings": warnings,
     }
 

@@ -4,7 +4,7 @@ The set of rule kinds is fixed in code; packs parameterize them. Adding a new
 kind of rule is the one place a new domain needs code.
 
 A hit carries the fragment ids it came from. That is how a signal finds the
-entities it implicates: through resolution, never by hand-wiring.
+participants it implicates: through resolution, never by hand-wiring.
 """
 from .pipeline import get_path, matches, parse_time
 

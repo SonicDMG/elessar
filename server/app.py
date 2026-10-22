@@ -19,10 +19,27 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import parse_qs, urlparse
 
 from . import pipeline, scenario
-from .session import Session
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 WEB = os.path.join(ROOT, "web")
+
+
+def load_dotenv(path):
+    """Minimal .env reader: KEY=VALUE lines; real environment variables win."""
+    if not os.path.isfile(path):
+        return
+    with open(path) as f:
+        for line in f:
+            line = line.strip()
+            if line and not line.startswith("#") and "=" in line:
+                key, value = line.split("=", 1)
+                os.environ.setdefault(key.strip(), value.strip().strip("\"'"))
+
+
+load_dotenv(os.path.join(ROOT, ".env"))
+
+from . import agent, jev  # noqa: E402  (they read their model ids from the loaded environment)
+from .session import Session  # noqa: E402
 
 
 class App:
@@ -81,18 +98,28 @@ def make_handler(app):
                     })
                 if url.path == "/api/state":
                     pid = parse_qs(url.query).get("scenario", [app.default])[0]
-                    return self._json(200, app.session(pid).state)
+                    return self._json(200, app.session(pid).public_state())
                 return self._static(url.path)
             except KeyError as e:
                 return self._json(404, {"error": f"unknown scenario or source {e}"})
 
         def do_POST(self):
-            if urlparse(self.path).path != "/api/action":
+            path = urlparse(self.path).path
+            if path not in ("/api/action", "/api/agent"):
                 return self._json(404, {"error": "not found"})
             try:
                 length = int(self.headers.get("Content-Length", 0))
                 payload = json.loads(self.rfile.read(length) or b"{}")
-                result = app.session(payload.get("scenario", app.default)).act(payload)
+                session = app.session(payload.get("scenario", app.default))
+                if path == "/api/agent":
+                    if not agent.available():
+                        return self._json(400, {"error": "The agent is off: add OPENROUTER_API_KEY to .env"})
+                    message = str(payload.get("message", "")).strip()
+                    if not message:
+                        return self._json(400, {"error": "empty message"})
+                    turn = session.ask_agent(message, payload.get("selected"))
+                    return self._json(200, {"turn": turn, "state": session.public_state()})
+                result = session.act(payload)
                 return self._json(200, result)
             except KeyError as e:
                 return self._json(400, {"error": f"missing or unknown field {e}"})
@@ -153,6 +180,8 @@ def main():
     server = ThreadingHTTPServer((args.host, args.port), make_handler(app))
     app.base_url = f"http://{args.host}:{server.server_address[1]}"
     print(f"ELESSAR on {app.base_url}  (scenario: {args.scenario}; packs: {', '.join(sorted(app.packs))})")
+    print(f"  decision model (Jev): {jev.MODEL if jev.available() else 'off (no OPENROUTER_API_KEY)'}")
+    print(f"  inference model (agent): {agent.MODEL if agent.available() else 'off (no OPENROUTER_API_KEY)'}")
     for name, errs in app.failures.items():
         print(f"  skipped invalid pack '{name}': {errs[0]}")
     try:

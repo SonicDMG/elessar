@@ -139,12 +139,12 @@ def proposals(clusters, by_frag, object_types, rejected):
     return out
 
 
-def anchor(entity, clusters, by_frag):
-    """Find the cluster an entity slot is anchored to, or None if it is absent."""
-    (prop, value), = entity["anchor"].items()
+def anchor(participant, clusters, by_frag):
+    """Find the cluster a participant slot is anchored to, or None if it is absent."""
+    (prop, value), = participant["anchor"].items()
     want = norm(value)
     for c in clusters.values():
-        if c["type"] != entity["type"]:
+        if c["type"] != participant["type"]:
             continue
         for v in c["props"].get(prop, []):
             if norm(v["value"]) == want:

@@ -1,5 +1,5 @@
 {
-  "entities": [
+  "participants": [
     {"id": "vale",        "type": "Actor",   "anchor": {"badge": "B-2093"}},
     {"id": "reyes",       "type": "Actor",   "anchor": {"badge": "B-5540"}},
     {"id": "kwan",        "type": "Actor",   "anchor": {"badge": "B-9004"}},
