@@ -222,6 +222,7 @@ scenarios/<id>/
   "sources": [
     {"id": "roster", "name": "People Directory", "kind": "Directory", "format": "csv",
      "file": "sources/roster.csv", "options": {"delimiter": "|"},
+     "time": {"field": "START_DATE", "unit": "date_dmy"},
      "confidence": 0.95, "latency_ms": 200, "color": "#7ee787", "blurb": "…"},
     {"id": "live", "format": "jsonl", "transport": "http", "url": "https://example.com/events"}
   ]
@@ -230,6 +231,14 @@ scenarios/<id>/
 
 Rack order is manifest order, and so is source priority when participants show
 property values.
+
+`time` is optional and says where each record's timestamp is, for the event
+timeline (`state.events`). `field` is a dotted path, or a list of paths tried
+in order (`["opened", "window.@start"]`); `unit` is `ms` or `s` (epoch), `iso`
+(`YYYY-MM-DDTHH:MM:SSZ`) or `date_dmy` (`dd/mm/yyyy`, read as midnight UTC).
+Records whose field is empty produce no event; a source without `time`
+produces none. The validator rejects an unknown unit and warns when a path
+never appears in the data or a value does not parse.
 
 | format | options |
 |---|---|

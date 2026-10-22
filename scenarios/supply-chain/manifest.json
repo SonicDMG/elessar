@@ -4,7 +4,7 @@
   "premise": "PO-7781, 4,000 control boards, will miss its ship date and the Leeds line runs dry in three days. Four systems each know part of why. What explains it?",
   "sources": [
     {"id": "inventory", "name": "Warehouse Stock", "kind": "Inventory", "format": "columnar", "file": "sources/stock.json", "options": {"fields": "schema.fields", "rows": "rows"}, "confidence": 0.95, "latency_ms": 180, "color": "#f778ba", "blurb": "Column-oriented stock snapshot: a schema, then bare arrays."},
-    {"id": "shipments", "name": "Carrier Events", "kind": "Shipment tracking", "format": "jsonl", "file": "sources/events.jsonl", "confidence": 0.9, "latency_ms": 260, "color": "#58a6ff", "blurb": "Carrier milestones, one JSON object per line. Suppliers appear as whatever the carrier typed on the bill of lading."},
+    {"id": "shipments", "name": "Carrier Events", "kind": "Shipment tracking", "format": "jsonl", "file": "sources/events.jsonl", "time": {"field": "ts", "unit": "iso"}, "confidence": 0.9, "latency_ms": 260, "color": "#58a6ff", "blurb": "Carrier milestones, one JSON object per line. Suppliers appear as whatever the carrier typed on the bill of lading."},
     {"id": "port", "name": "Port Bulletin", "kind": "Port authority", "format": "xml", "file": "sources/bulletin.xml", "options": {"records": "port"}, "confidence": 0.85, "latency_ms": 340, "color": "#d2a8ff", "blurb": "A port operations XML bulletin. Everything useful is an attribute; ports are UN/LOCODEs."},
     {"id": "suppliers", "name": "Supplier Master", "kind": "Master data", "format": "csv", "file": "sources/suppliers.csv", "confidence": 0.97, "latency_ms": 200, "color": "#7ee787", "blurb": "The procurement system's supplier list. Legal names, never what carriers call them."}
   ]

@@ -101,6 +101,15 @@ def load_pack(pack_dir):
         conf = s.setdefault("confidence", 0.9)
         if not 0 <= conf <= 1:
             errors.append(f"manifest: source '{sid}' confidence must be 0..1")
+        tconf = s.get("time")
+        if tconf is not None:
+            fields = tconf.get("field") if isinstance(tconf, dict) else None
+            if isinstance(fields, str):
+                fields = [fields]
+            if not fields or not all(isinstance(f, str) and f for f in fields):
+                errors.append(f"manifest: source '{sid}' time.field must be a path or a list of paths")
+            elif tconf.get("unit") not in pipeline.TIME_UNITS:
+                errors.append(f"manifest: source '{sid}' has unknown time.unit '{tconf.get('unit')}' (known: {list(pipeline.TIME_UNITS)})")
         s.setdefault("color", PALETTE[i % len(PALETTE)])
         s.setdefault("latency_ms", 150)
         s.setdefault("name", sid)
@@ -245,6 +254,18 @@ def load_pack(pack_dir):
                 field, _ = pipeline._prop_spec(spec)
                 if all(pipeline.get_path(r["data"], field) in (None, "") for r in recs):
                     warnings.append(f"mapping #{mi + 1}: field '{field}' never appears in '{sid}'")
+        if s.get("time"):
+            fields = s["time"]["field"]
+            fields = fields if isinstance(fields, list) else [fields]
+            for field in fields:
+                if all(pipeline.get_path(r["data"], field) in (None, "") for r in recs):
+                    warnings.append(f"manifest: time field '{field}' never appears in '{sid}'")
+            for r in recs:
+                try:
+                    pipeline.record_time(r["data"], s["time"])
+                except (TypeError, ValueError, OverflowError) as e:
+                    warnings.append(f"manifest: time of '{sid}' {r['pointer']} does not parse as {s['time']['unit']}: {e}")
+                    break
 
     return {
         "id": pid,

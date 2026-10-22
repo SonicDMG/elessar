@@ -259,9 +259,25 @@ def to_fragments(records, mappings):
     return frags
 
 
+TIME_UNITS = ("ms", "s", "iso", "date_dmy")
+
+
 def parse_time(value, unit):
     if unit == "ms":
         return datetime.fromtimestamp(int(value) / 1000, timezone.utc)
     if unit == "s":
         return datetime.fromtimestamp(int(value), timezone.utc)
+    if unit == "date_dmy":
+        return datetime.strptime(_date_dmy(str(value)), "%Y-%m-%d").replace(tzinfo=timezone.utc)
     return datetime.strptime(str(value), "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
+
+
+def record_time(data, spec):
+    """A record's timestamp per a source's `time` config: the first of the
+    config's field paths that is present, parsed by its unit. None if absent."""
+    fields = spec["field"] if isinstance(spec["field"], list) else [spec["field"]]
+    for field in fields:
+        v = get_path(data, field)
+        if v not in (None, ""):
+            return parse_time(v, spec.get("unit", "iso"))
+    return None

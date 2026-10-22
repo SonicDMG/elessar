@@ -76,6 +76,7 @@ class Session:
         self.earned = {}         # insight key -> points
         self.audit = []
         self.peeked = set()
+        self.acked = set()       # event ids the user acknowledged
         self.agent = agent.Agent(self)
         self.state = self.compute()
 
@@ -92,6 +93,7 @@ class Session:
         c.feedback, c.engine = self.feedback, self.engine
         c.jev, c.jev_stats = dict(self.jev), dict(self.jev_stats)
         c.earned, c.audit, c.peeked = dict(self.earned), list(self.audit), set(self.peeked)
+        c.acked = set(self.acked)
         c.agent = agent.Agent(c)
         c.state = self.state
         return c
@@ -173,6 +175,7 @@ class Session:
 
         # signals
         acts, sig_detail = {}, {}
+        record_signals = {}      # (source, index) -> signal ids with a hit on that record
         part_parents = {e["id"]: [] for e in pack["participants"]}
         part_types = {e["id"]: e["type"] for e in pack["participants"]}
         for sig in pack["signals"]:
@@ -198,6 +201,8 @@ class Session:
             linked = {}
             hit_out = []
             for h in hits:
+                for r in h["records"]:
+                    record_signals.setdefault((r["source"], r["index"]), set()).add(sig["id"])
                 parts = set()
                 for fid in h["fragments"]:
                     parts |= frag_participant.get(fid, set())
@@ -309,6 +314,8 @@ class Session:
         for e in pack["edges"]:
             draw.append({"from": e["from"], "to": e["to"], "kind": e["kind"], "w": e["w"], "flow": e["w"] * p.get(e["from"], 0.0)})
 
+        events, links = self._timeline(order, records, frags_by_record, frag_participant, record_signals, acts)
+
         sources = []
         for sid in pack["source_order"]:
             s = pack["sources"][sid]
@@ -338,6 +345,8 @@ class Session:
             "edges": draw,
             "stages": stages,
             "merges": {"pending": pending, "committed": committed_info},
+            "events": events,
+            "links": links,
             "object_types": pack["object_types"],
             "feedback": self.feedback,
             "engine": self.engine,
@@ -348,6 +357,42 @@ class Session:
             "audit": self.audit[-80:],
             "thresholds": {"steps": STEP_AT, "crownable": CROWNABLE, "capture_p": CAPTURE_P},
         }
+
+    def _timeline(self, order, records, frags_by_record, frag_participant, record_signals, acts):
+        """Timestamped records as events, and participant pairs joined by a shared record."""
+        events, pairs = [], {}
+        for sid in order:
+            tconf = self.pack["sources"][sid].get("time")
+            for r in records[sid]:
+                key = (sid, r["index"])
+                parts = set()
+                for fid in frags_by_record.get(key, []):
+                    parts |= frag_participant.get(fid, set())
+                parts = sorted(parts)
+                for i, a in enumerate(parts):
+                    for b in parts[i + 1:]:
+                        pairs.setdefault((a, b), []).append({"source": sid, "pointer": r["pointer"]})
+                if not tconf:
+                    continue
+                try:
+                    t = pipeline.record_time(r["data"], tconf)
+                except (TypeError, ValueError, OverflowError):
+                    t = None
+                if t is None:
+                    continue
+                sigs = sorted(record_signals.get(key, ()))
+                eid = f"{sid}:{r['index']}"
+                events.append({
+                    "id": eid, "at": pipeline._iso(t), "t": int(t.timestamp() * 1000),
+                    "source": sid, "pointer": r["pointer"], "excerpt": r["excerpt"],
+                    "participants": parts, "signals": sigs,
+                    "severity": max((acts[g] for g in sigs), default=0.0),
+                    "acked": eid in self.acked,
+                })
+        events.sort(key=lambda e: e["t"])  # stable: ties keep source order, then record order
+        links = [{"a": a, "b": b, "records": recs, "weight": len(recs)} for (a, b), recs in pairs.items()]
+        links.sort(key=lambda l: (-l["weight"], l["a"], l["b"]))
+        return events, links
 
     # ------------------------------------------------------------ actions
 
@@ -456,6 +501,16 @@ class Session:
         elif action == "peek":
             self._log("peek", payload["source"])
             self._earn("shape_shock", "shape_shock", events)
+        elif action in ("ack", "unack"):
+            eid = payload.get("event")
+            ev = next((e for e in self.state["events"] if e["id"] == eid), None)
+            if ev is None:
+                raise ValueError(f"unknown event '{eid}'")
+            if action == "ack":
+                self.acked.add(eid)
+            else:
+                self.acked.discard(eid)
+            self._log(action, f"{eid} ({ev['source']} {ev['pointer']})")
         elif action == "crown":
             self._crown(payload["hypothesis"], events)
         elif action == "reset":
