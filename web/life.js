@@ -33,6 +33,7 @@ let speed = 1;
 let hover = null;
 let observer = null;
 let onKey = null;
+const evidenceOpen = new Map(); // species id → evidence list open, as the user left it
 
 // ------------------------------------------------------------------ mode interface
 
@@ -93,14 +94,27 @@ export function mount(el, context) {
     const s = speciesAt(e);
     if (s) ctx.select(s.id);
     draw();
-    renderSide();
+    markSelected();
   });
-  els.side.addEventListener("click", (e) => {
-    const row = e.target.closest("[data-id]");
-    if (row) { ctx.select(row.dataset.id); draw(); renderSide(); }
-  });
+  // a code in the readout selects that piece; elsewhere a card selects its species
+  const pick = (e) => {
+    const ref = e.target.closest("[data-sel]");
+    const card = e.target.closest("[data-id]");
+    if (ref) ctx.select(ref.dataset.sel);
+    else if (card && !e.target.closest("summary")) ctx.select(card.dataset.id);
+    else return;
+    draw();
+    markSelected();
+  };
+  els.side.addEventListener("click", pick);
+  els.read.addEventListener("click", pick);
+  // remember which evidence lists the user opened or closed across rebuilds
+  els.side.addEventListener("toggle", (e) => {
+    const card = e.target.closest("[data-id]");
+    if (card && e.target.matches("details")) evidenceOpen.set(card.dataset.id, e.target.open);
+  }, true);
   // Escape clears the selection in app.js without an update; follow it.
-  onKey = () => setTimeout(() => { if (sim) { draw(); renderSide(); } }, 0);
+  onKey = () => setTimeout(() => { if (sim) { draw(); markSelected(); } }, 0);
   document.addEventListener("keydown", onKey);
   observer = new ResizeObserver(() => fit());
   observer.observe(root);
@@ -173,12 +187,18 @@ function seed(state) {
   const rand = prng(hash(fp));
   const hyps = hypotheses(state);
   const grid = new Uint8Array(COLS * ROWS);
+  const nodes = new Map(state.nodes.map((n) => [n.id, n]));
+  // one evidence entry per term, named by the board's code for its source node
+  const evidence = (from, v) => {
+    const n = nodes.get(from);
+    return { id: from, code: n ? n.code : from, label: n ? n.label : from, band: n && n.band, v, planted: 0, kept: 0, removed: 0 };
+  };
   const species = hyps.map((n, i) => {
     const x0 = Math.round((i * COLS) / hyps.length);
     const x1 = Math.round(((i + 1) * COLS) / hyps.length);
     const b = (n.detail && n.detail.breakdown) || {};
-    const support = (b.support || []).map((t) => t.term);
-    const inhibit = (b.inhibit || []).map((t) => t.w * t.p);
+    const support = (b.support || []).map((t) => evidence(t.from, t.term));
+    const inhibit = (b.inhibit || []).map((t) => evidence(t.from, t.w * t.p));
 
     // home band cells in a seeded random order; support terms take the next
     // share of them, inhibitors drop a share of what was taken
@@ -186,17 +206,30 @@ function seed(state) {
     for (let r = 0; r < ROWS; r++) for (let c = x0; c < x1; c++) cells.push(r * COLS + c);
     shuffle(cells, rand);
     const cap = Math.floor(cells.length * MAX_FILL);
-    let taken = 0;
-    for (const term of support) taken = Math.min(cap, taken + Math.round(term * SEED_DENSITY * cells.length));
-    let seeds = cells.slice(0, taken);
-    for (const v of inhibit) {
-      const drop = Math.round(v * seeds.length);
-      seeds = shuffle(seeds, rand).slice(drop);
+    // over the cap, every term shrinks by the same factor (leftover cells go
+    // to the biggest terms), so each keeps its share however many there are
+    const want = support.map((t) => Math.round(t.v * SEED_DENSITY * cells.length));
+    const wanted = want.reduce((a, n) => a + n, 0);
+    const f = wanted > cap ? cap / wanted : 1;
+    support.forEach((t, k) => { t.planted = Math.floor(want[k] * f); });
+    let spare = Math.min(cap, wanted) - support.reduce((a, t) => a + t.planted, 0);
+    for (const t of [...support].sort((a, b) => b.v - a.v)) if (spare > 0) { t.planted++; spare--; }
+    let seeds = [];
+    for (const t of support) {
+      const start = seeds.length;
+      for (let j = 0; j < t.planted; j++) seeds.push({ at: cells[start + j], term: t });
     }
-    for (const at of seeds) grid[at] = i + 1;
+    const planted = seeds.length;
+    for (const t of inhibit) {
+      t.removed = Math.round(t.v * seeds.length);
+      seeds = shuffle(seeds, rand).slice(t.removed);
+    }
+    for (const sd of seeds) { grid[sd.at] = i + 1; sd.term.kept++; }
+    const bySize = (a, b) => b.v - a.v;
     return {
       id: n.id, code: n.code, label: n.label, p: n.p, offboard: !!n.offboard, x0, x1, color: PALETTE[i % PALETTE.length],
-      supportSum: support.reduce((a, t) => a + t, 0), planted: taken, seeded: seeds.length,
+      supportSum: support.reduce((a, t) => a + t.v, 0), planted, seeded: seeds.length, capped: planted === cap && cap > 0,
+      support: support.sort(bySize), inhibit: inhibit.sort(bySize),
     };
   });
   // ties at birth go to the higher board belief, then pack order
@@ -212,6 +245,7 @@ function seed(state) {
   for (const s of species) s.styles = styles(s.color, s.offboard);
   els.nudge.hidden = true;
   count();
+  renderSide();
   fit();
   renderAll();
 }
@@ -348,6 +382,8 @@ function fit() {
   els.wrap.style.width = `${cssW}px`;
   els.wrap.style.height = `${cssH}px`;
   els.wrap.style.setProperty("--scan", `${scale}px`);
+  // beside the grid in a scrolling page, the species list scrolls within the grid's height
+  els.side.style.maxHeight = flow && !stack ? `${cssH}px` : "";
   draw();
 }
 
@@ -454,7 +490,7 @@ function onHover(e) {
 function renderAll() {
   draw();
   renderBar();
-  renderSide();
+  updateSide();
   renderRead();
 }
 
@@ -484,24 +520,77 @@ function leaders() {
   return { board, life };
 }
 
+const pct = (v) => `${Math.round(v * 100)}%`;
+
+// A clickable code: selects that piece everywhere (signal, participant or species).
+function ref(id, code, color) {
+  return `<button class="life-ref" data-sel="${escapeHtml(id)}" style="--c:${color}">${escapeHtml(code)}</button>`;
+}
+const evRef = (t) => ref(t.id, t.code, ctx.sprites.COLORS[t.band] || ctx.sprites.COLORS.grey);
+const spRef = (s) => ref(s.id, s.code, s.color);
+
+// Evidence rows: support terms (+w×p, seeds they kept) then inhibitors
+// (−w×p in red, seeds they removed), each sorted by size, tiny terms omitted.
+function evidenceHtml(s) {
+  const row = (t, kind) => `<div class="life-ev-row ${kind}">${evRef(t)}<span class="lbl" title="${escapeHtml(t.label)}">${escapeHtml(t.label)}</span>`
+    + `<span class="v">${kind === "sup" ? "+" : "−"}${t.v.toFixed(2)}</span>`
+    + `<span class="n" title="${kind === "sup" ? "seeds this term planted that survived the inhibitors" : "seeds this inhibitor removed"}">${kind === "sup" ? t.kept : t.removed ? `−${t.removed}` : "0"}</span></div>`;
+  const sup = s.support.filter((t) => t.v >= 0.01);
+  const inh = s.inhibit.filter((t) => t.v >= 0.01);
+  if (!sup.length && !inh.length) return `<p class="dim small life-ev-none">No evidence yet: every term is below 0.01.</p>`;
+  return sup.map((t) => row(t, "sup")).join("") + inh.map((t) => row(t, "inh")).join("");
+}
+
+// "230 seeds · S4 97 · S6 71 · P7 33": the survivors of each support term.
+function accounting(s) {
+  const parts = s.support.filter((t) => t.kept > 0).sort((a, b) => b.kept - a.kept).map((t) => `${escapeHtml(t.code)} ${t.kept}`);
+  const cut = s.planted - s.seeded;
+  const head = `${s.seeded} seeds` + (cut ? ` <span class="cut" title="removed by inhibitors">−${cut}</span>` : "") + (s.capped ? ` <span class="dim" title="band fill capped at ${MAX_FILL * 100}%">cap</span>` : "");
+  return [head, ...parts].join(" · ");
+}
+
 function renderSide() {
   if (!els || !sim) return;
   if (!sim.species.length) { els.side.innerHTML = `<p class="dim">This pack has no hypotheses.</p>`; return; }
-  const { board, life } = leaders();
   const stale = !els.nudge.hidden;
-  const pct = (v) => `${Math.round(v * 100)}%`;
+  const narrow = root.clientWidth < 720;
   els.side.innerHTML = `<h3>Species <span class="dim">life territory · board belief${stale ? " at seed" : ""}</span></h3>`
-    + sim.species.map((s, i) => {
-      const share = sim.total ? sim.counts[i] / sim.total : 0;
-      const tags = [i === life ? "life lead" : "", i === board ? "board lead" : "", s.offboard ? "off board" : ""].filter(Boolean);
-      return `<div class="life-sp${s.id === ctx.selected ? " sel" : ""}" data-id="${escapeHtml(s.id)}" style="--c:${s.color}">
+    + sim.species.map((s) => {
+      // evidence starts open beside the grid, closed when stacked, always open for the explained away
+      const open = evidenceOpen.has(s.id) ? evidenceOpen.get(s.id) : !narrow || s.offboard;
+      return `<div class="life-sp${s.offboard ? " off" : ""}" data-id="${escapeHtml(s.id)}" style="--c:${s.color}">
         <div class="life-sp-head"><span class="sw"></span><span class="code">${escapeHtml(s.code)}</span>
           <span class="lbl">${escapeHtml(s.label)}</span></div>
-        <div class="life-row"><span class="k">life</span><span class="bar"><i style="width:${pct(share)}"></i></span><span class="v">${pct(share)}</span></div>
+        <div class="life-row"><span class="k">life</span><span class="bar"><i data-f="life-bar"></i></span><span class="v" data-f="life-v"></span></div>
         <div class="life-row board"><span class="k">board</span><span class="bar"><i style="width:${pct(s.p)}"></i></span><span class="v">${pct(s.p)}</span></div>
-        <div class="life-tags small">${tags.map((t) => `<span>${t}</span>`).join("")}<span class="dim">seeded ${s.seeded}</span></div>
+        <div class="life-tags small" data-f="tags"></div>
+        <details class="life-ev"${open ? " open" : ""}><summary>${accounting(s)}</summary>${evidenceHtml(s)}</details>
       </div>`;
     }).join("");
+  markSelected();
+  updateSide();
+}
+
+// Per generation: territory bars and lead tags only, so clicks never land on a rebuilt node.
+function updateSide() {
+  if (!els || !sim || !sim.species.length) return;
+  const { board, life } = leaders();
+  sim.species.forEach((s, i) => {
+    const card = els.side.querySelector(`[data-id="${CSS.escape(s.id)}"]`);
+    if (!card) return;
+    const share = sim.total ? sim.counts[i] / sim.total : 0;
+    card.querySelector('[data-f="life-bar"]').style.width = pct(share);
+    card.querySelector('[data-f="life-v"]').textContent = pct(share);
+    const tags = [i === life ? "life lead" : "", i === board ? "board lead" : "", s.offboard ? "off board" : ""].filter(Boolean);
+    const html = tags.map((t) => `<span>${t}</span>`).join("");
+    const el = card.querySelector('[data-f="tags"]');
+    if (el.innerHTML !== html) el.innerHTML = html;
+  });
+}
+
+function markSelected() {
+  if (!els) return;
+  els.side.querySelectorAll(".life-sp").forEach((c) => c.classList.toggle("sel", c.dataset.id === ctx.selected));
 }
 
 function renderRead() {
@@ -518,11 +607,35 @@ function renderRead() {
   } else {
     const { board, life } = leaders();
     const L = sp[life], B = sp[board];
-    const share = Math.round((sim.counts[life] / sim.total) * 100);
+    const share = num(Math.round((sim.counts[life] / sim.total) * 100));
     text = life === board
-      ? `Life agrees with the board: <b style="color:${L.color}">${escapeHtml(L.code)}</b> ${escapeHtml(L.label)} leads both, ${share}% of territory against ${Math.round(L.p * 100)}% belief.`
-      : `Life and the board disagree: <b style="color:${L.color}">${escapeHtml(L.code)}</b> ${escapeHtml(L.label)} holds the most territory (${share}%), while the board leads with <b style="color:${B.color}">${escapeHtml(B.code)}</b> ${escapeHtml(B.label)} (${Math.round(B.p * 100)}%). Same evidence, a different aggregation rule.`;
+      ? `Life agrees with the board: ${spRef(L)} ${escapeHtml(L.label)} leads both, ${share}% of territory against ${Math.round(L.p * 100)}% belief.`
+      : `Life and the board disagree: ${spRef(L)} ${escapeHtml(L.label)} holds the most territory (${share}%), while the board leads with ${spRef(B)} ${escapeHtml(B.label)} (${Math.round(B.p * 100)}%). Same evidence, a different aggregation rule.`;
+    text += ` ${evidenceLine(L, life === board ? null : B, life)}`;
   }
   if (!els.nudge.hidden) text += ` <span class="dim">This run is from an earlier board.</span>`;
-  els.read.innerHTML = text;
+  // rebuild only when the words change, so a click on a code is never lost
+  // mid-run; otherwise just refresh the numbers in place
+  const shape = text.replace(NUM_RE, '<span class="life-num"></span>');
+  if (shape !== els.read.dataset.shape) { els.read.innerHTML = text; els.read.dataset.shape = shape; return; }
+  const values = [...text.matchAll(NUM_RE)].map((m) => m[1]);
+  els.read.querySelectorAll(".life-num").forEach((el, k) => { if (el.textContent !== values[k]) el.textContent = values[k]; });
+}
+
+// Numbers that change every generation live in their own spans.
+const num = (v) => `<span class="life-num">${v}</span>`;
+const NUM_RE = /<span class="life-num">([^<]*)<\/span>/g;
+
+// "H3 is backed by S4, S6, S1; H1 was cut by S4, S6." The strongest terms
+// behind the leaders, then the rivals that inhibitors cut by half or more.
+function evidenceLine(L, B, life) {
+  const top = (list) => list.filter((t) => t.v >= 0.01).slice(0, 3).map(evRef).join(", ");
+  const backed = [L, B].filter((s) => s && top(s.support)).map((s, k) => `${spRef(s)} ${k ? "by" : "is backed by"} ${top(s.support)}`);
+  let line = backed.length ? `${backed.join("; ")}.` : "";
+  const cut = sim.species
+    .filter((s, i) => i !== life && top(s.inhibit) && (s.offboard || (s.planted && s.planted - s.seeded >= s.planted / 2)))
+    .sort((a, b) => b.offboard - a.offboard || (b.planted - b.seeded) - (a.planted - a.seeded))
+    .slice(0, 2);
+  if (cut.length) line += ` ${cut.map((s, k) => `${spRef(s)} ${k ? "by" : "was cut by"} ${top(s.inhibit)}`).join("; ")}.`;
+  return line;
 }

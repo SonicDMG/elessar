@@ -45,17 +45,33 @@
 .life-row.board .bar { color: var(--hypothesis); opacity: 0.55; }
 .life-row .v { text-align: right; color: var(--text); }
 .life-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 3px; }
-.life-tags span:not(.dim) { border: 1px solid var(--c); color: var(--c); padding: 0 4px; font-size: 10.5px; }
-.life-tags .dim { margin-left: auto; }
+.life-tags:empty { display: none; }
+.life-tags span { border: 1px solid var(--c); color: var(--c); padding: 0 4px; font-size: 10.5px; }
+.life-sp.off .life-tags span:last-child { border-color: var(--grey); color: var(--dim); }
+
+/* backing evidence: support terms, then inhibitors in red */
+.life-ev { margin-top: 5px; border-top: 1px dashed var(--line); padding-top: 4px; }
+.life-ev summary { cursor: pointer; font-size: 11px; color: var(--text); list-style-position: inside; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.life-ev summary .cut { color: var(--red); }
+.life-ev[open] summary { margin-bottom: 3px; }
+.life-ev-row { display: grid; grid-template-columns: 26px minmax(0, 1fr) 40px 32px; gap: 5px; align-items: center; font-size: 11px; line-height: 1.5; }
+.life-ev-row .lbl { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--dim); }
+.life-ev-row .v { text-align: right; color: var(--text); }
+.life-ev-row .n { text-align: right; color: var(--dim); }
+.life-ev-row.inh .v, .life-ev-row.inh .n { color: var(--red); }
+.life-ev-none { margin: 2px 0 0; }
+.life-ref { font: 15px/1 var(--pixel); color: var(--c); background: none; border: 0; padding: 0 1px; text-align: left; cursor: pointer; }
+.life-ref:hover { background: none; text-decoration: underline; }
+.life-read .life-ref { font-size: 16px; }
 
 /* interpretation and rule note */
 .life-read { flex: none; margin: 0; font-size: 12.5px; color: var(--text); min-height: 1.45em; }
-.life-read b { font: 16px/1 var(--pixel); font-weight: 400; }
 .life-note { flex: none; margin: 0; }
 
 /* the page scrolls (narrow viewport) or the readout stacks under the grid:
    sizes come from the width, not the stage height */
 .life-flow, .life-flow .life-main { flex: none; }
+.life-flow .life-stage { align-items: flex-start; }
 .life-stack .life-main { flex-direction: column; }
 .life-stack .life-stage { flex: none; }
 .life-stack .life-side { width: auto; overflow: visible; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 6px; }
