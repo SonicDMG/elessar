@@ -7,6 +7,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=VT323&family=IBM+Plex+Mono:wght@400;600&display=swap">
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="life.css">
+  <link rel="stylesheet" href="topology.css">
 </head>
 <body>
   <header class="top">
@@ -27,7 +29,12 @@
 
   <main>
     <section class="stage">
-      <div class="stage-row">
+      <nav class="modes" id="modes">
+        <button data-mode="board" class="on">Board</button>
+        <button data-mode="life">Life</button>
+        <button data-mode="topology">Topology</button>
+      </nav>
+      <div class="stage-row" data-mode-view="board">
         <aside id="offboard" class="offboard"></aside>
         <div class="bands"><span class="b-hypothesis">HYPOTHESES</span><span class="b-participant">PARTICIPANTS</span><span class="b-signal">SIGNALS</span></div>
         <div class="board-wrap" id="wrap">
@@ -37,7 +44,7 @@
           <div id="tip" class="tip" hidden></div>
         </div>
       </div>
-      <p class="legend">
+      <p class="legend" data-mode-view="board">
         Belief moves a piece up its lane in diagonal checkers moves: one square at 33%, two at 66%.
         <span class="dot b-signal"></span>signals
         <span class="dot b-participant"></span>participants
@@ -47,6 +54,8 @@
         Gold halo: crownable (≥ 85%). Pieces that leave the board hop off its left edge into the column beside it, with the reason, and can always come back.
         Keys 1–9 toggle sources.
       </p>
+      <section id="mode-life" class="mode-view" data-mode-view="life" hidden></section>
+      <section id="mode-topology" class="mode-view" data-mode-view="topology" hidden></section>
     </section>
 
     <aside class="panel" id="panel">

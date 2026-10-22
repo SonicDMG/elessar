@@ -1,6 +1,9 @@
 // Wiring: fetch state, send actions, route renders.
 import { Board, escapeHtml } from "./board.js";
 import * as P from "./panel.js";
+import * as sprites from "./sprites.js";
+import * as Life from "./life.js";
+import * as Topology from "./topology.js";
 
 const $ = (s) => document.querySelector(s);
 const board = new Board($("#board"), $("#glow"), $("#tip"));
@@ -13,6 +16,40 @@ board.onSelect = (id) => {
   selected = id;
   setTab("object");
 };
+
+// ---------------------------------------------------------------- modes
+// Board is built in; Life and Topology are modules with mount/update/unmount
+// (see docs/modes.md). They share the session through `ctx`.
+const MODES = { life: Life, topology: Topology };
+let mode = "board";
+const ctx = {
+  get state() { return state; },
+  get selected() { return selected; },
+  select(id) {
+    selected = id;
+    board.select(id);
+    setTab("object");
+  },
+  act,
+  highlight(ids, ms) { if (mode === "board") board.highlight(ids, ms); },
+  sprites,
+};
+
+function setMode(name) {
+  if (!(name in MODES) && name !== "board") name = "board";
+  if (name === mode && document.querySelector(`[data-mode="${name}"].on`)) return;
+  if (MODES[mode]) MODES[mode].unmount();
+  mode = name;
+  document.querySelectorAll("[data-mode]").forEach((b) => b.classList.toggle("on", b.dataset.mode === name));
+  document.querySelectorAll("[data-mode-view]").forEach((v) => { v.hidden = v.dataset.modeView !== name; });
+  const url = new URL(location.href);
+  if (name === "board") url.searchParams.delete("mode"); else url.searchParams.set("mode", name);
+  history.replaceState(null, "", url);
+  if (MODES[name]) {
+    MODES[name].mount($(`#mode-${name}`), ctx);
+    if (state) MODES[name].update(state);
+  }
+}
 
 async function getJSON(url, opts) {
   const res = await fetch(url, opts);
@@ -29,9 +66,12 @@ async function init() {
   sel.innerHTML = scenarios.map((s) => `<option value="${s.id}">${escapeHtml(s.title)} · ${s.sources} sources · ${s.pieces} pieces</option>`).join("")
     + Object.keys(invalid).map((name) => `<option disabled>${escapeHtml(name)} (invalid pack)</option>`).join("");
   sel.value = scenarioId;
+  setMode(new URLSearchParams(location.search).get("mode") || "board");
   sel.addEventListener("change", () => {
     scenarioId = sel.value;
-    history.replaceState(null, "", `?scenario=${scenarioId}`);
+    const url = new URL(location.href);
+    url.searchParams.set("scenario", scenarioId);
+    history.replaceState(null, "", url);
     load();
   });
   await load();
@@ -83,6 +123,7 @@ function render(animate) {
   $("#mergecount").textContent = n;
   P.renderRack($("#rack"), state, act, peek);
   P.renderOffboard($("#offboard"), state, act, (id) => { selected = id; board.select(id); setTab("object"); });
+  if (MODES[mode]) MODES[mode].update(state);
   renderPanel();
 }
 
@@ -190,6 +231,7 @@ $("#resizer").addEventListener("pointerdown", (e) => {
 $("#resizer").addEventListener("dblclick", () => setPanelWidth(PANEL_DEFAULT, true));
 
 document.querySelectorAll(".tabs button").forEach((b) => b.addEventListener("click", () => setTab(b.dataset.tab)));
+document.querySelectorAll("[data-mode]").forEach((b) => b.addEventListener("click", () => setMode(b.dataset.mode)));
 $("#reset").addEventListener("click", () => act({ action: "reset" }));
 $("#agent-form").addEventListener("submit", (e) => { e.preventDefault(); askAgent(); });
 $("#agent-input").addEventListener("keydown", (e) => {

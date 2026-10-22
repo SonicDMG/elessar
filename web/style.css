@@ -51,7 +51,15 @@ select { font: inherit; color: var(--text); background: #141b23; border: 1px sol
 
 /* ---------------------------------------------------------------- layout */
 main { flex: 1; display: grid; grid-template-columns: minmax(0, 1fr) var(--panel-w, 370px); min-height: 0; }
-.stage { padding: 14px 16px 6px; position: relative; min-width: 0; min-height: 0; display: flex; flex-direction: column; }
+.stage { padding: 8px 16px 6px; position: relative; min-width: 0; min-height: 0; display: flex; flex-direction: column; }
+.modes { flex: none; display: flex; gap: 2px; margin: 0 0 8px; }
+.modes button { font: 17px/1 var(--pixel); letter-spacing: 1px; padding: 4px 14px; border-bottom: 2px solid transparent; background: none; border-color: transparent; color: var(--dim); }
+.modes button:hover { color: var(--text); background: none; }
+.modes button.on { color: var(--text); border-bottom-color: var(--participant); }
+.mode-view { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+.mode-view[hidden] { display: none !important; }
+.mode-placeholder { margin: auto; text-align: center; color: var(--text); font: 22px/1.3 var(--pixel); letter-spacing: 1px; }
+.mode-placeholder p { font: 12px var(--mono); }
 .stage-row { flex: 1; min-height: 0; display: flex; gap: 8px; justify-content: center; align-items: center; }
 .bands { height: var(--board-h, 432px); display: flex; flex-direction: column; font: 15px/1 var(--pixel); letter-spacing: 2px; }
 .bands span { flex: 1; min-height: 0; overflow: hidden; writing-mode: vertical-rl; transform: rotate(180deg); text-align: center; opacity: 0.75;
