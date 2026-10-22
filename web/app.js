@@ -184,6 +184,19 @@ function setTab(name) {
   if (state) renderPanel();
 }
 
+async function jevCache(op, signal) {
+  const opts = op ? { method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(op === "reask_all" ? { scenario: scenarioId, op: "reask" } : { scenario: scenarioId, op, signal }) } : undefined;
+  try {
+    const r = await getJSON(`/api/jev/cache?scenario=${scenarioId}`, opts);
+    const rep = op ? r.report : r;
+    if (op) { state = r.state; render(false); }
+    P.renderJevCache($("#modal"), rep, state, jevCache);
+  } catch (e) {
+    P.toast($("#toasts"), { kind: "error", title: "Jev cache", text: e.message, points: 0 });
+  }
+}
+
 async function peek(sourceId) {
   await P.showPeek($("#modal"), state, sourceId);
   act({ action: "peek", source: sourceId });
@@ -233,6 +246,7 @@ $("#resizer").addEventListener("dblclick", () => setPanelWidth(PANEL_DEFAULT, tr
 document.querySelectorAll(".tabs button").forEach((b) => b.addEventListener("click", () => setTab(b.dataset.tab)));
 document.querySelectorAll("[data-mode]").forEach((b) => b.addEventListener("click", () => setMode(b.dataset.mode)));
 $("#reset").addEventListener("click", () => act({ action: "reset" }));
+$("#jev-cache").addEventListener("click", () => jevCache());
 $("#agent-form").addEventListener("submit", (e) => { e.preventDefault(); askAgent(); });
 $("#agent-input").addEventListener("keydown", (e) => {
   if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); askAgent(); }

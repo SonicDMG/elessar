@@ -539,26 +539,50 @@ class Session:
     def _jev_signals(self, sid):
         return [s for s in self.pack["signals"] if s.get("jev") and s.get("source") == sid]
 
+    def _records_any(self, sid):
+        """Records of a source whether or not it is connected (file sources
+        are read from disk), so the cache inspector can cover the whole pack."""
+        if sid in self.connected:
+            return self._records(sid)
+        s = self.pack["sources"][sid]
+        if s["transport"] != "file":
+            return []
+        cached = self._parsed.get(sid)
+        if cached:
+            return cached[1]
+        with open(s["path"], encoding="utf-8") as f:
+            return pipeline.parse(sid, s["format"], f.read(), s.get("options"))
+
+    def _jev_jobs(self, sid, records, skip_known=True):
+        """What we ask Jev about one source: one request per record carrying
+        every opted-in question whose `where` matches. Returns
+        [(record, state, questions, [signal ids])]."""
+        name = self.pack["sources"][sid]["name"]
+        jobs = []
+        for r in records:
+            qs, ids = {}, []
+            for sig in self._jev_signals(sid):
+                spec = sig["jev"]
+                if skip_known and f"{sig['id']}|{sid}|{r['index']}" in self.jev:
+                    continue
+                if not pipeline.matches(r["data"], spec.get("where")):
+                    continue
+                q = {"type": "noul", "instructions": spec["question"]}
+                if spec.get("criteria"):
+                    q["criteria"] = spec["criteria"]
+                qs[sig["id"].replace("-", "_")] = q
+                ids.append(sig["id"])
+            if qs:
+                jobs.append((r, {"source": name, "record": r["data"]}, qs, ids))
+        return jobs
+
     def _ask_jev(self, sid):
         """Ask Jev every opted-in signal's question about each candidate record
         of one source: one request per record, all of its questions together."""
         sigs = self._jev_signals(sid)
         if not sigs or not jev.available():
             return
-        name = self.pack["sources"][sid]["name"]
-        jobs = []
-        for r in self._records(sid):
-            qs = {}
-            for sig in sigs:
-                spec = sig["jev"]
-                if f"{sig['id']}|{sid}|{r['index']}" in self.jev or not pipeline.matches(r["data"], spec.get("where")):
-                    continue
-                q = {"type": "noul", "instructions": spec["question"]}
-                if spec.get("criteria"):
-                    q["criteria"] = spec["criteria"]
-                qs[sig["id"].replace("-", "_")] = q
-            if qs:
-                jobs.append((r["index"], {"source": name, "record": r["data"]}, qs))
+        jobs = [(r["index"], state, qs) for r, state, qs, _ in self._jev_jobs(sid, self._records(sid))]
         if not jobs:
             return
         results = jev.ask_many(jobs)
@@ -590,6 +614,82 @@ class Session:
         avg = f", avg {sum(latencies) // len(latencies)} ms" if latencies else ""
         self._log("jev", f"{sid}: {len(jobs)} records, {stats['calls']} calls, {stats['cached']} cached, "
                          f"{stats['errors']} errors, ${stats['cost']:.5f}{avg}")
+
+    def jev_inventory(self):
+        """Every Jev ask this pack can make, with its cache status: what the
+        question is, which records it covers, what Jev answered, when, and by
+        which model version. Covers unconnected sources too."""
+        codes = {n["id"]: n["code"] for n in self.pack["layout"]["nodes"]}
+        signals = []
+        paths = set()
+        versions = set()
+        for sig in self.pack["signals"]:
+            if not sig.get("jev"):
+                continue
+            sid = sig["source"]
+            spec = sig["jev"]
+            key = sig["id"].replace("-", "_")
+            records = []
+            for r, state, qs, ids in self._jev_jobs(sid, self._records_any(sid), skip_known=False):
+                if sig["id"] not in ids:
+                    continue
+                path = jev.cache_path(state, qs)
+                paths.add(path)
+                c = jev.load_cached(path)
+                entry = {"pointer": r["pointer"], "excerpt": r["excerpt"][:200], "path": path,
+                         "asked_with": [codes.get(i, i) for i in ids if i != sig["id"]], "cached": None}
+                if c is not None:
+                    ans = (c.get("answers") or {}).get(key) or {}
+                    entry["cached"] = {"noul": ans.get("noul"), "model": c.get("model"), "at": c.get("at"),
+                                       "ms": c.get("ms"), "legacy": "payload" not in c}
+                    if c.get("model"):
+                        versions.add(c["model"])
+                records.append(entry)
+            n_cached = sum(1 for r in records if r["cached"])
+            signals.append({
+                "id": sig["id"], "code": codes.get(sig["id"], sig["id"]), "label": sig.get("label", sig["id"]),
+                "source": sid, "source_name": self.pack["sources"][sid]["name"],
+                "connected": sid in self.connected,
+                "question": spec["question"], "criteria": spec.get("criteria"), "where": spec.get("where"),
+                "threshold": spec.get("threshold", 0.5),
+                "records": records, "cached": n_cached, "live": len(records) - n_cached,
+            })
+        newest = max(versions) if versions else None
+        for s in signals:
+            for r in s["records"]:
+                if r["cached"]:
+                    r["cached"]["older_version"] = bool(newest and r["cached"]["model"] and r["cached"]["model"] < newest)
+        return {"model": jev.MODEL, "newest_seen": newest, "signals": signals, "paths": sorted(paths)}
+
+    def forget_jev(self, signal_id=None, reask=False):
+        """Drop cached answers (for one signal's asks, or all of this pack's),
+        and optionally ask again right away for connected sources."""
+        inv = self.jev_inventory()
+        targets = [s for s in inv["signals"] if signal_id in (None, s["id"])]
+        if signal_id and not targets:
+            raise ValueError(f"no Jev signal {signal_id}")
+        paths = {r["path"] for s in targets for r in s["records"]}
+        removed = jev.forget(paths)
+        # a cache file holds every question asked about that record, so drop
+        # the in-memory answers for all signals that share those asks
+        for s in inv["signals"]:
+            for r in s["records"]:
+                if r["path"] in paths:
+                    for sid_key in [k for k in self.jev if k.endswith(f"|{s['source']}|{self._index_of(s['source'], r['pointer'])}")]:
+                        self.jev.pop(sid_key, None)
+        what = f"{targets[0]['code']} {targets[0]['label']}" if signal_id else "every Jev ask in this pack"
+        self._log("jev-cache", f"forgot {removed} cached answer(s) for {what}")
+        if reask:
+            for sid in sorted({s["source"] for s in targets if s["connected"]}):
+                self._ask_jev(sid)
+        self.state = self.compute()
+        return removed
+
+    def _index_of(self, sid, pointer):
+        for r in self._records_any(sid):
+            if r["pointer"] == pointer:
+                return r["index"]
+        return None
 
     def _jev_view(self, sig, records, rule_hits):
         """What Jev said about each candidate record, next to what the rule said."""

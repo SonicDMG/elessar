@@ -363,6 +363,53 @@ export async function showPeek(modal, state, sourceId) {
   modal.hidden = false;
 }
 
+// ------------------------------------------------------------------ Jev cache inspector
+
+const ago = (iso) => {
+  if (!iso) return "date unknown";
+  const d = (Date.now() - Date.parse(iso)) / 36e5;
+  return d < 1 ? "under an hour ago" : d < 48 ? `${Math.round(d)} h ago` : `${Math.round(d / 24)} d ago`;
+};
+
+export function renderJevCache(modal, rep, state, act) {
+  const body = modal.querySelector(".modal-body");
+  const srcColor = (id) => (state.sources.find((s) => s.id === id) || {}).color || "#888";
+  const sig = (s) => {
+    const rows = s.records.map((r) => {
+      const c = r.cached;
+      const status = !c ? `<span class="jc-live">live next time</span>`
+        : `<b>${num(c.noul)}</b> <span class="dim">${h(c.model || "?")}${c.legacy ? " · before inspector" : " · " + ago(c.at)}${c.older_version ? ' · <span class="warn">older version</span>' : ""}</span>`;
+      return `<tr><td class="ptr">${h(r.pointer)}${r.asked_with.length ? `<span class="dim"> with ${r.asked_with.join(", ")}</span>` : ""}</td><td>${status}</td></tr>`;
+    }).join("");
+    const stale = s.live ? `<span class="warn">${s.live} to ask live</span>` : `<span class="dim">all ${s.cached} cached</span>`;
+    return `<details class="jc-sig" ${s.live ? "open" : ""}>
+      <summary><b class="code b-signal">${h(s.code)}</b> ${h(s.label)} <span class="chip" style="--c:${srcColor(s.source)}">${h(s.source_name)}</span> ${stale}
+        <span class="jc-actions"><button class="link" data-jc="forget" data-sig="${h(s.id)}">forget</button>${s.connected ? `<button class="link" data-jc="reask" data-sig="${h(s.id)}">re-ask now</button>` : `<span class="dim small">asked when connected</span>`}</span></summary>
+      <div class="q">“${h(s.question)}”</div>
+      ${s.criteria ? `<div class="dim small">yes: ${h(s.criteria.true || "")} · no: ${h(s.criteria.false || "")}</div>` : ""}
+      ${s.where ? `<div class="dim small">only records where ${h(JSON.stringify(s.where))}</div>` : ""}
+      <table class="jc-rows">${rows}</table>
+    </details>`;
+  };
+  const totals = rep.signals.reduce((t, s) => ({ cached: t.cached + s.cached, live: t.live + s.live }), { cached: 0, live: 0 });
+  body.innerHTML = `
+    <header><b>Jev cache</b> <span class="dim">${h(rep.model)}${rep.newest_seen ? ` · newest answered by ${h(rep.newest_seen)}` : ""}</span></header>
+    <p>Jev's answer depends only on the model, the record and the question, so answers are kept on disk and reused. An entry goes stale when the question text, the record or the model version changes. Below is every ask this pack can make: ${totals.cached} cached, ${totals.live} that will call Jev live.</p>
+    ${rep.available ? "" : `<p class="warn">Jev is off: add OPENROUTER_API_KEY to .env. Cached answers are still shown.</p>`}
+    <div class="jc-list">${rep.signals.map(sig).join("") || `<p class="dim">No signal in this pack has a Jev question.</p>`}</div>
+    <footer class="jc-foot">
+      <span class="dim">${rep.files} file${rep.files === 1 ? "" : "s"} on disk · ${rep.orphans.length} orphan${rep.orphans.length === 1 ? "" : "s"} (answers to questions no pack asks any more)</span>
+      <span class="btns">
+        ${rep.orphans.length ? `<button data-jc="forget_orphans">forget orphans</button>` : ""}
+        <button data-jc="forget_all">forget everything</button>
+        <button data-jc="reask_all" ${rep.available ? "" : "disabled"}>forget and re-ask connected</button>
+      </span>
+    </footer>
+    ${rep.orphan_questions.length ? `<details class="jc-sig"><summary class="dim">orphaned questions</summary><ul>${rep.orphan_questions.map((o) => `<li class="small">“${h(o.question)}” <span class="dim">${h(o.model || "")} ${ago(o.at)}</span></li>`).join("")}</ul></details>` : ""}`;
+  body.querySelectorAll("[data-jc]").forEach((b) => b.addEventListener("click", () => act(b.dataset.jc, b.dataset.sig)));
+  modal.hidden = false;
+}
+
 export function toast(el, ev) {
   const t = document.createElement("div");
   t.className = `toast k-${ev.kind}`;

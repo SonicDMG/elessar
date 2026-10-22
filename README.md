@@ -165,7 +165,17 @@ How it runs:
   (`POST https://openrouter.ai/api/v1/systemone`). `ELESSAR_DECISION_MODEL`
   picks the model (default `jev-latest`).
 - Answers are cached in `.cache/jev/` (git-ignored) by model, record and
-  question, so replays are instant, free and repeatable.
+  question, so replays are instant, free and repeatable. A Jev answer
+  depends only on those three things, so an unchanged pack never needs a
+  new call; that also means a demo on a warm cache shows no traffic on
+  OpenRouter. The **cache** link in the header opens an inspector listing
+  every ask the pack can make, with its question, criteria, the records it
+  covers, the cached answer, when it was given and by which model version.
+  From there you can forget a signal's answers, re-ask them live, drop
+  orphaned entries (questions no pack asks any more), or clear everything.
+  An entry is stale when the question text, the record, or the model
+  version changed; the inspector flags answers from an older version than
+  the newest it has seen.
 - Calls, cache hits, cost and latency show in the header and the Log tab.
   A full `change-cascade` run is 17 calls, about 300–400 ms each, costing
   about $0.0003 in total.

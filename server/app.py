@@ -51,6 +51,22 @@ class App:
         self.sessions = {}
         self.base_url = None
 
+    def jev_cache_report(self, pid):
+        """This pack's Jev asks with their cache status, plus cache files no
+        pack would ask for any more (orphans) and legacy files without a payload."""
+        inv = self.session(pid).jev_inventory()
+        referenced = set()
+        for other in self.packs:
+            referenced |= set(self.session(other).jev_inventory()["paths"])
+        entries = jev.list_cache()
+        orphans = [e["path"] for e in entries if e["path"] not in referenced and e["payload"] is not None]
+        legacy = [e["path"] for e in entries if e["payload"] is None and e["path"] not in referenced]
+        return {**inv, "available": jev.available(), "files": len(entries), "orphans": orphans + legacy,
+                "orphan_questions": [
+                    {"question": next(iter(e["payload"]["questions"].values()), {}).get("instructions", "?"),
+                     "model": e["model"], "at": e["at"]}
+                    for e in entries if e["path"] in orphans][:20]}
+
     def session(self, pid):
         if pid not in self.packs:
             raise KeyError(pid)
@@ -99,18 +115,36 @@ def make_handler(app):
                 if url.path == "/api/state":
                     pid = parse_qs(url.query).get("scenario", [app.default])[0]
                     return self._json(200, app.session(pid).public_state())
+                if url.path == "/api/jev/cache":
+                    pid = parse_qs(url.query).get("scenario", [app.default])[0]
+                    return self._json(200, app.jev_cache_report(pid))
                 return self._static(url.path)
             except KeyError as e:
                 return self._json(404, {"error": f"unknown scenario or source {e}"})
 
         def do_POST(self):
             path = urlparse(self.path).path
-            if path not in ("/api/action", "/api/agent"):
+            if path not in ("/api/action", "/api/agent", "/api/jev/cache"):
                 return self._json(404, {"error": "not found"})
             try:
                 length = int(self.headers.get("Content-Length", 0))
                 payload = json.loads(self.rfile.read(length) or b"{}")
                 session = app.session(payload.get("scenario", app.default))
+                if path == "/api/jev/cache":
+                    pid = payload.get("scenario", app.default)
+                    op = payload.get("op")
+                    if op in ("forget", "reask"):
+                        session.forget_jev(payload.get("signal"), reask=(op == "reask"))
+                    elif op == "forget_orphans":
+                        jev.forget(app.jev_cache_report(pid)["orphans"])
+                    elif op == "forget_all":
+                        jev.forget(e["path"] for e in jev.list_cache())
+                        for s in app.sessions.values():
+                            s.jev.clear()
+                            s.state = s.compute()
+                    else:
+                        return self._json(400, {"error": f"unknown op '{op}'"})
+                    return self._json(200, {"report": app.jev_cache_report(pid), "state": session.public_state()})
                 if path == "/api/agent":
                     if not agent.available():
                         return self._json(400, {"error": "The agent is off: add OPENROUTER_API_KEY to .env"})
