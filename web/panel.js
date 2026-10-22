@@ -307,7 +307,7 @@ export function renderRack(el, state, act, peek) {
       <div class="card-head"><span class="n">${i + 1}</span><b>${h(s.name)}</b></div>
       <div class="meta"><span class="fmt">${h(s.format)}</span> <span class="dim">${h(s.kind)}</span></div>
       <div class="stats">${s.connected
-        ? `${s.latency_ms} ms · ${s.bytes} B · ${s.records} rec → ${s.fragments} frag`
+        ? `${s.latency_ms} ms · ${s.bytes} B · ${s.records} rec → ${s.fragments} frag${s.skipped ? ` · <span class="warn" title="${h((s.skipped_examples || []).map((x) => `${x.pointer}: ${x.reason}`).join("\n"))}">${s.skipped} skipped</span>` : ""}`
         : s.error ? `<span class="err">${h(s.error)}</span>` : `<span class="dim">conf ${num(s.confidence)} · ${h(s.transport)}</span>`}</div>
       <div class="btns">
         <button data-src="${s.id}" class="${s.connected ? "" : "gold"}">${s.connected ? "disconnect" : "connect"}</button>

@@ -16,6 +16,7 @@ CROWNABLE = 0.85
 CAPTURE_P = 0.08
 CAPTURE_INHIBIT = 0.5
 JUDGEMENTS = {"trust": 1.0, "discount": 0.5, "dismiss": 0.0}
+MAX_SLICES = 80  # timeline re-inferences per pack; more distinct times are thinned
 
 INSIGHTS = {
     "shape_shock": (50, "Shape Shock", "Raw sources agree on nothing: delimiters, timestamps, naming, nesting. Fusion starts by mapping each one onto a single ontology."),
@@ -130,9 +131,14 @@ class Session:
         if cached and cached[0] == raw:
             return cached[1]
         s = self.pack["sources"][sid]
-        recs = pipeline.parse(sid, s["format"], raw, s.get("options"))
-        self._parsed[sid] = (raw, recs)
+        skipped = []
+        recs = pipeline.parse(sid, s["format"], raw, s.get("options"), skipped)
+        self._parsed[sid] = (raw, recs, skipped)
         return recs
+
+    def _skipped(self, sid):
+        cached = self._parsed.get(sid)
+        return cached[2] if cached and len(cached) > 2 else []
 
     # ------------------------------------------------------------ the recompute
 
@@ -195,7 +201,8 @@ class Session:
                 record_index[(sid, r["index"])] = r
             frags = pipeline.to_fragments(recs, [(mi, m) for mi, m in pack["mappings"] if m["source"] == sid])
             fragments.extend(frags)
-            source_stats[sid] = {"records": len(recs), "fragments": len(frags)}
+            source_stats[sid] = {"records": len(recs), "fragments": len(frags), "skipped": len(self._skipped(sid)),
+                                 "skipped_examples": self._skipped(sid)[:5]}
 
         by_frag = {f["id"]: f for f in fragments}
         frags_by_record = {}
@@ -376,7 +383,7 @@ class Session:
                 "blurb": s.get("blurb", ""), "connected": conn is not None,
                 "latency_ms": conn and conn["latency_ms"], "bytes": conn and conn["bytes"],
                 "error": self.errors.get(sid),
-                **source_stats.get(sid, {"records": 0, "fragments": 0}),
+                **source_stats.get(sid, {"records": 0, "fragments": 0, "skipped": 0, "skipped_examples": []}),
             })
 
         committed_info = []
@@ -418,11 +425,19 @@ class Session:
         undated = [u["id"] for u in self.state.get("undated", [])]
         policy = self.pack["unknown_time"]
         times = sorted({e["t"] for e in events})
+        # one re-inference per distinct time is fine for dozens; past MAX_SLICES
+        # keep evenly spaced times (first and last always) and let each slice
+        # carry every event since the previous one
+        if len(times) > MAX_SLICES:
+            idx = sorted({round(k * (len(times) - 1) / (MAX_SLICES - 1)) for k in range(MAX_SLICES)})
+            times = [times[k] for k in idx]
         slices = []
         seen = 0
+        prev = None
         for i, t in enumerate([None] + times):
             st = self.compute(until=(-1 if t is None else t), track=False, undated=(policy != "after"))
-            arrived = [e["id"] for e in events if e["t"] == t] if t is not None else []
+            arrived = [e["id"] for e in events if (prev is None or e["t"] > prev) and e["t"] <= t] if t is not None else []
+            prev = t if t is not None else prev
             seen += len(arrived)
             slices.append({**self._slice(st), "t": t, "at": next((e["at"] for e in events if e["t"] == t), None),
                            "index": i, "events_seen": seen, "arrived": arrived,
@@ -638,6 +653,10 @@ class Session:
             self.connected[sid] = {"raw": raw, "latency_ms": ms, "bytes": size, "at": _now()}
             self.errors.pop(sid, None)
             self._log("connect", f"{sid}: {size} bytes in {ms} ms from {self.source_url(sid)}")
+            self._records(sid)
+            if self._skipped(sid):
+                bad = self._skipped(sid)
+                self._log("skipped", f"{sid}: {len(bad)} row(s) could not be parsed, e.g. {bad[0]['pointer']}: {bad[0]['reason']}")
             self._ask_jev(sid)
         except Exception as e:  # surface any fetch failure on the source card
             self.errors[sid] = str(e)

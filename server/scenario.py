@@ -261,10 +261,13 @@ def load_pack(pack_dir):
         if s["transport"] != "file":
             continue
         try:
+            skipped = []
             with open(s["path"], encoding="utf-8") as f:
-                recs = pipeline.parse(sid, s["format"], f.read(), s.get("options"))
+                recs = pipeline.parse(sid, s["format"], f.read(), s.get("options"), skipped)
         except Exception as e:  # report any parser failure as a pack error
             raise PackError(pack_dir, [f"source '{sid}' failed to parse as {s['format']}: {e}"])
+        if skipped:
+            warnings.append(f"source '{sid}': {len(skipped)} row(s) skipped, e.g. {skipped[0]['pointer']}: {skipped[0]['reason']}")
         if not recs:
             warnings.append(f"source '{sid}' parsed to zero records")
             continue

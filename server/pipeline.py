@@ -91,33 +91,58 @@ def _record(source, index, data, pointer, excerpt):
     return {"source": source, "index": index, "data": data, "pointer": pointer, "excerpt": excerpt}
 
 
-def parse_csv(source, text, opts):
+def _skip(skipped, pointer, reason, excerpt):
+    """Parsers are tolerant: a bad row is reported, not fatal for the source."""
+    if skipped is not None:
+        skipped.append({"pointer": pointer, "reason": reason, "excerpt": excerpt[:160]})
+
+
+def parse_csv(source, text, opts, skipped=None):
     lines = text.splitlines()
-    reader = csv.DictReader(lines, delimiter=opts.get("delimiter", ","))
+    reader = csv.DictReader(lines, delimiter=opts.get("delimiter", ","), restkey="__extra__")
     out = []
-    for i, row in enumerate(reader):
+    for row in reader:
         line_no = reader.line_num
+        raw = lines[line_no - 1]
+        if None in row.values():
+            have = sum(1 for v in row.values() if v is not None)
+            _skip(skipped, f"line {line_no}", f"truncated row: {have} of {len(reader.fieldnames)} columns", raw)
+            continue
+        if "__extra__" in row:
+            _skip(skipped, f"line {line_no}", f"{len(row['__extra__'])} extra column(s)", raw)
+            continue
         data = {(k or "").strip(): (v or "").strip() for k, v in row.items()}
-        out.append(_record(source, i, data, f"line {line_no}", lines[line_no - 1]))
+        out.append(_record(source, len(out), data, f"line {line_no}", raw))
     return out
 
 
-def parse_jsonl(source, text, opts):
+def parse_jsonl(source, text, opts, skipped=None):
     out = []
     for n, line in enumerate(text.splitlines(), start=1):
         if not line.strip():
             continue
-        out.append(_record(source, len(out), json.loads(line), f"line {n}", line))
+        try:
+            data = json.loads(line)
+        except ValueError as e:
+            _skip(skipped, f"line {n}", f"invalid JSON: {e.msg} at column {e.pos + 1}", line)
+            continue
+        if not isinstance(data, dict):
+            _skip(skipped, f"line {n}", "not a JSON object", line)
+            continue
+        out.append(_record(source, len(out), data, f"line {n}", line))
     return out
 
 
-def parse_nested_json(source, text, opts):
+def parse_nested_json(source, text, opts, skipped=None):
     path = opts["records"]
     items = get_path(json.loads(text), path) or []
-    return [
-        _record(source, i, item, f"{path}[{i}]", json.dumps(item, separators=(", ", ": ")))
-        for i, item in enumerate(items)
-    ]
+    out = []
+    for i, item in enumerate(items):
+        if not isinstance(item, dict):
+            _skip(skipped, f"{path}[{i}]", "not an object", json.dumps(item))
+            continue
+        out.append(_record(source, len(out), item, f"{path}[{i}]", json.dumps(item, separators=(", ", ": "))))
+    return out
 
 
 def _flatten_xml(el, prefix, out):
@@ -130,7 +155,7 @@ def _flatten_xml(el, prefix, out):
         _flatten_xml(child, f"{prefix}{child.tag}.", out)
 
 
-def parse_xml(source, text, opts):
+def parse_xml(source, text, opts, skipped=None):
     root = ET.fromstring(text)
     path = opts["records"]
     out = []
@@ -142,18 +167,22 @@ def parse_xml(source, text, opts):
     return out
 
 
-def parse_columnar(source, text, opts):
+def parse_columnar(source, text, opts, skipped=None):
     doc = json.loads(text)
     fields = get_path(doc, opts.get("fields", "schema.fields"))
     rows_path = opts.get("rows", "rows")
     rows = get_path(doc, rows_path) or []
-    return [
-        _record(source, i, dict(zip(fields, row)), f"{rows_path}[{i}]", json.dumps(row))
-        for i, row in enumerate(rows)
-    ]
+    out = []
+    for i, row in enumerate(rows):
+        if not isinstance(row, list) or len(row) != len(fields):
+            n = len(row) if isinstance(row, list) else "no"
+            _skip(skipped, f"{rows_path}[{i}]", f"{n} values for {len(fields)} fields", json.dumps(row))
+            continue
+        out.append(_record(source, len(out), dict(zip(fields, row)), f"{rows_path}[{i}]", json.dumps(row)))
+    return out
 
 
-def parse_kv(source, text, opts):
+def parse_kv(source, text, opts, skipped=None):
     pair_sep, kv_sep = opts.get("pair_sep", ";"), opts.get("kv_sep", "=")
     out = []
     for n, line in enumerate(text.splitlines(), start=1):
@@ -165,6 +194,9 @@ def parse_kv(source, text, opts):
             if kv_sep in pair:
                 k, v = pair.split(kv_sep, 1)
                 data[k.strip()] = v.strip()
+        if not data:
+            _skip(skipped, f"line {n}", "no key=value pairs", line)
+            continue
         out.append(_record(source, len(out), data, f"line {n}", line))
     return out
 
@@ -188,8 +220,10 @@ CONTENT_TYPES = {
 }
 
 
-def parse(source_id, fmt, text, opts):
-    return PARSERS[fmt](source_id, text, opts or {})
+def parse(source_id, fmt, text, opts, skipped=None):
+    """Records of one payload. Pass a list as `skipped` to collect the rows
+    the parser had to drop, each as {"pointer", "reason", "excerpt"}."""
+    return PARSERS[fmt](source_id, text, opts or {}, skipped)
 
 
 # ---------------------------------------------------------------- transforms
