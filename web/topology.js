@@ -145,7 +145,7 @@ export function mount(el, ctx) {
     hypPos: new Map(),        // node id -> world {x, y, side} on the Hypotheses submap
     need: { w: 240, h: 150 }, // native size the layouts want, for choosing the scale
     hypNeed: { w: 370, h: 150 },
-    items: [], edges: [], events: null, span: null,
+    items: [], edges: [], events: null, undated: [], policy: "throughout", span: null,
     cam: { x: 0, y: 0, tx: 0, ty: 0 }, panned: false, drag: null,
     scale: 3, W: 0, H: 0, k: 1,
     flash: new Map(), hover: null, lastSel: undefined, labelKey: "",
@@ -269,6 +269,9 @@ function ring(ids, out, rx, ry) {
 }
 
 function readEvents(state) {
+  // records the server could not date: shown in their own section, never on the scrubber
+  C.undated = Array.isArray(state.undated) ? state.undated.map((e) => ({ ...e, participants: e.participants || [] })) : [];
+  C.policy = state.unknown_time || "throughout";
   if (!Array.isArray(state.events)) { C.events = null; C.span = null; return; }
   C.events = state.events
     .map((e) => ({ ...e, t: Number.isFinite(e.t) ? e.t : Date.parse(e.at), participants: e.participants || [] }))
@@ -283,7 +286,7 @@ function readEvents(state) {
 // right, past the last slice, is live.
 function rebuildSpan() {
   const sl = timeline();
-  const stops = sl ? sl.filter((x) => x.t != null).map((x) => x.t)
+  const stops = sl ? sl.filter((x) => x._t != null).map((x) => x._t)
     : C.events ? [...new Set(C.events.map((e) => e.t))] : [];
   if (!C.events || !stops.length) { C.span = null; return; }
   const first = stops[0], last = stops[stops.length - 1];
@@ -311,11 +314,23 @@ function syncTimeline(state) {
   };
   fetch(`/api/timeline?scenario=${encodeURIComponent(state.scenario.id)}`)
     .then((r) => (r.ok ? r.json() : Promise.reject(new Error(r.statusText))))
-    .then((d) => done(Array.isArray(d.slices) && d.slices.length ? "ok" : "error", d.slices || null))
+    .then((d) => done(Array.isArray(d.slices) && d.slices.length ? "ok" : "error", stepTimes(d.slices || [])))
     .catch(() => done("error", null));
 }
 
 const timeline = () => (C.tl && C.tl.status === "ok" ? C.tl.slices : null);
+
+// Each slice's place on the scrubber (_t): its time, none for slice 0, and
+// for the undated-arrival slice (policy "after", no time of its own) one
+// millisecond after the slice before it, so it gets the last step.
+function stepTimes(slices) {
+  slices.forEach((x, i) => { x._t = x.t != null ? x.t : i === 0 ? null : (slices[i - 1]._t ?? 0) + 1; });
+  return slices;
+}
+
+// Undated record ids a slice brings in: all of them at slice 0 under
+// "throughout", or the arrival slice under "after".
+const undatedIn = (sl) => (!sl ? [] : sl.undated_arrive ? sl.after || sl.undated || [] : sl.index === 0 ? sl.undated || [] : []);
 
 // The slice in force at replay time t: the last one at or before t, or slice
 // 0 (before any timed record) when t precedes them all. Null when live or when
@@ -324,7 +339,7 @@ function sliceAt(t) {
   const sl = timeline();
   if (!sl || t == null) return null;
   let cur = sl[0];
-  for (const x of sl) if (x.t != null && x.t <= t) cur = x;
+  for (const x of sl) if (x._t != null && x._t <= t) cur = x;
   return cur;
 }
 
@@ -741,8 +756,11 @@ function renderMapText() {
   C.banner.innerHTML = live
     ? `<b class="live">LIVE</b> status from beliefs`
     : sl
-      ? `<b class="replay">REPLAY</b> ${sl.t == null ? "before any timed record" : clock(sl.t)} · slice ${sl.index}/${C.tl.slices.length - 1}`
-        + ` · ${sl.events_seen}/${C.events.length} events · board re-inferred`
+      ? `<b class="replay">REPLAY</b> ${sl.undated_arrive ? "after the last timed record" : sl.t == null ? "before any timed record" : clock(sl.t)}`
+        + ` · slice ${sl.index}/${C.tl.slices.length - 1} · ${sl.events_seen}/${C.events.length} events`
+        + (sl.undated_arrive ? ` · <span class="undated">undated evidence arrives</span>`
+          : undatedIn(sl).length ? ` · <span class="undated">+ ${undatedIn(sl).length} undated</span>` : "")
+        + ` · board re-inferred`
       : `<b class="replay">REPLAY</b> ${clock(C.t)} · ${C.events.filter((e) => e.t <= C.t).length}/${C.events.length} events`
         + ` · <span class="approx">approximate</span> <span class="dim">${why}: colored by event severity${C.map === "@hyp" ? "; this map shows live beliefs" : ""}</span>`;
 
@@ -919,27 +937,35 @@ function renderEvents() {
     return;
   }
   const src = s.sources.find((x) => x.id === C.map);
-  const rows = src ? C.events.filter((e) => e.source === src.id) : C.events;
-  const acked = rows.filter((e) => e.acked).length;
-  C.evHead.innerHTML = `<b>Event browser</b> <span class="dim">${rows.length} event${rows.length === 1 ? "" : "s"}${acked ? ` · ${acked} acked` : ""}${src ? ` · from ${h(src.name)} only` : ""}</span>`;
-  if (!rows.length) {
-    C.evList.innerHTML = `<li class="topo-wait">${C.events.length ? "No events from this source." : "No events yet: connect a source whose records carry timestamps."}</li>`;
+  const mine = (list) => (src ? list.filter((e) => e.source === src.id) : list);
+  const rows = mine(C.events), undated = mine(C.undated);
+  const acked = [...rows, ...undated].filter((e) => e.acked).length;
+  C.evHead.innerHTML = `<b>Event browser</b> <span class="dim">${rows.length} event${rows.length === 1 ? "" : "s"}`
+    + `${undated.length ? ` · ${undated.length} undated` : ""}${acked ? ` · ${acked} acked` : ""}${src ? ` · from ${h(src.name)} only` : ""}</span>`;
+  if (!rows.length && !undated.length) {
+    C.evList.innerHTML = `<li class="topo-wait">${C.events.length || C.undated.length ? "No events from this source." : "No events yet: connect a source whose records carry timestamps."}</li>`;
     return;
   }
   const codes = new Map(s.nodes.map((n) => [n.id, n.code]));
-  const top = C.evBox.scrollTop;
-  C.evList.innerHTML = rows.map((e) => {
+  const DATED_BY = { document: "document date", connect: "dated at connect" };
+  const row = (e, when, tag) => {
     const sv = s.sources.find((x) => x.id === e.source);
     const sev = e.severity || 0;
-    return `<li data-ev="${h(e.id)}" class="${e.acked ? "acked" : ""}">
+    return `<li data-ev="${h(e.id)}" class="${e.acked ? "acked" : ""}${when ? "" : " undated"}">
       <i class="sev" style="--s:${STATUS[statusFor(sev)].color}" title="severity ${Math.round(sev * 100)}%"></i>
-      <time>${clock(e.t)}</time>
+      <time>${when || "undated"}</time>
       <span class="chip" style="--c:${sv ? sv.color : "#888"}">${h(sv ? sv.name : e.source)}</span>
       <span class="who">${e.participants.map((id) => `<button class="pid" data-pid="${h(id)}" title="select">${h(codes.get(id) || id)}</button>`).join("") || `<span class="dim">–</span>`}</span>
-      <code class="ex" title="${h(`${e.pointer || ""}  ${e.excerpt || ""}`)}">${h(e.excerpt || "")}</code>
+      <code class="ex" title="${h(`${e.pointer || ""}  ${e.excerpt || ""}`)}">${tag ? `<em class="tag">${h(tag)}</em> ` : ""}${h(e.excerpt || "")}</code>
       <button class="ack" data-ack>${e.acked ? "unack" : "ack"}</button>
     </li>`;
-  }).join("");
+  };
+  // undated records last, under their own heading, with the reason they have no date
+  const policy = { throughout: "in force from the start of the replay", after: "arrive after the last timed record", at_connect: "dated at connect" }[C.policy] || C.policy;
+  const top = C.evBox.scrollTop;
+  C.evList.innerHTML = rows.map((e) => row(e, clock(e.t), DATED_BY[e.dated_by])).join("")
+    + (undated.length ? `<li class="topo-undated-head"><b>Undated</b> <span class="dim">${undated.length} record${undated.length === 1 ? "" : "s"} with no usable timestamp · ${h(policy)}</span></li>`
+      + undated.map((e) => row(e, null, e.why || "undated")).join("") : "");
   C.evBox.scrollTop = top;
   markRows();
 }
@@ -948,14 +974,17 @@ function renderEvents() {
 // timeline the latest row, are the cursor) and rows that touch the selected piece.
 function markRows() {
   if (!C.events) return;
-  const byId = new Map(C.events.map((e) => [e.id, e]));
-  const sl = sliceAt(C.t), arrived = sl ? new Set(sl.arrived || []) : null;
+  const byId = new Map([...C.events, ...C.undated].map((e) => [e.id, e]));
+  const sl = sliceAt(C.t), arrived = sl ? new Set([...(sl.arrived || []), ...undatedIn(sl)]) : null;
+  // undated records are in force throughout, except under "after" until their slice
+  const undatedIds = new Set(C.undated.map((e) => e.id));
+  const undatedLater = C.t != null && C.policy === "after" && !(sl && sl.undated_arrive);
   const rows = [...C.evList.querySelectorAll("li[data-ev]")];
   let cur = null;
   for (const li of rows) {
     const e = byId.get(li.dataset.ev);
     if (!e) continue;
-    const future = C.t != null && e.t > C.t;
+    const future = undatedIds.has(e.id) ? undatedLater : C.t != null && e.t > C.t;
     li.classList.toggle("future", future);
     li.classList.toggle("sel", !!C.ctx.selected && e.participants.includes(C.ctx.selected));
     li.classList.toggle("cur", !!arrived && arrived.has(e.id));
@@ -1050,7 +1079,7 @@ function wire() {
   C.evList.addEventListener("click", (e) => {
     const li = e.target.closest("li[data-ev]");
     if (!li) return;
-    const ev = C.events.find((x) => x.id === li.dataset.ev);
+    const ev = [...C.events, ...C.undated].find((x) => x.id === li.dataset.ev);
     if (!ev) return;
     if (e.target.closest("[data-ack]")) {
       C.ctx.act({ action: ev.acked ? "unack" : "ack", event: ev.id });
