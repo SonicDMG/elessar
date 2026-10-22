@@ -1,1 +1,69 @@
 /* Landscape mode styles. Owned by web/landscape.js. */
+.ls { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 6px; }
+
+/* camera and timeline controls */
+.ls-bar { flex: none; display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: center; }
+.ls-cam { display: flex; align-items: center; gap: 3px; }
+.ls-cam button { padding: 2px 8px; }
+.ls-zoom { min-width: 26px; text-align: center; font: 16px/1 var(--pixel); }
+.ls-time { flex: 1 1 360px; min-width: 0; display: flex; align-items: center; gap: 8px; }
+.ls-play { min-width: 74px; white-space: nowrap; }
+.ls-scrub { flex: 1 1 140px; min-width: 100px; accent-color: var(--hypothesis); height: 14px; }
+.ls-scrub:disabled { opacity: 0.35; }
+.ls-when { font-size: 11.5px; color: var(--dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.ls-when b { font: 15px/1 var(--pixel); letter-spacing: 1px; font-weight: 400; }
+.ls-when .live { color: #7ee787; }
+.ls-when .replay { color: var(--gold); }
+.ls-when .undated { color: var(--gold); }
+
+/* the floor: a native-resolution canvas scaled by a whole number */
+.ls-stage { flex: 1; min-height: 300px; position: relative; overflow: hidden; outline: 1px solid var(--line);
+  background: var(--bg); box-shadow: 0 0 40px rgba(255, 95, 210, 0.05); touch-action: none; }
+.ls-stage.panning { cursor: grabbing !important; }
+.ls-canvas { position: absolute; left: 0; top: 0; z-index: 1; }
+.ls-labels { position: absolute; inset: 0; z-index: 2; pointer-events: none; overflow: hidden; }
+.ls-scan {
+  position: absolute; inset: 0; z-index: 3; pointer-events: none;
+  background: repeating-linear-gradient(to bottom, transparent 0, transparent calc(var(--scan, 3px) * 2), rgba(0, 0, 0, 0.16) calc(var(--scan, 3px) * 2), rgba(0, 0, 0, 0.16) calc(var(--scan, 3px) * 3));
+}
+.ls-stage .tip { z-index: 5; white-space: normal; max-width: min(460px, 90%); }
+.ls-note { position: absolute; z-index: 4; left: 50%; top: 12px; transform: translateX(-50%); margin: 0; max-width: min(520px, 90%);
+  text-align: center; font-size: 12px; color: var(--text); background: rgba(7, 9, 12, 0.88); border: 1px dashed var(--line); padding: 6px 10px; }
+
+/* beacons: one label per lane, sitting on a stem drawn in the canvas */
+.ls-beacon { position: absolute; left: 0; top: 0; pointer-events: auto; display: flex; align-items: baseline; gap: 5px;
+  font: 15px/1 var(--pixel); letter-spacing: 0.5px; color: var(--text); background: rgba(7, 9, 12, 0.86);
+  border: 1px solid color-mix(in srgb, var(--c) 55%, var(--line)); padding: 2px 5px 1px; white-space: nowrap; }
+.ls-beacon:hover { background: rgba(14, 19, 26, 0.95); border-color: var(--c); }
+.ls-beacon b { color: var(--c); font-weight: 400; font-size: 16px; }
+.ls-beacon .lbl { max-width: 150px; overflow: hidden; text-overflow: ellipsis; }
+.ls-beacon i { font-style: normal; color: var(--c); }
+.ls-beacon em, .ls-beacon u { font: 10px/1 var(--mono); font-style: normal; text-decoration: none; padding: 1px 3px; align-self: center; }
+.ls-beacon em { color: var(--dim); border: 1px dashed var(--grey); }
+.ls-beacon u { color: var(--gold); border: 1px solid #6b5a22; }
+.ls-beacon.off { color: var(--dim); border-style: dashed;
+  background: repeating-linear-gradient(135deg, rgba(7, 9, 12, 0.9) 0 3px, rgba(74, 86, 99, 0.22) 3px 4px); }
+.ls-beacon.off b, .ls-beacon.off i { color: color-mix(in srgb, var(--c) 55%, var(--grey)); }
+.ls-beacon.top { border-color: var(--gold); box-shadow: 0 0 12px rgba(255, 215, 94, 0.18); }
+.ls-beacon.sel { border-color: #e8f1ff; box-shadow: 0 0 12px color-mix(in srgb, var(--c) 35%, transparent); }
+.ls-tick { position: absolute; left: 0; top: 0; font: 10px/1 var(--mono); color: var(--dim); opacity: 0.8; }
+
+/* readout and legend */
+.ls-read { flex: none; margin: 0; font-size: 12.5px; color: var(--text); min-height: 1.45em; }
+.ls-read .cut { color: var(--red); }
+.ls-ref { font: 16px/1 var(--pixel); color: var(--c); background: none; border: 0; padding: 0 1px; cursor: pointer; }
+.ls-ref:hover { background: none; text-decoration: underline; }
+.ls-legend { flex: none; margin: 0; display: flex; flex-wrap: wrap; gap: 2px 14px; }
+.ls-group { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 2px 6px; }
+.ls-group b { color: var(--text); font-weight: 600; }
+.ls-chip { display: inline-flex; align-items: center; gap: 3px; color: var(--c); }
+.ls-chip i { display: inline-block; width: 8px; height: 8px; background: var(--c); }
+.ls-chip.off { color: var(--dim); }
+.ls-chip.off i { background: repeating-linear-gradient(135deg, var(--c) 0 2px, transparent 2px 4px); }
+.ls-pit { display: inline-block; width: 2px; height: 10px; margin-right: 4px; background: var(--red); vertical-align: -1px; }
+
+/* the page scrolls on narrow viewports: the floor takes a share of the window */
+@media (max-width: 1100px) {
+  .ls { flex: none; }
+  .ls-stage { flex: none; height: 62vh; }
+}
