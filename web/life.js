@@ -101,14 +101,14 @@ export function mount(el, context) {
       <p class="life-read"></p>
       <p class="life-note dim small">B3/S23; a born cell takes the majority colour of its three parents (all different: the higher board belief wins).
         Evidence arrives in event time: each slice plants what every support term gained (×${SEED_DENSITY} of the band per unit of w×p; a signal shared by two hypotheses plants on the border between them), inhibitors remove their new cut from the species' live cells, then Conway runs.
-        Newly planted cells are immune to death for one generation. <b class="life-key">Patterned cells are evidence</b> (one pattern per signal or participant); <b class="life-key plain">plain cells were born</b> by Conway.</p>
+        Newly planted cells are immune to death for one generation. <span class="life-undated-note"></span> <b class="life-key">Patterned cells are evidence</b> (one pattern per signal or participant); <b class="life-key plain">plain cells were born</b> by Conway.</p>
     </div>`;
   const q = (s) => root.querySelector(s);
   els = {
     life: q(".life"), stage: q(".life-stage"), wrap: q(".life-wrap"), grid: q(".life-grid"), glow: q(".life-glow"),
     tip: q(".tip"), side: q(".life-side"), read: q(".life-read"), gen: q(".life-gen b"), when: q(".life-when"),
     status: q(".life-status"), nudge: q(".life-nudge"), play: q(".life-play"), next: q('[data-act="next"]'),
-    scrub: q(".life-scrub"), slice: q(".life-slice"), k: q(".life-k input"),
+    scrub: q(".life-scrub"), slice: q(".life-slice"), k: q(".life-k input"), undatedNote: q(".life-undated-note"),
   };
   els.g = els.grid.getContext("2d");
   els.gg = els.glow.getContext("2d");
@@ -310,8 +310,12 @@ function bandOrder(ids, last) {
 function seed(state, tl) {
   const info = new Map();
   let k = 0;
+  const onlyUndated = undatedOnly(state);
   for (const n of state.nodes) {
-    info.set(n.id, { id: n.id, code: n.code, label: n.label, band: n.band, pattern: n.band === "hypothesis" ? -1 : k++ % PATTERNS.length });
+    info.set(n.id, {
+      id: n.id, code: n.code, label: n.label, band: n.band, undated: onlyUndated.has(n.id),
+      pattern: n.band === "hypothesis" ? -1 : k++ % PATTERNS.length,
+    });
   }
   const slices = tl.slices;
   const last = slices[slices.length - 1];
@@ -365,9 +369,11 @@ function seed(state, tl) {
     connected: state.sources.some((s) => s.connected), byPos: [...species].sort((a, b) => a.pos - b.pos),
     sources: [...info.values()].filter((n) => n.band !== "hypothesis"),
     lastDate: (slices.filter((sl) => sl.at).pop() || {}).at?.slice(0, 10),
+    policy: tl.unknown_time || state.unknown_time || "throughout", undatedCount: (state.undated || []).length,
   };
   sim.sourceIndex = new Map(sim.sources.map((n, j) => [n.id, j + 1]));
   for (const s of species) s.styles = styles(s.color, false);
+  els.undatedNote.textContent = UNDATED_NOTE[sim.policy] || "";
   els.nudge.hidden = true;
   els.scrub.max = String(lastSlice());
   rebuild(0);
@@ -375,6 +381,38 @@ function seed(state, tl) {
 }
 
 const lastSlice = () => sim.slices.length - 1;
+
+// How each unknown_time policy places records that carry no date.
+const UNDATED_NOTE = {
+  throughout: "Undated evidence (policy: throughout) is present from the first slice on.",
+  after: "Undated evidence (policy: after) arrives in a final slice of its own.",
+  at_connect: "Undated evidence (policy: at_connect) is dated when its source connected.",
+};
+
+// Signals whose every hit is an undated record, and participants that only
+// undated records name: their cells are marked "from undated evidence".
+function undatedOnly(state) {
+  const undated = state.undated || [];
+  const keys = new Set(undated.map((u) => `${u.source}|${u.pointer}`));
+  const dated = new Set((state.events || []).flatMap((e) => e.participants || []));
+  const out = new Set(undated.flatMap((u) => u.participants || []).filter((id) => !dated.has(id)));
+  if (!keys.size) return out;
+  for (const n of state.nodes) {
+    if (n.band !== "signal") continue;
+    const recs = ((n.detail && n.detail.hits) || []).flatMap((h) => h.records || []);
+    if (recs.length && recs.every((r) => keys.has(`${r.source}|${r.pointer}`))) out.add(n.id);
+  }
+  return out;
+}
+
+// Undated records in play at slice j: from the start under "throughout",
+// from their own final slice under "after".
+function undatedAt(j) {
+  if (!sim.undatedCount) return 0;
+  if (sim.policy === "throughout") return sim.undatedCount;
+  if (sim.policy === "after") return sim.slices.slice(0, j + 1).some((sl) => sl.undated_arrive) ? sim.undatedCount : 0;
+  return 0;
+}
 
 // Replay from the first slice up to slice `to`: a fresh PRNG from the
 // fingerprint, the same cell orders, K generations between slices.
@@ -646,6 +684,8 @@ function fit() {
   els.wrap.style.setProperty("--scan", `${scale}px`);
   // beside the grid in a scrolling page, the species list scrolls within the grid's height
   els.side.style.maxHeight = flow && !stack ? `${cssH}px` : "";
+  hover = null;
+  els.tip.hidden = true; // a resize moves the cells out from under the pointer
   draw();
 }
 
@@ -738,10 +778,14 @@ function speciesAt(e) {
   return s ? sim.species[s - 1] : sim.species.find((sp) => c >= sp.x0 && c < sp.x1);
 }
 
-// "02:00:00" on the incident's day, the full date otherwise; slice 0 is reference data.
+// "02:00:00" on the incident's day, the full date otherwise. Undated slices
+// say so: slice 0 holds undated evidence only (or nothing yet), and policy
+// "after" ends with a slice where the undated records arrive.
 function sliceTime(j, full) {
-  const at = sim.slices[j] && sim.slices[j].at;
-  if (!at) return "reference data";
+  const sl = sim.slices[j] || {};
+  const at = sl.at;
+  if (sl.undated_arrive) return "undated evidence arrives";
+  if (!at) return (sl.undated || []).length ? "undated evidence only" : "before the first event";
   const d = at.slice(0, 10), t = at.slice(11, 19);
   return full || d !== sim.lastDate ? `${d} ${t}` : t;
 }
@@ -760,7 +804,9 @@ function onHover(e) {
   let origin = "home band";
   if (live) {
     const src = sim.mark[idx] ? sim.sources[sim.mark[idx] - 1] : null;
-    origin = src ? `planted by <b>${escapeHtml(src.code)}</b> ${escapeHtml(src.label)} · ${sliceTime(sim.when[idx])}` : `born gen ${sim.bornAt[idx]}`;
+    origin = src
+      ? `planted by <b>${escapeHtml(src.code)}</b> ${escapeHtml(src.label)} · ${src.undated ? "from undated evidence" : sliceTime(sim.when[idx])}`
+      : `born gen ${sim.bornAt[idx]}`;
   }
   els.tip.innerHTML = `<b>${s.code}</b> ${escapeHtml(s.label)} · ${origin}<br><span>${sim.counts[i]} cells, ${share}% of territory</span>`;
   const wr = els.wrap.getBoundingClientRect();
@@ -793,7 +839,8 @@ function renderBar() {
   els.scrub.value = String(sim.slice);
   els.gen.textContent = String(sim.gen).padStart(4, "0");
   const sl = sim.slices[sim.slice];
-  els.when.textContent = `· ${sliceTime(sim.slice, true)}${sim.eventCount ? ` · ${sl.events_seen}/${sim.eventCount} events` : ""}`;
+  const undated = undatedAt(sim.slice);
+  els.when.textContent = `· ${sliceTime(sim.slice, true)}${sim.eventCount ? ` · ${sl.events_seen}/${sim.eventCount} events` : ""}${undated ? ` +${undated} undated` : ""}`;
   els.slice.textContent = `slice ${sim.slice}/${last}`;
   let status = `${sim.total} live`;
   if (!sim.anyEvidence) status = "nothing seeded";
@@ -826,7 +873,8 @@ const spRef = (s) => ref(s.id, s.code, s.color);
 // cells planted so far) then inhibitors (−w×p in red, cells removed so far).
 function evidenceHtml(s) {
   const pat = (t) => (t.pattern >= 0 ? `<img class="life-pat" src="${swatch(t.pattern, s.color)}" alt="" title="${PATTERNS[t.pattern].name}: cells planted by ${escapeHtml(t.code)}">` : "<span></span>");
-  const row = (t, kind) => `<div class="life-ev-row ${kind}">${kind === "sup" ? pat(t) : "<span></span>"}${evRef(t)}<span class="lbl" title="${escapeHtml(t.label)}">${escapeHtml(t.label)}</span>`
+  const tag = (t) => (t.undated ? `<i class="life-undated" title="every record behind ${escapeHtml(t.code)} is undated">undated</i>` : "");
+  const row = (t, kind) => `<div class="life-ev-row ${kind}">${kind === "sup" ? pat(t) : "<span></span>"}${evRef(t)}<span class="lbl" title="${escapeHtml(t.label)}">${tag(t)}${escapeHtml(t.label)}</span>`
     + `<span class="v">${kind === "sup" ? "+" : "−"}${t.v.toFixed(2)}</span>`
     + `<span class="n" title="${kind === "sup" ? "cells this term has planted" : "live cells this inhibitor has removed"}">${kind === "sup" ? t.planted : t.removed ? `−${t.removed}` : "0"}</span></div>`;
   const sup = s.support.filter((t) => t.v >= 0.01);

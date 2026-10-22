@@ -67,6 +67,7 @@
 .life-ev-row .n { text-align: right; color: var(--dim); }
 .life-ev-row.inh .v, .life-ev-row.inh .n { color: var(--red); }
 .life-ev-none { margin: 2px 0 0; }
+.life-undated { font-style: normal; font-size: 9.5px; color: var(--gold); border: 1px dashed #6b5a22; padding: 0 3px; margin-right: 4px; }
 .life-pat { width: 9px; height: 9px; image-rendering: pixelated; display: block; }
 .life-key { font-weight: 400; color: var(--text); border-bottom: 2px dotted var(--hypothesis); }
 .life-key.plain { border-bottom: 2px solid color-mix(in srgb, var(--hypothesis) 60%, var(--bg)); }
