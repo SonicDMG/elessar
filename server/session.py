@@ -612,7 +612,7 @@ class Session:
             self._earn("shape_shock", "shape_shock", events)
         elif action in ("ack", "unack"):
             eid = payload.get("event")
-            ev = next((e for e in self.state["events"] if e["id"] == eid), None)
+            ev = next((e for e in self.state["events"] + self.state.get("undated", []) if e["id"] == eid), None)
             if ev is None:
                 raise ValueError(f"unknown event '{eid}'")
             if action == "ack":
