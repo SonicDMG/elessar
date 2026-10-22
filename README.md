@@ -97,11 +97,11 @@ concept that just fired. Every action lands in the **Log** tab, the audit trail.
 
 Both reach the same final board whatever order you connect sources in.
 
-## Modes: Board, Life, Topology
+## Modes: Board, Life, Topology, Landscape
 
-The strip above the center area switches between three views of the same
+The strip above the center area switches between four views of the same
 session; the side panel, source rack and header stay put, and selecting a
-piece in any view selects it everywhere. `?mode=life` or `?mode=topology`
+piece in any view selects it everywhere. `?mode=life`, `?mode=topology` or `?mode=landscape`
 in the URL opens one directly.
 
 - **Board** is the checkers view described above.
@@ -127,6 +127,16 @@ in the URL opens one directly.
   severity, source, participants and ack; the replay scrubber steps through
   the timeline slices, so statuses at any moment come from real inference
   on the records that had arrived by then.
+
+- **Landscape** is a spike map on a surface plot, read as a fitness
+  landscape: hypotheses are lanes on an isometric floor (ordered and
+  coloured as in Life), evidence rows run across them, every support term is
+  a spike of height `w × p` and every inhibitor a red pit below the floor. A
+  smoothed surface rises over the spikes with contour lines, so the
+  best-backed hypothesis is the highest ridge and an explained-away one sits
+  in a trough. Rotate in four stops, zoom, hover for the exact product,
+  click to select, and scrub the same timeline as the other modes to watch
+  the relief form as evidence lands.
 
 See `docs/modes.md` for the mode interface and data shapes.
 
