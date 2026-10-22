@@ -115,6 +115,9 @@ def make_handler(app):
                 if url.path == "/api/state":
                     pid = parse_qs(url.query).get("scenario", [app.default])[0]
                     return self._json(200, app.session(pid).public_state())
+                if url.path == "/api/timeline":
+                    pid = parse_qs(url.query).get("scenario", [app.default])[0]
+                    return self._json(200, app.session(pid).timeline())
                 if url.path == "/api/jev/cache":
                     pid = parse_qs(url.query).get("scenario", [app.default])[0]
                     return self._json(200, app.jev_cache_report(pid))

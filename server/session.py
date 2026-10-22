@@ -134,13 +134,31 @@ class Session:
 
     # ------------------------------------------------------------ the recompute
 
-    def compute(self):
+    def _record_t(self, sid, r):
+        """Epoch ms of a record, or None when its source has no time config
+        or the field is missing. Untimed records count as reference data."""
+        tconf = self.pack["sources"][sid].get("time")
+        if not tconf:
+            return None
+        try:
+            t = pipeline.record_time(r["data"], tconf)
+        except (TypeError, ValueError, OverflowError):
+            return None
+        return None if t is None else int(t.timestamp() * 1000)
+
+    def compute(self, until=None, track=True):
+        """The whole board from the session's decisions. With `until` (epoch
+        ms) only records timestamped at or before it take part, untimed
+        records throughout; `track=False` leaves session memory untouched,
+        for time slices that must not disturb the live board."""
         pack = self.pack
         order = [s for s in pack["source_order"] if s in self.connected]
         records, record_index, fragments = {}, {}, []
         source_stats = {}
         for sid in order:
             recs = self._records(sid)
+            if until is not None:
+                recs = [r for r in recs if (lambda t: t is None or t <= until)(self._record_t(sid, r))]
             records[sid] = recs
             for r in recs:
                 record_index[(sid, r["index"])] = r
@@ -270,7 +288,8 @@ class Session:
                     "merges": [pid for pid in self.committed if any(f in c["fragments"] for f in pid.split("|"))],
                 })
                 status = "resolved" if c["title"] else "unresolved"
-                self.participant_sources[e["id"]] = list(c["sources"])
+                if track:
+                    self.participant_sources[e["id"]] = list(c["sources"])
             else:
                 status = "absent"
             offboard = None
@@ -357,6 +376,42 @@ class Session:
             "audit": self.audit[-80:],
             "thresholds": {"steps": STEP_AT, "crownable": CROWNABLE, "capture_p": CAPTURE_P},
         }
+
+    def timeline(self):
+        """The board re-inferred at every distinct event time: what each
+        signal, participant and hypothesis looked like once the records up
+        to that moment had arrived. Untimed records are present throughout."""
+        events = self.state.get("events", [])
+        times = sorted({e["t"] for e in events})
+        slices = []
+        seen = 0
+        for i, t in enumerate([None] + times):
+            st = self.compute(until=(-1 if t is None else t), track=False)
+            arrived = [e["id"] for e in events if e["t"] == t] if t is not None else []
+            seen += len(arrived)
+            slices.append({**self._slice(st), "t": t, "at": next((e["at"] for e in events if e["t"] == t), None),
+                           "index": i, "events_seen": seen, "arrived": arrived})
+        return {"slices": slices, "final": self._slice(self.state), "event_count": len(events)}
+
+    @staticmethod
+    def _slice(st):
+        """A compact view of one board: activations, involvements, and each
+        hypothesis's derivation terms."""
+        out = {"signals": {}, "participants": {}, "hypotheses": {}}
+        for n in st["nodes"]:
+            if n["band"] == "signal":
+                out["signals"][n["id"]] = {"p": round(n["p"], 4), "status": n["status"]}
+            elif n["band"] == "participant":
+                out["participants"][n["id"]] = {"p": round(n["p"], 4), "status": n["status"], "present": n["present"]}
+            else:
+                b = n["detail"]["breakdown"]
+                out["hypotheses"][n["id"]] = {
+                    "p": round(n["p"], 4), "status": n["status"], "present": n["present"],
+                    "support": [{"from": x["from"], "w": round(x["w"], 4), "p": round(x["p"], 4), "term": round(x["term"], 4)} for x in b["support"] if x["term"] > 0.001],
+                    "inhibit": [{"from": x["from"], "w": round(x["w"], 4), "p": round(x["p"], 4), "cut": round(x["w"] * x["p"], 4)} for x in b["inhibit"] if x["w"] * x["p"] > 0.001],
+                    "raw": round(b["raw"], 4), "divisor": round(b.get("divisor", 1.0), 4),
+                }
+        return out
 
     def _timeline(self, order, records, frags_by_record, frag_participant, record_signals, acts):
         """Timestamped records as events, and participant pairs joined by a shared record."""
