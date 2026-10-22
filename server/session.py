@@ -60,6 +60,7 @@ class Session:
         self.agent_lock = threading.Lock()
         self._parsed = {}
         self._doc_times = {}
+        self._rtimes = {}
         self.reset()
 
     def reset(self):
@@ -89,6 +90,7 @@ class Session:
         c.lock, c.agent_lock = threading.Lock(), threading.Lock()
         c._parsed = dict(self._parsed)
         c._doc_times = dict(self._doc_times)
+        c._rtimes = dict(self._rtimes)
         c.connected, c.errors = dict(self.connected), dict(self.errors)
         c.committed, c.rejected = list(self.committed), set(self.rejected)
         c.judgements, c.crown, c.kept = dict(self.judgements), self.crown, set(self.kept)
@@ -134,6 +136,7 @@ class Session:
         skipped = []
         recs = pipeline.parse(sid, s["format"], raw, s.get("options"), skipped)
         self._parsed[sid] = (raw, recs, skipped)
+        self._rtimes = {k: v for k, v in self._rtimes.items() if k[0] != sid}
         return recs
 
     def _skipped(self, sid):
@@ -167,6 +170,10 @@ class Session:
         """Epoch ms of a record. None means undated: no time config, an empty
         field, or a value that does not parse. Under unknown_time=at_connect
         undated records are dated at their source's connect time."""
+        key = (sid, r["index"], r["pointer"])
+        if key in self._rtimes:
+            t = self._rtimes[key]
+            return self._connect_t(sid) if t is None and self.pack["unknown_time"] == "at_connect" else t
         tconf = self.pack["sources"][sid].get("time")
         t = None
         if tconf and "document" in tconf:
@@ -177,11 +184,12 @@ class Session:
                 t = None if parsed is None else int(parsed.timestamp() * 1000)
             except (TypeError, ValueError, OverflowError):
                 t = None
+        self._rtimes[key] = t
         if t is None and self.pack["unknown_time"] == "at_connect":
             return self._connect_t(sid)
         return t
 
-    def compute(self, until=None, track=True, undated=True):
+    def compute(self, until=None, track=True, undated=True, proposals=True):
         """The whole board from the session's decisions. With `until` (epoch
         ms) only records timestamped at or before it take part; `undated`
         says whether records without a timestamp take part in that slice
@@ -211,7 +219,7 @@ class Session:
 
         committed_pairs = [tuple(pid.split("|")) for pid in self.committed]
         clusters, cluster_of = resolve.resolve(fragments, pack["object_types"], committed_pairs, pack["source_order"])
-        pending = resolve.proposals(clusters, by_frag, pack["object_types"], self.rejected)
+        pending = resolve.proposals(clusters, by_frag, pack["object_types"], self.rejected) if proposals else []
 
         # participant slots -> clusters
         part_cluster = {e["id"]: resolve.anchor(e, clusters, by_frag) for e in pack["participants"]}
@@ -421,6 +429,9 @@ class Session:
         """The board re-inferred at every distinct event time: what each
         signal, participant and hypothesis looked like once the records up
         to that moment had arrived. Untimed records are present throughout."""
+        cached = getattr(self, "_timeline_cache", None)
+        if cached and cached[0] is self.state:
+            return cached[1]
         events = self.state.get("events", [])
         undated = [u["id"] for u in self.state.get("undated", [])]
         policy = self.pack["unknown_time"]
@@ -435,7 +446,7 @@ class Session:
         seen = 0
         prev = None
         for i, t in enumerate([None] + times):
-            st = self.compute(until=(-1 if t is None else t), track=False, undated=(policy != "after"))
+            st = self.compute(until=(-1 if t is None else t), track=False, undated=(policy != "after"), proposals=False)
             arrived = [e["id"] for e in events if (prev is None or e["t"] > prev) and e["t"] <= t] if t is not None else []
             prev = t if t is not None else prev
             seen += len(arrived)
@@ -447,8 +458,10 @@ class Session:
             st = self.compute(until=last, track=False, undated=True)
             slices.append({**self._slice(st), "t": last if times else None, "at": slices[-1]["at"], "index": len(slices),
                            "events_seen": seen, "arrived": [], "undated": undated, "undated_arrive": True})
-        return {"slices": slices, "final": self._slice(self.state), "event_count": len(events),
-                "undated_count": len(undated), "unknown_time": policy}
+        result = {"slices": slices, "final": self._slice(self.state), "event_count": len(events),
+                  "undated_count": len(undated), "unknown_time": policy}
+        self._timeline_cache = (self.state, result)
+        return result
 
     @staticmethod
     def _slice(st):

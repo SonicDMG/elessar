@@ -1,0 +1,250 @@
+{
+  "participants": [
+    {
+      "id": "ring-seller",
+      "type": "Seller",
+      "anchor": {
+        "id": "S-101"
+      }
+    },
+    {
+      "id": "honest-seller",
+      "type": "Seller",
+      "anchor": {
+        "id": "S-100"
+      }
+    },
+    {
+      "id": "ring-device",
+      "type": "Device",
+      "anchor": {
+        "fingerprint": "fp-7c1e9a"
+      }
+    },
+    {
+      "id": "promo",
+      "type": "Promo",
+      "anchor": {
+        "code": "WELCOME25"
+      }
+    },
+    {
+      "id": "card-bin",
+      "type": "Card",
+      "anchor": {
+        "bin": "455612"
+      }
+    },
+    {
+      "id": "ring-buyer",
+      "type": "Buyer",
+      "anchor": {
+        "id": "B-2017"
+      }
+    },
+    {
+      "id": "victim",
+      "type": "Buyer",
+      "anchor": {
+        "email": "umar_yilmaz@example.net"
+      }
+    },
+    {
+      "id": "risk-model",
+      "type": "RiskModel",
+      "anchor": {
+        "name": "risk-rules-v7"
+      }
+    }
+  ],
+  "hypotheses": [
+    {
+      "id": "takeover",
+      "label": "Account takeover",
+      "prior": 0.25,
+      "blurb": "Existing customers' accounts were taken over and used to buy."
+    },
+    {
+      "id": "ring",
+      "label": "Seller collusion ring",
+      "prior": 0.15,
+      "blurb": "A seller is buying from itself through sock-puppet accounts with stolen cards and a promo."
+    },
+    {
+      "id": "promo-abuse",
+      "label": "Promo abuse",
+      "prior": 0.18,
+      "blurb": "Individuals gaming the WELCOME25 promo with throwaway accounts."
+    },
+    {
+      "id": "false-positives",
+      "label": "Risk-model false positives",
+      "prior": 0.2,
+      "blurb": "The tightened risk rules are flagging and declining good customers."
+    },
+    {
+      "id": "not-received",
+      "label": "Items not received",
+      "prior": 0.06,
+      "blurb": "A logistics problem: buyers disputing orders that never arrived."
+    }
+  ],
+  "edges": [
+    {
+      "from": "unauthorized-tickets",
+      "to": "takeover",
+      "w": 0.65
+    },
+    {
+      "from": "flagged-bin-approved",
+      "to": "takeover",
+      "w": 0.35
+    },
+    {
+      "from": "victim",
+      "to": "takeover",
+      "w": 0.3
+    },
+    {
+      "from": "new-account-orders",
+      "to": "takeover",
+      "w": 0.9,
+      "kind": "inhibit"
+    },
+    {
+      "from": "shared-device",
+      "to": "takeover",
+      "w": 0.6,
+      "kind": "inhibit"
+    },
+    {
+      "from": "shared-payout",
+      "to": "ring",
+      "w": 0.85
+    },
+    {
+      "from": "shared-device",
+      "to": "ring",
+      "w": 0.65
+    },
+    {
+      "from": "promo-concentration",
+      "to": "ring",
+      "w": 0.5
+    },
+    {
+      "from": "new-account-orders",
+      "to": "ring",
+      "w": 0.55
+    },
+    {
+      "from": "fraud-chargebacks",
+      "to": "ring",
+      "w": 0.5
+    },
+    {
+      "from": "ring-seller",
+      "to": "ring",
+      "w": 0.6
+    },
+    {
+      "from": "ring-device",
+      "to": "ring",
+      "w": 0.3
+    },
+    {
+      "from": "card-bin",
+      "to": "ring",
+      "w": 0.35
+    },
+    {
+      "from": "promo-concentration",
+      "to": "promo-abuse",
+      "w": 0.6
+    },
+    {
+      "from": "promo",
+      "to": "promo-abuse",
+      "w": 0.4
+    },
+    {
+      "from": "new-account-orders",
+      "to": "promo-abuse",
+      "w": 0.3
+    },
+    {
+      "from": "shared-payout",
+      "to": "promo-abuse",
+      "w": 0.8,
+      "kind": "inhibit"
+    },
+    {
+      "from": "fraud-chargebacks",
+      "to": "promo-abuse",
+      "w": 0.7,
+      "kind": "inhibit"
+    },
+    {
+      "from": "rules-deploy",
+      "to": "false-positives",
+      "w": 0.6
+    },
+    {
+      "from": "decline-spike",
+      "to": "false-positives",
+      "w": 0.6
+    },
+    {
+      "from": "risk-model",
+      "to": "false-positives",
+      "w": 0.4
+    },
+    {
+      "from": "fraud-chargebacks",
+      "to": "false-positives",
+      "w": 0.95,
+      "kind": "inhibit"
+    },
+    {
+      "from": "flagged-bin-approved",
+      "to": "false-positives",
+      "w": 0.7,
+      "kind": "inhibit"
+    },
+    {
+      "from": "honest-seller",
+      "to": "not-received",
+      "w": 0.2
+    },
+    {
+      "from": "fraud-chargebacks",
+      "to": "not-received",
+      "w": 0.8,
+      "kind": "inhibit"
+    },
+    {
+      "from": "unauthorized-tickets",
+      "to": "not-received",
+      "w": 0.5,
+      "kind": "inhibit"
+    },
+    {
+      "from": "shared-payout",
+      "to": "false-positives",
+      "w": 0.65,
+      "kind": "inhibit"
+    },
+    {
+      "from": "shared-device",
+      "to": "promo-abuse",
+      "w": 0.4,
+      "kind": "inhibit"
+    },
+    {
+      "from": "shared-payout",
+      "to": "takeover",
+      "w": 0.5,
+      "kind": "inhibit"
+    }
+  ]
+}

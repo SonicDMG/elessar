@@ -1,0 +1,539 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<helpdesk export="2026-10-13T08:00:00Z" tz="UTC">
+  <ticket id="CH-3179" type="change" category="risk" priority="P2">
+    <summary>Deploy risk-rules-v7 (velocity and AVS tightening)</summary>
+    <ci type="model" name="Risk rules">risk-rules-v7</ci>
+    <opened>2026-10-07T09:00:00Z</opened>
+    <status>completed</status>
+  </ticket>
+  <ticket id="TK-3177" type="complaint" category="payout" priority="P3">
+    <summary>Payout for last week is late, please advise.</summary>
+    <reporter email="ops@falcon.example"/>
+    <opened>2026-10-06T18:14:26Z</opened>
+    <status>open</status>
+  </ticket>
+  <ticket id="TK-3172" type="complaint" category="payout" priority="P3">
+    <summary>Payout for last week is late, please advise.</summary>
+    <reporter email="ops@hollow.example"/>
+    <opened>2026-10-06T20:40:08Z</opened>
+    <status>closed</status>
+  </ticket>
+  <ticket id="TK-3176" type="complaint" category="payout" priority="P3">
+    <summary>Payout for last week is late, please advise.</summary>
+    <reporter email="ops@umber.example"/>
+    <opened>2026-10-07T08:24:05Z</opened>
+    <status>closed</status>
+  </ticket>
+  <ticket id="TK-3166" type="complaint" category="payout" priority="P3">
+    <summary>Payout for last week is late, please advise.</summary>
+    <reporter email="ops@vantage.example"/>
+    <opened>2026-10-07T13:11:36Z</opened>
+    <status>open</status>
+  </ticket>
+  <ticket id="TK-3168" type="complaint" category="payout" priority="P3">
+    <summary>Payout for last week is late, please advise.</summary>
+    <reporter email="ops@quarry.example"/>
+    <opened>2026-10-07T14:39:31Z</opened>
+    <status>pending</status>
+  </ticket>
+  <ticket id="TK-3170" type="complaint" category="payout" priority="P3">
+    <summary>Payout for last week is late, please advise.</summary>
+    <reporter email="ops@lumen.example"/>
+    <opened>2026-10-07T23:39:27Z</opened>
+    <status>open</status>
+  </ticket>
+  <ticket id="TK-3162" type="question" category="account" priority="P3">
+    <summary>How do I change my shipping address?</summary>
+    <reporter email="dev.hassan61@example.com"/>
+    <order id="O-50265" seller="S-126"/>
+    <opened>2026-10-08T03:25:15Z</opened>
+    <status>pending</status>
+  </ticket>
+  <ticket id="TK-3173" type="complaint" category="payout" priority="P3">
+    <summary>Payout for last week is late, please advise.</summary>
+    <reporter email="ops@jade.example"/>
+    <opened>2026-10-08T04:26:44Z</opened>
+    <status>open</status>
+  </ticket>
+  <ticket id="TK-3150" type="question" category="account" priority="P3">
+    <summary>How do I change my shipping address?</summary>
+    <reporter email="vera.singh92@example.com"/>
+    <order id="O-50349" seller="S-105"/>
+    <opened>2026-10-08T10:04:31Z</opened>
+    <status>pending</status>
+  </ticket>
+  <ticket id="TK-3175" type="complaint" category="payout" priority="P3">
+    <summary>Payout for last week is late, please advise.</summary>
+    <reporter email="ops@kestrel.example"/>
+    <opened>2026-10-08T15:20:32Z</opened>
+    <status>open</status>
+  </ticket>
+  <ticket id="TK-3139" type="complaint" category="seller" priority="P3">
+    <summary>Seller stopped answering messages after payment.</summary>
+    <reporter email="wes.nakamura66@example.com"/>
+    <order id="O-50144" seller="S-114"/>
+    <opened>2026-10-08T17:55:34Z</opened>
+    <status>closed</status>
+  </ticket>
+  <ticket id="TK-3119" type="dispute" category="unauthorized" priority="P2">
+    <summary>I don't recognise this order at all. Not my account.</summary>
+    <reporter email="maya_usman@example.net"/>
+    <order id="O-50052" seller="S-101"/>
+    <opened>2026-10-08T19:17:25Z</opened>
+    <status>open</status>
+  </ticket>
+  <ticket id="TK-3167" type="complaint" category="payout" priority="P3">
+    <summary>Payout for last week is late, please advise.</summary>
+    <reporter email="ops@quarry.example"/>
+    <opened>2026-10-08T22:28:58Z</opened>
+    <status>open</status>
+  </ticket>
+  <ticket id="TK-3101" type="dispute" category="unauthorized" priority="P2">
+    <summary>I did not make this purchase. I have never shopped with this seller.</summary>
+    <reporter email="farid_jensen@example.net"/>
+    <order id="O-50407" seller="S-102"/>
+    <opened>2026-10-09T11:37:47Z</opened>
+    <status>pending</status>
+  </ticket>
+  <ticket id="TK-3159" type="question" category="account" priority="P3">
+    <summary>How do I change my shipping address?</summary>
+    <reporter email="rosa.brooks32@example.com"/>
+    <order id="O-50305" seller="S-120"/>
+    <opened>2026-10-09T14:15:36Z</opened>
+    <status>closed</status>
+  </ticket>
+  <ticket id="TK-3169" type="complaint" category="payout" priority="P3">
+    <summary>Payout for last week is late, please advise.</summary>
+    <reporter email="ops@quarry.example"/>
+    <opened>2026-10-09T18:29:57Z</opened>
+    <status>pending</status>
+  </ticket>
+  <ticket id="TK-3141" type="question" category="account" priority="P3">
+    <summary>How do I change my shipping address?</summary>
+    <reporter email="noor.alvarez99@example.com"/>
+    <order id="O-50297" seller="S-114"/>
+    <opened>2026-10-09T19:48:40Z</opened>
+    <status>open</status>
+  </ticket>
+  <ticket id="TK-3129" type="dispute" category="other" priority="P2">
+    <summary>I don't recognise this order at all. Not my account.</summary>
+    <reporter email="rosa_xu@example.net"/>
+    <order id="O-50416" seller="S-101"/>
+    <opened>2026-10-09T20:23:33Z</opened>
+    <status>open</status>
+  </ticket>
+  <ticket id="TK-3110" type="dispute" category="unauthorized" priority="P2">
+    <summary>I don't recognise this order at all. Not my account.</summary>
+    <reporter email="kira_larsen@example.net"/>
+    <order id="O-50210" seller="S-102"/>
+    <opened>2026-10-09T22:45:43Z</opened>
+    <status>pending</status>
+  </ticket>
+  <ticket id="TK-3143" type="dispute" category="shipping" priority="P3">
+    <summary>Order never arrived, tracking stuck for a week.</summary>
+    <reporter email="jonaspetrov202@mailbox.example"/>
+    <order id="O-50370" seller="S-101"/>
+    <opened>2026-10-10T01:25:45Z</opened>
+    <status>closed</status>
+  </ticket>
+  <ticket id="TK-3104" type="dispute" category="unauthorized" priority="P2">
+    <summary>I did not make this purchase. I have never shopped with this seller.</summary>
+    <reporter email="farid_dubois@example.net"/>
+    <order id="O-50241" seller="S-102"/>
+    <opened>2026-10-10T02:04:19Z</opened>
+    <status>pending</status>
+  </ticket>
+  <ticket id="TK-3128" type="dispute" category="other" priority="P2">
+    <summary>Unauthorized charge on my card for an order I never placed.</summary>
+    <reporter email="otto_varga@example.net"/>
+    <order id="O-50388" seller="S-102"/>
+    <opened>2026-10-10T04:39:56Z</opened>
+    <status>open</status>
+  </ticket>
+  <ticket id="TK-3127" type="dispute" category="unauthorized" priority="P2">
+    <summary>I did not make this purchase. I have never shopped with this seller.</summary>
+    <reporter email="quinn_evans@example.net"/>
+    <order id="O-50370" seller="S-101"/>
+    <opened>2026-10-10T05:25:45Z</opened>
+    <status>closed</status>
+  </ticket>
+  <ticket id="TK-3126" type="dispute" category="unauthorized" priority="P2">
+    <summary>This wasn't me. Please refund, my card was used without permission.</summary>
+    <reporter email="sven_kowalski@example.net"/>
+    <order id="O-50387" seller="S-101"/>
+    <opened>2026-10-10T05:59:06Z</opened>
+    <status>open</status>
+  </ticket>
+  <ticket id="TK-3161" type="dispute" category="quality" priority="P3">
+    <summary>Item not as described, the box was damaged.</summary>
+    <reporter email="esme.nakamura69@example.com"/>
+    <order id="O-50191" seller="S-121"/>
+    <opened>2026-10-10T07:54:13Z</opened>
+    <status>pending</status>
+  </ticket>
+  <ticket id="TK-3147" type="dispute" category="quality" priority="P3">
+    <summary>Item not as described, the box was damaged.</summary>
+    <reporter email="otto.quist57@example.com"/>
+    <order id="O-50220" seller="S-109"/>
+    <opened>2026-10-10T08:06:39Z</opened>
+    <status>pending</status>
+  </ticket>
+  <ticket id="TK-3145" type="dispute" category="shipping" priority="P3">
+    <summary>Order never arrived, tracking stuck for a week.</summary>
+    <reporter email="chloequist115@mailbox.example"/>
+    <order id="O-50403" seller="S-102"/>
+    <opened>2026-10-10T08:47:05Z</opened>
+    <status>pending</status>
+  </ticket>
+  <ticket id="TK-3153" type="dispute" category="shipping" priority="P3">
+    <summary>Order never arrived, tracking stuck for a week.</summary>
+    <reporter email="otto.hassan14@example.com"/>
+    <order id="O-50181" seller="S-106"/>
+    <opened>2026-10-10T10:25:05Z</opened>
+    <status>closed</status>
+  </ticket>
+  <ticket id="TK-3118" type="dispute" category="unauthorized" priority="P2">
+    <summary>I don't recognise this order at all. Not my account.</summary>
+    <reporter email="quinn_fischer@example.net"/>
+    <order id="O-50365" seller="S-101"/>
+    <opened>2026-10-10T13:51:01Z</opened>
+    <status>closed</status>
+  </ticket>
+  <ticket id="TK-3132" type="dispute" category="unauthorized" priority="P2">
+    <summary>This wasn't me. Please refund, my card was used without permission.</summary>
+    <reporter email="gwen_walsh@example.net"/>
+    <order id="O-50313" seller="S-101"/>
+    <opened>2026-10-10T16:19:09Z</opened>
+    <status>open</status>
+  </ticket>
+  <ticket id="TK-3111" type="dispute" category="unauthorized" priority="P2">
+    <summary>Unauthorized charge on my card for an order I never placed.</summary>
+    <reporter email="dev_mendes@example.net"/>
+    <order id="O-50354" seller="S-101"/>
+    <opened>2026-10-10T17:11:07Z</opened>
+    <status>pending</status>
+  </ticket>
+  <ticket id="TK-3105" type="dispute" category="unauthorized" priority="P2">
+    <summary>Unauthorized charge on my card for an order I never placed.</summary>
+    <reporter email="umar_yilmaz@example.net"/>
+    <order id="O-50361" seller="S-102"/>
+    <opened>2026-10-10T20:55:29Z</opened>
+    <status>closed</status>
+  </ticket>
+  <ticket id="TK-3112" type="dispute" category="unauthorized" priority="P2">
+    <summary>This wasn't me. Please refund, my card was used without permission.</summary>
+    <reporter email="maya_xu@example.net"/>
+    <order id="O-50400" seller="S-101"/>
+    <opened>2026-10-10T23:14:20Z</opened>
+    <status>open</status>
+  </ticket>
+  <ticket id="TK-3103" type="dispute" category="unauthorized" priority="P2">
+    <summary>I don't recognise this order at all. Not my account.</summary>
+    <reporter email="hiro_petrov@example.net"/>
+    <order id="O-50405" seller="S-101"/>
+    <opened>2026-10-11T02:07:32Z</opened>
+    <status>closed</status>
+  </ticket>
+  <ticket id="TK-3138" type="dispute" category="shipping" priority="P3">
+    <summary>Order never arrived, tracking stuck for a week.</summary>
+    <reporter email="gwen.larsen80@example.com"/>
+    <order id="O-50082" seller="S-104"/>
+    <opened>2026-10-11T02:35:37Z</opened>
+    <status>open</status>
+  </ticket>
+  <ticket id="TK-3171" type="complaint" category="payout" priority="P3">
+    <summary>Payout for last week is late, please advise.</summary>
+    <reporter email="ops@lumen.example"/>
+    <opened>2026-10-11T04:22:49Z</opened>
+    <status>pending</status>
+  </ticket>
+  <ticket id="TK-3113" type="dispute" category="other" priority="P2">
+    <summary>Unauthorized charge on my card for an order I never placed.</summary>
+    <reporter email="chloe_nakamura@example.net"/>
+    <order id="O-50129" seller="S-101"/>
+    <opened>2026-10-11T05:19:42Z</opened>
+    <status>closed</status>
+  </ticket>
+  <ticket id="TK-3135" type="dispute" category="quality" priority="P3">
+    <summary>Item not as described, the box was damaged.</summary>
+    <reporter email="kira.quist80@example.com"/>
+    <order id="O-50271" seller="S-116"/>
+    <opened>2026-10-11T08:30:34Z</opened>
+    <status>open</status>
+  </ticket>
+  <ticket id="TK-3117" type="dispute" category="unauthorized" priority="P2">
+    <summary>I did not make this purchase. I have never shopped with this seller.</summary>
+    <reporter email="noor_reyes@example.net"/>
+    <order id="O-50366" seller="S-102"/>
+    <opened>2026-10-11T08:40:18Z</opened>
+    <status>closed</status>
+  </ticket>
+  <ticket id="TK-3144" type="complaint" category="seller" priority="P3">
+    <summary>Seller stopped answering messages after payment.</summary>
+    <reporter email="farid.fischer35@example.com"/>
+    <order id="O-50161" seller="S-111"/>
+    <opened>2026-10-11T09:29:48Z</opened>
+    <status>open</status>
+  </ticket>
+  <ticket id="TK-3102" type="dispute" category="unauthorized" priority="P2">
+    <summary>I don't recognise this order at all. Not my account.</summary>
+    <reporter email="gwen_walsh@example.net"/>
+    <order id="O-50012" seller="S-101"/>
+    <opened>2026-10-11T10:50:55Z</opened>
+    <status>open</status>
+  </ticket>
+  <ticket id="TK-3124" type="dispute" category="unauthorized" priority="P2">
+    <summary>This wasn't me. Please refund, my card was used without permission.</summary>
+    <reporter email="tara_usman@example.net"/>
+    <order id="O-50386" seller="S-102"/>
+    <opened>2026-10-11T11:12:10Z</opened>
+    <status>closed</status>
+  </ticket>
+  <ticket id="TK-3137" type="question" category="account" priority="P3">
+    <summary>How do I change my shipping address?</summary>
+    <reporter email="chloe.larsen79@example.com"/>
+    <order id="O-50036" seller="S-115"/>
+    <opened>2026-10-11T13:08:15Z</opened>
+    <status>closed</status>
+  </ticket>
+  <ticket id="TK-3109" type="dispute" category="unauthorized" priority="P2">
+    <summary>I don't recognise this order at all. Not my account.</summary>
+    <reporter email="dev_usman@example.net"/>
+    <order id="O-50268" seller="S-102"/>
+    <opened>2026-10-11T15:35:50Z</opened>
+    <status>open</status>
+  </ticket>
+  <ticket id="TK-3155" type="dispute" category="quality" priority="P3">
+    <summary>Item not as described, the box was damaged.</summary>
+    <reporter email="luis.yilmaz40@example.com"/>
+    <order id="O-50008" seller="S-123"/>
+    <opened>2026-10-11T19:35:10Z</opened>
+    <status>pending</status>
+  </ticket>
+  <ticket id="TK-3152" type="dispute" category="quality" priority="P3">
+    <summary>Item not as described, the box was damaged.</summary>
+    <reporter email="noorquist891@mailbox.example"/>
+    <order id="O-50376" seller="S-101"/>
+    <opened>2026-10-11T19:35:52Z</opened>
+    <status>pending</status>
+  </ticket>
+  <ticket id="TK-3178" type="complaint" category="payout" priority="P3">
+    <summary>Payout for last week is late, please advise.</summary>
+    <reporter email="ops@lumen.example"/>
+    <opened>2026-10-11T20:31:41Z</opened>
+    <status>closed</status>
+  </ticket>
+  <ticket id="TK-3156" type="question" category="account" priority="P3">
+    <summary>How do I change my shipping address?</summary>
+    <reporter email="tara.petrov79@example.com"/>
+    <order id="O-50061" seller="S-115"/>
+    <opened>2026-10-11T21:10:00Z</opened>
+    <status>pending</status>
+  </ticket>
+  <ticket id="TK-3123" type="dispute" category="unauthorized" priority="P2">
+    <summary>This wasn't me. Please refund, my card was used without permission.</summary>
+    <reporter email="wes_yilmaz@example.net"/>
+    <order id="O-50406" seller="S-101"/>
+    <opened>2026-10-12T00:53:35Z</opened>
+    <status>closed</status>
+  </ticket>
+  <ticket id="TK-3108" type="dispute" category="unauthorized" priority="P2">
+    <summary>I did not make this purchase. I have never shopped with this seller.</summary>
+    <reporter email="rosa_zimmer@example.net"/>
+    <order id="O-50385" seller="S-101"/>
+    <opened>2026-10-12T01:09:50Z</opened>
+    <status>closed</status>
+  </ticket>
+  <ticket id="TK-3146" type="dispute" category="shipping" priority="P3">
+    <summary>Order never arrived, tracking stuck for a week.</summary>
+    <reporter email="otto.yilmaz16@example.com"/>
+    <order id="O-50073" seller="S-107"/>
+    <opened>2026-10-12T03:08:05Z</opened>
+    <status>closed</status>
+  </ticket>
+  <ticket id="TK-3106" type="dispute" category="unauthorized" priority="P2">
+    <summary>Unauthorized charge on my card for an order I never placed.</summary>
+    <reporter email="chloe_petrov@example.net"/>
+    <order id="O-50382" seller="S-101"/>
+    <opened>2026-10-12T04:03:27Z</opened>
+    <status>open</status>
+  </ticket>
+  <ticket id="TK-3114" type="dispute" category="unauthorized" priority="P2">
+    <summary>This wasn't me. Please refund, my card was used without permission.</summary>
+    <reporter email="umar_alvarez@example.net"/>
+    <order id="O-50367" seller="S-101"/>
+    <opened>2026-10-12T04:26:37Z</opened>
+    <status>open</status>
+  </ticket>
+  <ticket id="TK-3174" type="complaint" category="payout" priority="P3">
+    <summary>Payout for last week is late, please advise.</summary>
+    <reporter email="ops@ember.example"/>
+    <opened>2026-10-12T07:11:44Z</opened>
+    <status>open</status>
+  </ticket>
+  <ticket id="TK-3165" type="complaint" category="payout" priority="P3">
+    <summary>Payout for last week is late, please advise.</summary>
+    <reporter email="ops@umber.example"/>
+    <opened>2026-10-12T07:34:35Z</opened>
+    <status>open</status>
+  </ticket>
+  <ticket id="TK-3107" type="dispute" category="unauthorized" priority="P2">
+    <summary>I did not make this purchase. I have never shopped with this seller.</summary>
+    <reporter email="zoe_walsh@example.net"/>
+    <order id="O-50390" seller="S-101"/>
+    <opened>2026-10-12T09:13:13Z</opened>
+    <status>open</status>
+  </ticket>
+  <ticket id="TK-3131" type="dispute" category="other" priority="P2">
+    <summary>I did not make this purchase. I have never shopped with this seller.</summary>
+    <reporter email="farid_jensen@example.net"/>
+    <order id="O-50119" seller="S-102"/>
+    <opened>2026-10-12T13:09:18Z</opened>
+    <status>pending</status>
+  </ticket>
+  <ticket id="TK-3163" type="dispute" category="quality" priority="P3">
+    <summary>Item not as described, the box was damaged.</summary>
+    <reporter email="farid.singh28@example.com"/>
+    <order id="O-50325" seller="S-104"/>
+    <opened>2026-10-12T16:25:42Z</opened>
+    <status>open</status>
+  </ticket>
+  <ticket id="TK-3122" type="dispute" category="unauthorized" priority="P2">
+    <summary>I don't recognise this order at all. Not my account.</summary>
+    <reporter email="tara_yilmaz@example.net"/>
+    <order id="O-50377" seller="S-102"/>
+    <opened>2026-10-12T17:22:41Z</opened>
+    <status>closed</status>
+  </ticket>
+  <ticket id="TK-3149" type="question" category="account" priority="P3">
+    <summary>How do I change my shipping address?</summary>
+    <reporter email="otto.dubois85@example.com"/>
+    <order id="O-50086" seller="S-107"/>
+    <opened>2026-10-12T20:38:16Z</opened>
+    <status>open</status>
+  </ticket>
+  <ticket id="TK-3160" type="dispute" category="quality" priority="P3">
+    <summary>Item not as described, the box was damaged.</summary>
+    <reporter email="hiro.evans54@example.com"/>
+    <order id="O-50235" seller="S-110"/>
+    <opened>2026-10-12T21:52:35Z</opened>
+    <status>pending</status>
+  </ticket>
+  <ticket id="TK-3115" type="dispute" category="unauthorized" priority="P2">
+    <summary>I don't recognise this order at all. Not my account.</summary>
+    <reporter email="luis_garcia@example.net"/>
+    <order id="O-50352" seller="S-102"/>
+    <opened>2026-10-12T23:35:56Z</opened>
+    <status>open</status>
+  </ticket>
+  <ticket id="TK-3154" type="dispute" category="shipping" priority="P3">
+    <summary>Order never arrived, tracking stuck for a week.</summary>
+    <reporter email="tara.larsen61@example.com"/>
+    <order id="O-50089" seller="S-129"/>
+    <opened>2026-10-13T00:37:43Z</opened>
+    <status>closed</status>
+  </ticket>
+  <ticket id="TK-3120" type="dispute" category="unauthorized" priority="P2">
+    <summary>I did not make this purchase. I have never shopped with this seller.</summary>
+    <reporter email="hiro_okafor@example.net"/>
+    <order id="O-50383" seller="S-101"/>
+    <opened>2026-10-13T02:00:49Z</opened>
+    <status>pending</status>
+  </ticket>
+  <ticket id="TK-3121" type="dispute" category="unauthorized" priority="P2">
+    <summary>I did not make this purchase. I have never shopped with this seller.</summary>
+    <reporter email="esme_reyes@example.net"/>
+    <order id="O-50419" seller="S-102"/>
+    <opened>2026-10-13T03:26:41Z</opened>
+    <status>pending</status>
+  </ticket>
+  <ticket id="TK-3157" type="complaint" category="seller" priority="P3">
+    <summary>Seller stopped answering messages after payment.</summary>
+    <reporter email="sven.larsen59@example.com"/>
+    <order id="O-50286" seller="S-106"/>
+    <opened>2026-10-13T06:37:41Z</opened>
+    <status>closed</status>
+  </ticket>
+  <ticket id="TK-3116" type="dispute" category="unauthorized" priority="P2">
+    <summary>I did not make this purchase. I have never shopped with this seller.</summary>
+    <reporter email="jonas_ito@example.net"/>
+    <order id="O-50324" seller="S-102"/>
+    <opened>2026-10-13T21:57:20Z</opened>
+    <status>closed</status>
+  </ticket>
+  <ticket id="TK-3134" type="dispute" category="unauthorized" priority="P2">
+    <summary>I don't recognise this order at all. Not my account.</summary>
+    <reporter email="farid_dubois@example.net"/>
+    <order id="O-50369" seller="S-101"/>
+    <opened>2026-10-14T06:27:52Z</opened>
+    <status>closed</status>
+  </ticket>
+  <ticket id="TK-3130" type="dispute" category="other" priority="P2">
+    <summary>I don't recognise this order at all. Not my account.</summary>
+    <reporter email="kira_fischer@example.net"/>
+    <order id="O-50412" seller="S-101"/>
+    <opened>2026-10-14T07:11:40Z</opened>
+    <status>closed</status>
+  </ticket>
+  <ticket id="TK-3158" type="complaint" category="seller" priority="P3">
+    <summary>Seller stopped answering messages after payment.</summary>
+    <reporter email="maya.brooks60@example.com"/>
+    <order id="O-50003" seller="S-116"/>
+    <opened>2026-10-14T11:33:31Z</opened>
+    <status>open</status>
+  </ticket>
+  <ticket id="TK-3136" type="dispute" category="shipping" priority="P3">
+    <summary>Order never arrived, tracking stuck for a week.</summary>
+    <reporter email="tara.larsen61@example.com"/>
+    <order id="O-50204" seller="S-100"/>
+    <status>closed</status>
+  </ticket>
+  <ticket id="TK-3140" type="dispute" category="quality" priority="P3">
+    <summary>Item not as described, the box was damaged.</summary>
+    <reporter email="zoeito111@mailbox.example"/>
+    <order id="O-50405" seller="S-101"/>
+    <opened>2026-10-14T22:07:32Z</opened>
+    <status>closed</status>
+  </ticket>
+  <ticket id="TK-3133" type="dispute" category="unauthorized" priority="P2">
+    <summary>This wasn't me. Please refund, my card was used without permission.</summary>
+    <reporter email="hiro_petrov@example.net"/>
+    <order id="O-50141" seller="S-102"/>
+    <opened>2026-10-15T03:50:49Z</opened>
+    <status>open</status>
+  </ticket>
+  <ticket id="TK-3148" type="complaint" category="seller" priority="P3">
+    <summary>Seller stopped answering messages after payment.</summary>
+    <reporter email="chloequist115@mailbox.example"/>
+    <order id="O-50396" seller="S-102"/>
+    <opened>2026-10-15T04:51:30Z</opened>
+    <status>closed</status>
+  </ticket>
+  <ticket id="TK-3151" type="question" category="account" priority="P3">
+    <summary>How do I change my shipping address?</summary>
+    <reporter email="zoe.walsh97@example.com"/>
+    <order id="O-50042" seller="S-121"/>
+    <opened>2026-10-15T12:47:29Z</opened>
+    <status>closed</status>
+  </ticket>
+  <ticket id="TK-3125" type="dispute" category="unauthorized" priority="P2">
+    <summary>I don't recognise this order at all. Not my account.</summary>
+    <reporter email="ben_larsen@example.net"/>
+    <order id="O-50044" seller="S-101"/>
+    <opened>2026-10-15T21:57:22Z</opened>
+    <status>open</status>
+  </ticket>
+  <ticket id="TK-3142" type="complaint" category="seller" priority="P3">
+    <summary>Seller stopped answering messages after payment.</summary>
+    <reporter email="esme.nakamura69@example.com"/>
+    <order id="O-50295" seller="S-117"/>
+    <status>pending</status>
+  </ticket>
+  <ticket id="TK-3164" type="complaint" category="seller" priority="P3">
+    <summary>Seller stopped answering messages after payment.</summary>
+    <reporter email="otto.hassan34@example.com"/>
+    <order id="O-50348" seller="S-113"/>
+    <opened>2026-10-16T08:35:40Z</opened>
+    <status>pending</status>
+  </ticket>
+</helpdesk>

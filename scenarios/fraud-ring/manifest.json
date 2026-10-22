@@ -1,0 +1,32 @@
+{
+  "id": "fraud-ring",
+  "title": "Chargeback Spike",
+  "premise": "Marketplace Lumen, 6-12 October 2026: chargebacks tripled in a week and the risk team is paged. Eight systems saw parts of it, several of them dirty, and none agree on what anything is called. What explains it?",
+  "unknown_time": "throughout",
+  "sources": [
+    {"id": "orders", "name": "Order Ledger", "kind": "Orders", "format": "csv", "file": "sources/orders.csv",
+     "time": {"field": "placed_at", "unit": "iso"}, "confidence": 0.95, "latency_ms": 260, "color": "#58a6ff",
+     "blurb": "The storefront's order export. Comma CSV with quoted names; seller names as the storefront spelled them that day. Some timestamps are in US format and a few buyer ids are blank."},
+    {"id": "payments", "name": "Payment Gateway", "kind": "Payments", "format": "jsonl", "file": "sources/payments.jsonl",
+     "time": {"field": "t", "unit": "ms"}, "confidence": 0.92, "latency_ms": 300, "color": "#7ee787",
+     "blurb": "One JSON object per authorization attempt. Epoch milliseconds, except where someone logged seconds. One line is not even JSON."},
+    {"id": "devices", "name": "Device Fingerprints", "kind": "Sessions", "format": "nested-json", "file": "sources/sessions.json",
+     "options": {"records": "data.sessions"}, "time": {"field": "loginAt", "unit": "iso"}, "confidence": 0.9, "latency_ms": 340, "color": "#56d4dd",
+     "blurb": "A fingerprinting collector's session dump: camelCase, three levels deep, and its clock runs an hour ahead."},
+    {"id": "tickets", "name": "Help Desk", "kind": "Support tickets", "format": "xml", "file": "sources/tickets.xml",
+     "options": {"records": "ticket"}, "time": {"field": "opened", "unit": "iso"}, "confidence": 0.88, "latency_ms": 280, "color": "#d2a8ff",
+     "blurb": "Support tickets as XML. Reporters are emails, not account ids; a tenth have no opened date; the one change ticket matters."},
+    {"id": "chargebacks", "name": "Dispute Export", "kind": "Chargebacks", "format": "columnar", "file": "sources/chargebacks.json",
+     "options": {"fields": "schema.fields", "rows": "rows"}, "time": {"field": "filed_at", "unit": "date_dmy"}, "confidence": 0.96, "latency_ms": 220, "color": "#ff7b72",
+     "blurb": "The card network's dispute file: a schema, then bare rows. Dates as dd/mm/yyyy, four of them 00/00/0000."},
+    {"id": "sellers", "name": "Seller Registry", "kind": "Master data", "format": "csv", "file": "sources/sellers.csv",
+     "time": {"field": "ONBOARDED", "unit": "date_dmy"}, "confidence": 0.97, "latency_ms": 190, "color": "#f0883e",
+     "blurb": "Onboarding records with legal names and payout accounts. Two sellers share a payout account. A country of '-' and a rating of 'unknown'."},
+    {"id": "promos", "name": "Promo Catalog", "kind": "Promotions", "format": "kv", "file": "sources/promos.txt",
+     "time": {"document": {"regex": "generated (\\S+)"}, "unit": "iso"}, "confidence": 0.9, "latency_ms": 150, "color": "#e3b341",
+     "blurb": "key=value lines. No per-record dates: the whole export is dated by its header."},
+    {"id": "partner", "name": "Partner Fraud Feed", "kind": "External intel", "format": "jsonl", "file": "sources/partner.jsonl",
+     "time": {"field": "seen_at", "unit": "iso"}, "confidence": 0.7, "latency_ms": 420, "color": "#f778ba",
+     "blurb": "Indicators from a fraud-intel partner: card BINs, device fingerprints, merchant names and emails, each with its own confidence. Names are free text; three indicators have no date."}
+  ]
+}

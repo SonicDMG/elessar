@@ -1,0 +1,31 @@
+SELLER_ID,LEGAL_NAME,COUNTRY,ONBOARDED,PAYOUT_ACCOUNT,RATING,STATUS
+S-100,"Nova Goods",US,16/05/2025,PA-ca264e,4.8,active
+S-101,"Brightline Electronics Ltd",US,26/08/2026,PA-3031d0,4.1,active
+S-102,"Northwing Gadgets",US,13/09/2026,PA-3031d0,3.6,active
+S-103,"Cobalt Supply Co",AU,15/11/2023,PA-23c417,3.9,active
+S-104,"Harbor Outfitters",FR,02/11/2023,PA-1e43bb,4.7,active
+S-105,"Juniper Trading",US,18/12/2024,PA-1fac61,4.4,active
+S-106,"Kestrel Home",AU,09/12/2025,PA-7131a3,3.7,active
+S-107,"Lumen Audio",US,04/08/2024,PA-d69964,3.8,active
+S-108,"Meridian Parts",US,06/01/2023,PA-9df154,4.3,active
+S-109,"Orchard Direct",-,21/08/2025,PA-6030a1,4.1,active
+S-110,"Pioneer Goods",FR,12/11/2025,PA-1e840b,4.4,active
+S-111,"Quarry Electronics Ltd",NL,28/03/2023,PA-daed60,4.6,active
+S-112,"Redwood Gadgets",NL,07/12/2022,PA-e807c8,4.1,active
+S-113,"Summit Supply Co",GB,17/03/2025,PA-7cfa37,3.7,active
+S-114,"Tidewater Outfitters",DE,10/04/2023,PA-fd7fe4,unknown,active
+S-115,"Umber Trading",NL,08/08/2024,PA-257a95,3.8,active
+S-116,"Vantage Home",AU,17/04/2025,PA-af21f0,3.8,active
+S-117,"Willow Audio",NL,08/11/2023,PA-1412f9,4.9,active
+S-118,"Yonder Parts",US,02/02/2023,PA-a0a383,4.0,active
+S-119,"Zenith Direct",CA,19/11/2022,PA-fe4c28,4.4,active
+S-120,"Amber Goods",NL,31/10/2025,PA-2febd0,4.8,active
+S-121,"Beacon Electronics Ltd",NL,07/11/2025,PA-1f1010,4.6,active
+S-122,"Cinder Gadgets",DE,23/12/2022,PA-e42b06,4.0,active
+S-123,"Drift Supply Co",AU,09/04/2024,PA-0b8d5e,4.8,active
+S-124,"Ember Outfitters",CA,10/04/2025,PA-3bf3fa,4.2,active
+S-125,"Falcon Trading",GB,09/08/2024,PA-4238e1,4.6,active
+S-126,"Granite Home",AU,10/01/2024,PA-fe3620,3.7,active
+S-127,"Hollow Audio",NL,19/12/2023,PA-8e40ee,4.7,active
+S-128,"Ivory Parts",AU,18/02/2023,PA-8e8d34,4.5,active
+S-129,"Jade Direct",CA,31/01/2024,PA-76250f,3.8,active

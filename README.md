@@ -95,7 +95,18 @@ concept that just fired. Every action lands in the **Log** tab, the audit trail.
   merge is load-bearing: the supplier is only cleared once you merge the
   carrier's name for it with the supplier master's.
 
-Both reach the same final board whatever order you connect sources in.
+- **fraud-ring** (8 sources, ~1,000 records, 22 pieces). A marketplace's
+  chargebacks triple in a week. The sources are deliberately dirty:
+  timestamps in the wrong format or missing, a malformed JSON line, a
+  truncated CSV row, placeholder values, duplicates, a collector's clock an
+  hour off, name variants, and a fuzzy merge proposal that is wrong. Most
+  records are ordinary business; the rules have to find the needles. The
+  pack is produced by `scenarios/fraud-ring/generate.py` (seeded, so the
+  committed files are reproducible); the dirt it plants is listed at the
+  bottom of that file. The source cards show rows that could not be parsed
+  and `./run.sh --check` lists every piece of dirt it can detect.
+
+All three reach the same final board whatever order you connect sources in.
 
 ## Modes: Board, Life, Topology, Landscape
 

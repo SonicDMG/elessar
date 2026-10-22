@@ -1,0 +1,25 @@
+{"indicator": "bin", "value": "414724", "confidence": 0.66, "basis": "velocity", "seen_at": "2026-10-07T14:53:24Z"}
+{"indicator": "email", "value": "user940@throwaway.example", "confidence": 0.32, "basis": "reputation", "seen_at": "2026-10-06T21:38:51Z"}
+{"indicator": "bin", "value": "601199", "confidence": 0.8, "basis": "card-testing ring", "seen_at": "2026-10-11T02:38:42Z"}
+{"indicator": "email", "value": "fp-c9e9f4", "confidence": 0.67, "basis": "velocity", "seen_at": "2026-10-10T00:35:59Z"}
+{"indicator": "bin", "value": "455612", "confidence": 0.87, "basis": "card-testing ring", "seen_at": "2026-10-08T17:50:26Z"}
+{"indicator": "email", "value": "wesusman749@mailbox.example", "confidence": 0.5, "basis": "disposable domain", "seen_at": "2026-10-08T14:17:09Z"}
+{"indicator": "email", "value": "hirosingh415@mailbox.example", "confidence": 0.53, "basis": "disposable domain", "seen_at": "2026-10-09T10:24:16Z"}
+{"indicator": "device", "value": "553655", "confidence": 0.66, "basis": "reputation", "seen_at": "2026-10-07T22:14:15Z"}
+{"indicator": "email", "value": "fp-3fc0a7", "confidence": 0.66, "basis": "reputation", "seen_at": "2026-10-09T16:19:24Z"}
+{"indicator": "bin", "value": "522094", "confidence": 0.8, "basis": "card-testing ring", "seen_at": "2026-10-11T08:01:28Z"}
+{"indicator": "email", "value": "rosavarga301@mailbox.example", "confidence": 0.6, "basis": "disposable domain", "seen_at": "2026-10-10T15:09:35Z"}
+{"indicator": "email", "value": "zoeyilmaz749@mailbox.example", "confidence": 0.78, "basis": "disposable domain", "seen_at": "2026-10-08T07:53:27Z"}
+{"indicator": "email", "value": "jonastanaka863@mailbox.example", "confidence": 0.57, "basis": "disposable domain", "seen_at": "2026-10-11T23:03:17Z"}
+{"indicator": "device", "value": "fp-21bb04", "confidence": 0.86, "basis": "shared across marketplaces"}
+{"indicator": "device", "value": "fp-7c1e9a", "confidence": 0.84, "basis": "shared across marketplaces", "seen_at": "2026-10-10T12:59:59Z"}
+{"indicator": "device", "value": "592563", "confidence": 0.46, "basis": "reputation", "seen_at": "2026-10-10T17:59:35Z"}
+{"indicator": "email", "value": "jonasusman149@mailbox.example", "confidence": 0.52, "basis": "disposable domain", "seen_at": "2026-10-10T09:53:51Z"}
+{"indicator": "merchant", "value": "Brightline Electronics", "confidence": 0.71, "basis": "triangulation pattern", "country": "US", "seen_at": "2026-10-11T14:00:00Z"}
+{"indicator": "email", "value": "fp-de12b2", "confidence": 0.4, "basis": "velocity", "seen_at": "2026-10-10T04:10:17Z"}
+{"indicator": "merchant", "value": "Nova Goods Co", "confidence": 0.55, "basis": "chargeback ratio", "country": "PH", "seen_at": "2026-10-10T11:00:00Z"}
+{"indicator": "email", "value": "benbrooks644@mailbox.example", "confidence": 0.65, "basis": "disposable domain"}
+{"indicator": "bin", "value": "495167", "confidence": 0.44, "basis": "reputation", "seen_at": "2026-10-10T23:17:04Z"}
+{"indicator": "email", "value": "user232@throwaway.example", "confidence": 0.62, "basis": "velocity", "seen_at": "2026-10-06T12:35:22Z"}
+{"indicator": "device", "value": "547922", "confidence": 0.68, "basis": "velocity", "seen_at": "2026-10-07T07:53:02Z"}
+{"indicator": "email", "value": "xiagarcia263@mailbox.example", "confidence": 0.51, "basis": "disposable domain"}

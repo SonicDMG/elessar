@@ -7,14 +7,23 @@ following Gotham's rule that a resolved object keeps its constituents.
 """
 import re
 from difflib import SequenceMatcher
+from functools import lru_cache
 
 
+@lru_cache(maxsize=65536)
 def norm(value):
     return re.sub(r"\s+", " ", re.sub(r"[^0-9a-z@._ -]", "", str(value).lower())).strip()
 
 
+@lru_cache(maxsize=65536)
 def fuzzy_norm(value):
     return re.sub(r"\s+", " ", re.sub(r"[^0-9a-z ]", " ", str(value).lower())).strip()
+
+
+@lru_cache(maxsize=65536)
+def similarity(a, b):
+    """Fuzzy name similarity; the same pair comes up on every recompute."""
+    return SequenceMatcher(None, fuzzy_norm(a), fuzzy_norm(b)).ratio()
 
 
 class UnionFind:
@@ -113,7 +122,7 @@ def proposals(clusters, by_frag, object_types, rejected):
                     for pb in fz["properties"]:
                         for va in a["props"].get(pa, []):
                             for vb in b["props"].get(pb, []):
-                                score = SequenceMatcher(None, fuzzy_norm(va["value"]), fuzzy_norm(vb["value"])).ratio()
+                                score = similarity(str(va["value"]), str(vb["value"]))
                                 if score >= threshold and (best is None or score > best[0]):
                                     best = (score, pa, va, pb, vb)
                 if not best:

@@ -1,0 +1,212 @@
+[
+  {
+    "id": "fraud-chargebacks",
+    "label": "Fraud chargebacks on one seller",
+    "kind": "count",
+    "source": "chargebacks",
+    "where": {
+      "reason_code": "10.4"
+    },
+    "params": {
+      "group_by": "seller_id",
+      "min": 10
+    },
+    "strength": 0.9,
+    "implicates": {
+      "types": [
+        "Seller"
+      ],
+      "w": 0.8
+    },
+    "explain": "Reason code 10.4 is 'fraud: card absent'. Ten or more on a single seller in a week is not noise."
+  },
+  {
+    "id": "unauthorized-tickets",
+    "label": "Cardholders say 'not me'",
+    "kind": "match",
+    "source": "tickets",
+    "where": {
+      "@type": "dispute",
+      "@category": "unauthorized"
+    },
+    "strength": 0.8,
+    "implicates": {
+      "types": [
+        "Buyer",
+        "Seller"
+      ],
+      "w": 0.5
+    },
+    "explain": "Support tickets from cardholders who did not place the order. On their own they look like stolen accounts.",
+    "jev": {
+      "question": "Does this ticket say the person did not make the purchase themselves?",
+      "where": {
+        "@type": {
+          "ne": "change"
+        }
+      },
+      "criteria": {
+        "true": "The reporter denies placing the order or says their card or account was used without permission.",
+        "false": "A shipping, quality, payout or account-help question, or a seller complaint."
+      }
+    }
+  },
+  {
+    "id": "shared-device",
+    "label": "One device, many buyers",
+    "kind": "count",
+    "source": "devices",
+    "params": {
+      "group_by": "fingerprint",
+      "min": 8
+    },
+    "strength": 0.9,
+    "implicates": {
+      "types": [
+        "Device",
+        "Buyer"
+      ],
+      "w": 0.8
+    },
+    "explain": "Eight or more buyer accounts logging in from the same device fingerprint. Real households share a device between two or three people, not eight."
+  },
+  {
+    "id": "promo-concentration",
+    "label": "WELCOME25 concentrated on one seller",
+    "kind": "count",
+    "source": "orders",
+    "where": {
+      "promo_code": "WELCOME25"
+    },
+    "params": {
+      "group_by": "seller_id",
+      "min": 25
+    },
+    "strength": 0.85,
+    "implicates": {
+      "types": [
+        "Promo",
+        "Seller"
+      ],
+      "w": 0.6
+    },
+    "explain": "A new-customer promo is meant to spread across the catalogue. Twenty-five or more uses on one seller means somebody is steering it."
+  },
+  {
+    "id": "flagged-bin-approved",
+    "label": "Flagged card BINs approved",
+    "kind": "co_resolved",
+    "params": {
+      "type": "Card",
+      "clauses": [
+        {
+          "source": "partner",
+          "where": {
+            "indicator": "bin"
+          }
+        },
+        {
+          "source": "payments",
+          "where": {
+            "result": "approved"
+          }
+        }
+      ]
+    },
+    "strength": 0.85,
+    "implicates": {
+      "types": [
+        "Card"
+      ],
+      "w": 0.7
+    },
+    "explain": "A card BIN the partner flags for card testing, and approved authorizations on that same BIN. Neither source alone says this."
+  },
+  {
+    "id": "new-account-orders",
+    "label": "Day-old accounts buying big",
+    "kind": "count",
+    "source": "orders",
+    "where": {
+      "buyer_age_days": {
+        "lte": 2
+      },
+      "amount": {
+        "gte": 150
+      }
+    },
+    "params": {
+      "group_by": "seller_id",
+      "min": 20
+    },
+    "strength": 0.85,
+    "implicates": {
+      "types": [
+        "Seller",
+        "Buyer"
+      ],
+      "w": 0.6
+    },
+    "explain": "Accounts under two days old placing orders over 150, twenty or more of them on the same seller."
+  },
+  {
+    "id": "rules-deploy",
+    "label": "Risk rules v7 deployed",
+    "kind": "match",
+    "source": "tickets",
+    "where": {
+      "@type": "change",
+      "ci": {
+        "contains": "risk-rules"
+      }
+    },
+    "strength": 0.9,
+    "implicates": {
+      "types": [
+        "RiskModel"
+      ],
+      "w": 0.7
+    },
+    "explain": "A change ticket: the risk model's rules were tightened on the 7th. Anything that moved after that could be the model."
+  },
+  {
+    "id": "shared-payout",
+    "label": "Two sellers, one payout account",
+    "kind": "count",
+    "source": "sellers",
+    "params": {
+      "group_by": "PAYOUT_ACCOUNT",
+      "min": 2
+    },
+    "strength": 0.95,
+    "implicates": {
+      "types": [
+        "Seller"
+      ],
+      "w": 0.9
+    },
+    "explain": "Two registered sellers paying out to the same bank account are one business wearing two names."
+  },
+  {
+    "id": "decline-spike",
+    "label": "Declines up under v7",
+    "kind": "count",
+    "source": "payments",
+    "where": {
+      "result": "declined",
+      "rules": "risk-rules-v7"
+    },
+    "params": {
+      "group_by": "rules",
+      "min": 25
+    },
+    "strength": 0.8,
+    "implicates": {
+      "types": [
+        "RiskModel"
+      ],
+      "w": 0.6
+    },
+    "explain": "Twenty-five or more declines attributed to the new rules. It explains unhappy customers; it does not explain chargebacks, which only follow approvals."
+  }
+]

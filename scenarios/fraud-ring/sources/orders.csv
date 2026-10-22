@@ -1,0 +1,429 @@
+order_id,placed_at,buyer_id,buyer_email,seller_id,seller_name,seller_country,sku,amount,currency,device_id,promo_code,ship_country,buyer_age_days
+O-50266,2026-10-06T00:16:17Z,B-1140,otto.hassan34@example.com,S-121,"Beacon Electronics Ltd",NL,TABLET-10,156.25,USD,fp-970170,SHIP0,FR,808
+O-50249,2026-10-06T01:08:43Z,B-1210,esme.petrov37@example.com,S-109,"Orchard Direct",US,BLENDER-PRO,160.01,USD,fp-54897f,,US,860
+O-50095,2026-10-06T01:21:04Z,B-1041,otto.kowalski79@example.com,S-122,"Cinder Gadgets",DE,CONSOLE-CTRL,119.76,USD,fp-66182d,SHIP0,FR,547
+O-50007,2026-10-06T01:36:25Z,B-1005,maya.dubois62@example.com,S-104,"Harbor Outfitters",FR,HEADSET-7,239.43,USD,fp-cd06d1,FALL10,SG,679
+O-50039,2026-10-06T01:48:32Z,B-1146,kira.garcia24@example.com,S-101,"Brightline Electronics",SG,TABLET-10,23.43,USD,fp-ef6b57,,SG,698
+O-50181,2026-10-06T02:25:05Z,B-1125,otto.hassan14@example.com,S-106,"Kestrel Home",AU,CHARGER-65W,120.74,USD,fp-4f0aaf,,DE,259
+O-50062,2026-10-06T02:43:44Z,B-1119,maya.nakamura96@example.com,S-122,"Cinder Gadgets",DE,CONSOLE-CTRL,255.21,USD,fp-6b85c4,,FR,566
+O-50252,2026-10-06T02:44:43Z,B-1175,gwen.tanaka75@example.com,S-100,"Nova Goods",US,CAM-DASH,50.48,USD,fp-2675ae,,US,228
+O-50261,2026-10-06T03:05:04Z,B-1202,otto.quist57@example.com,S-117,"Willow Audio",NL,SPEAKER-M,110.30,USD,fp-0bf7d8,,NL,213
+O-50234,2026-10-06T03:57:40Z,,umar.nakamura32@example.com,S-112,"Redwood Gadgets",NL,KNIFE-SET,17.01,USD,fp-cf3e5b,FALL10,SG,861
+O-50046,2026-10-06T04:06:56Z,B-1178,ben.larsen44@example.com,S-129,"Jade Direct",CA,WATCH-S3,220.47,USD,fp-169cfe,,NL,174
+O-50052,2026-10-06T04:17:25Z,B-1183,umar.reyes12@example.com,S-101,"Brightline Electronics Ltd",SG,CHARGER-65W,283.72,USD,fp-53cf16,WELCOME25,AU,698
+O-50287,2026-10-06T04:30:24Z,B-1030,rosa.reyes17@example.com,S-102,"Northwing Gadgets",US,CHARGER-65W,40.63,USD,fp-074ad9,,GB,51
+O-50087,2026-10-06T04:40:07Z,B-1213,ines.quist62@example.com,S-123,"Drift Supply Co",AU,KNIFE-SET,146.50,USD,fp-869697,,FR,243
+O-50010,2026-10-06T05:43:32Z,,zoe.alvarez33@example.com,S-127,"Hollow Audio",NL,HEADSET-7,202.31,USD,fp-07db72,FALL10,FR,67
+O-50032,2026-10-06T05:59:18Z,B-1163,yusuf.fischer32@example.com,S-111,"Quarry Electronics Ltd",NL,KNIFE-SET,198.61,USD,fp-2124af,,US,447
+O-50320,2026-10-06T09:00:22Z,B-1192,luis.jensen21@example.com,S-105,"Juniper Trading",US,DRONE-MINI,140.86,USD,fp-57f43e,,DE,563
+O-50238,"10/06/2026 09:12",B-1189,sven.larsen59@example.com,S-119,"Zenith Direct",CA,CAM-DASH,250.33,USD,fp-53390b,FALL10,FR,821
+O-50189,2026-10-06T09:19:36Z,B-1048,maya.petrov21@example.com,S-106,"Kestrel Home",AU,HEADSET-7,270.50,USD,fp-728a66,,US,713
+O-50033,2026-10-06T09:52:23Z,B-1130,dev.chen39@example.com,S-115,"Umber Trading",NL,HEADSET-7,75.36,USD,fp-6226bb,,US,567
+O-50109,2026-10-06T10:00:43Z,B-1162,zoe.zimmer77@example.com,S-101,"Brightline Elec",SG,ROUTER-AX,278.20,USD,fp-65060d,,SG,110
+O-50255,2026-10-06T11:01:53Z,B-1060,tara.evans6@example.com,S-106,"Kestrel Home",AU,BLENDER-PRO,50.93,USD,fp-7a144e,,SG,569
+O-50306,2026-10-06T11:18:17Z,B-1110,tara.yilmaz18@example.com,S-110,"Pioneer Goods",FR,DRONE-MINI,266.66,USD,fp-9289e5,,GB,689
+O-50165,2026-10-06T11:25:39Z,B-1050,gwen.larsen41@example.com,S-124,"Ember Outfitters",CA,LAMP-ARC,180.78,USD,fp-bb5e20,FALL10,SG,124
+O-50322,2026-10-06T12:00:25Z,B-1018,xia.zimmer30@example.com,S-119,"Zenith Direct",CA,LAMP-ARC,75.83,USD,fp-fc4de6,,DE,234
+O-50317,2026-10-06T12:15:06Z,B-1119,maya.nakamura96@example.com,S-107,"Lumen Audio",US,YOGA-MAT,166.61,USD,fp-6b85c4,SHIP0,GB,566
+O-50059,2026-10-06T12:19:11Z,B-1067,rosa.mendes65@example.com,S-108,"Meridian Parts",US,WATCH-S3,98.73,USD,fp-6e2c38,SHIP0,SG,345
+O-50167,2026-10-06T12:30:46Z,B-1028,esme.alvarez20@example.com,S-126,"Granite Home",AU,SPEAKER-M,281.16,USD,fp-ee42dd,,GB,634
+O-50260,2026-10-06T12:34:50Z,B-1067,rosa.mendes65@example.com,S-108,"Meridian Parts",US,SPEAKER-M,70.09,$,fp-6e2c38,WELCOME25,AU,345
+O-50207,2026-10-06T12:40:17Z,B-1188,farid.nakamura15@example.com,S-116,"Vantage Home",AU,YOGA-MAT,262.95,USD,fp-2e5472,FALL10,US,870
+O-50215,2026-10-06T12:42:56Z,B-1055,vera.ito52@example.com,S-109,"Orchard Direct",US,YOGA-MAT,74.74,USD,fp-fd3dca,SHIP0,NL,182
+O-50217,2026-10-06T13:13:05Z,B-1058,chloe.tanaka29@example.com,S-100,"Nova Goods",US,WATCH-S3,205.20,USD,fp-87661e,SHIP0,DE,98
+O-50074,2026-10-06T13:42:07Z,B-1015,wes.ito67@example.com,S-128,"Ivory Parts",AU,TABLET-10,89.21,USD,fp-558688,,US,405
+O-50256,2026-10-06T14:04:25Z,B-1110,tara.yilmaz18@example.com,S-122,"Cinder Gadgets",DE,KNIFE-SET,317.13,$,fp-9289e5,,US,689
+O-50349,2026-10-06T14:04:31Z,B-1082,vera.singh92@example.com,S-105,"Juniper Trading",US,YOGA-MAT,255.83,$,fp-75baca,FALL10,US,729
+O-50265,2026-10-06T14:25:15Z,B-1022,dev.hassan61@example.com,S-126,"Granite Home",AU,KNIFE-SET,135.21,USD,fp-acebed,,NL,231
+O-50310,2026-10-06T14:34:47Z,B-1088,xia.usman59@example.com,S-106,"Kestrel Home",AU,YOGA-MAT,62.49,USD,fp-c3def7,,NL,535
+O-50186,2026-10-06T14:43:22Z,B-1145,wes.kowalski94@example.com,S-125,"Falcon Trading",GB,TABLET-10,302.87,USD,fp-28a207,FALL10,AU,145
+O-50070,2026-10-06T14:51:14Z,B-1051,kira.reyes59@example.com,S-105,"Juniper Trading",US,YOGA-MAT,19.83,USD,fp-09420a,,NL,481
+O-50035,2026-10-06T15:21:21Z,B-1111,ben.reyes17@example.com,S-110,"Pioneer Goods",FR,CAM-DASH,266.11,USD,fp-f1c21c,SHIP0,CA,204
+O-50144,2026-10-06T15:55:34Z,B-1049,wes.nakamura66@example.com,S-114,"Tidewater Outfitters",DE,BACKPACK-30L,77.43,USD,fp-ada0a1,,SG,443
+O-50081,2026-10-06T16:31:21Z,B-1160,priya.fischer2@example.com,S-111,"Quarry Electronics Ltd",NL,CONSOLE-CTRL,65.05,$,fp-9b4c13,,FR,851
+O-50344,2026-10-06T16:35:47Z,B-1126,quinn.varga14@example.com,S-111,"Quarry Electronics Ltd",NL,DRONE-MINI,281.19,USD,fp-ea2682,,FR,875
+O-50203,2026-10-06T16:45:50Z,B-1121,sven.larsen17@example.com,S-124,"Ember Outfitters",CA,SPEAKER-M,134.75,USD,fp-6e92b8,,CA,733
+O-50297,2026-10-06T16:48:40Z,B-1186,noor.alvarez99@example.com,S-114,"Tidewater Outfitters",DE,DRONE-MINI,65.02,$,fp-ba418d,,US,851
+O-50282,2026-10-06T18:27:13Z,B-1049,wes.nakamura66@example.com,S-127,"Hollow Audio",NL,KNIFE-SET,216.00,USD,fp-ada0a1,,US,443
+O-50224,2026-10-06T19:19:07Z,B-1197,farid.singh28@example.com,S-109,"Orchard Direct",US,CAM-DASH,53.73,USD,fp-ccab73,SHIP0,DE,72
+O-50330,2026-10-06T19:48:56Z,B-1136,hiro.varga55@example.com,S-120,"Amber Goods",NL,ROUTER-AX,310.19,USD,fp-741d4d,,GB,409
+O-50131,2026-10-06T19:53:05Z,B-1152,gwen.kowalski47@example.com,S-121,"Beacon Electronics Ltd",NL,DRONE-MINI,172.35,USD,fp-f2f62a,,AU,785
+O-50024,2026-10-06T20:58:17Z,B-1003,wes.quist80@example.com,S-121,"Beacon Electronics Ltd",NL,ROUTER-AX,213.00,USD,fp-1ba4f4,WELCOME25,SG,700
+O-50259,2026-10-06T21:05:04Z,B-1019,xia.alvarez4@example.com,S-111,"Quarry Electronics Ltd",NL,LAMP-ARC,93.89,USD,fp-8f0ff2,,US,839
+O-50225,2026-10-06T21:24:30Z,,noor.alvarez99@example.com,S-118,"Yonder Parts",US,CHARGER-65W,295.50,USD,fp-ba418d,,SG,851
+O-50016,2026-10-06T21:53:57Z,B-1097,chloe.singh12@example.com,S-112,"Redwood Gadgets",NL,HEADSET-7,139.18,$,fp-860bd3,WELCOME25,CA,175
+O-50342,2026-10-06T22:06:29Z,B-1192,luis.jensen21@example.com,S-128,"Ivory Parts",AU,KNIFE-SET,168.94,USD,fp-57f43e,FALL10,NL,563
+O-50090,2026-10-06T23:05:17Z,B-1197,farid.singh28@example.com,S-107,"Lumen Audio",US,TABLET-10,266.81,USD,fp-ccab73,,DE,72
+O-50187,2026-10-06T23:22:10Z,B-1127,rosa.yilmaz6@example.com,S-123,"Drift Supply Co",AU,BLENDER-PRO,53.13,USD,fp-40556d,,US,31
+O-50041,2026-10-07T00:10:35Z,B-1037,esme.petrov80@example.com,S-120,"Amber Goods",NL,CONSOLE-CTRL,75.09,USD,fp-3d9cc2,SHIP0,US,772
+O-50112,2026-10-07T00:36:17Z,B-1152,gwen.kowalski47@example.com,S-129,"Jade Direct",CA,WATCH-S3,154.06,$,fp-f2f62a,,NL,785
+O-50233,2026-10-07T01:23:53Z,B-1014,esme.walsh70@example.com,S-127,"Hollow Audio",NL,KNIFE-SET,203.78,USD,fp-989f36,,NL,57
+O-50160,2026-10-07T01:36:51Z,B-1194,esme.brooks62@example.com,S-109,"Orchard Direct",US,WATCH-S3,79.42,USD,fp-1b53e8,,AU,352
+O-50188,2026-10-07T02:06:56Z,B-1035,rosa.evans68@example.com,S-114,"Tidewater Outfitters",DE,CONSOLE-CTRL,313.48,USD,fp-0993af,FALL10,NL,552
+O-50093,2026-10-07T02:18:37Z,B-1215,farid.usman36@example.com,S-120,"Amber Goods",NL,TABLET-10,13.80,USD,fp-a7d897,FALL10,US,725
+O-50157,2026-10-07T02:38:32Z,B-1223,noor.quist47@example.com,S-124,"Ember Outfitters",CA,ROUTER-AX,177.75,USD,fp-43988e,SHIP0,AU,78
+O-50305,"10/07/2026 03:15",B-1039,rosa.brooks32@example.com,S-120,"Amber Goods",NL,WATCH-S3,70.63,USD,fp-8dc813,SHIP0,US,225
+O-50101,2026-10-07T03:21:07Z,B-1061,farid.ito7@example.com,S-122,"Cinder Gadgets",DE,SPEAKER-M,232.02,USD,fp-674e2a,,DE,215
+O-50313,2026-10-07T04:19:09Z,B-1009,gwen.tanaka49@example.com,S-101,"Brightline Electronics",SG,WATCH-S3,137.45,USD,fp-8127ed,WELCOME25,AU,182
+O-50143,2026-10-07T04:58:06Z,B-1070,noor.fischer8@example.com,S-105,"Juniper Trading",US,CHARGER-65W,276.25,USD,fp-c302ef,WELCOME25,CA,116
+O-50229,2026-10-07T05:00:06Z,B-1228,esme.alvarez32@example.com,S-119,"Zenith Direct",CA,SPEAKER-M,70.18,USD,fp-4c72c3,SHIP0,US,754
+O-50110,2026-10-07T05:16:26Z,B-1069,luis.brooks17@example.com,S-120,"Amber Goods",NL,EARBUDS-X2,86.93,USD,fp-2435c7,,AU,44
+O-50300,2026-10-07T05:22:41Z,B-1199,ben.reyes97@example.com,S-129,"Jade Direct",CA,KETTLE-1.7,153.82,USD,fp-13859a,SHIP0,US,718
+O-50273,2026-10-07T05:56:36Z,B-1104,ines.larsen9@example.com,S-104,"Harbor Outfitters",FR,CAM-DASH,122.44,USD,fp-c7c330,FALL10,NL,432
+O-50066,2026-10-07T06:54:33Z,B-1011,otto.petrov62@example.com,S-129,"Jade Direct",CA,CONSOLE-CTRL,124.59,USD,fp-2bf913,,US,349
+O-50097,2026-10-07T07:21:59Z,B-1192,luis.jensen21@example.com,S-128,"Ivory Parts",AU,TABLET-10,305.71,USD,fp-57f43e,WELCOME25,NL,563
+O-50159,2026-10-07T07:44:14Z,B-1198,maya.larsen16@example.com,S-127,"Hollow Audio",NL,YOGA-MAT,30.17,USD,fp-7e7e80,,FR,183
+O-50334,2026-10-07T08:12:49Z,B-1125,otto.hassan14@example.com,S-119,"Zenith Direct",CA,TABLET-10,282.12,USD,fp-4f0aaf,WELCOME25,AU,259
+O-50124,2026-10-07T08:20:19Z,B-1217,otto.reyes67@example.com,S-125,"Falcon Trading",GB,CONSOLE-CTRL,127.04,USD,fp-358f48,SHIP0,NL,623
+O-50312,2026-10-07T08:53:59Z,B-1185,ben.jensen96@example.com,S-117,"Willow Audio",NL,BACKPACK-30L,254.06,$,fp-b6e085,SHIP0,NL,610
+O-50208,2026-10-07T08:54:16Z,B-1091,tara.singh18@example.com,S-117,"Willow Audio",NL,BLENDER-PRO,19.62,USD,fp-f6ffd8,SHIP0,DE,42
+O-50084,2026-10-07T09:15:14Z,B-1027,otto.mendes96@example.com,S-110,"Pioneer Goods",FR,SPEAKER-M,56.70,USD,fp-515594,FALL10,GB,116
+O-50045,2026-10-07T10:37:00Z,B-1145,wes.kowalski94@example.com,S-116,"Vantage Home",AU,HEADSET-7,249.64,USD,fp-28a207,WELCOME25,SG,145
+O-50048,2026-10-07T11:26:21Z,B-1109,xia.chen7@example.com,S-100,"Nova Goods",US,CHARGER-65W,315.85,USD,fp-d25fa6,WELCOME25,GB,779
+O-50150,2026-10-07T11:54:38Z,B-1103,maya.dubois26@example.com,S-120,"Amber Goods",NL,YOGA-MAT,140.33,USD,fp-060060,WELCOME25,FR,760
+O-50069,2026-10-07T14:07:42Z,B-1199,ben.reyes97@example.com,S-108,"Meridian Parts",US,SPEAKER-M,87.99,USD,fp-13859a,FALL10,CA,718
+O-50155,2026-10-07T14:08:25Z,B-1121,sven.larsen17@example.com,S-116,"Vantage Home",AU,ROUTER-AX,301.99,USD,fp-6e92b8,FALL10,SG,733
+O-50161,2026-10-07T14:29:48Z,B-1072,farid.fischer35@example.com,S-111,"Quarry Electronics Ltd",NL,LAMP-ARC,300.33,USD,fp-01dad6,FALL10,US,486
+O-50241,2026-10-07T15:04:19Z,B-1193,dev.mendes63@example.com,S-102,"Northwing Gadgets",US,KETTLE-1.7,47.01,USD,fp-6509f8,SHIP0,FR,801
+O-50098,2026-10-07T15:08:18Z,B-1131,ines.hassan77@example.com,S-100,"Nova Goods",US,CHARGER-65W,15.43,USD,fp-055b3a,SHIP0,GB,31
+O-50285,2026-10-07T15:24:12Z,B-1227,gwen.larsen80@example.com,S-102,"Northwing Gadgets",US,EARBUDS-X2,168.17,USD,fp-f32654,FALL10,GB,878
+O-50257,2026-10-07T15:33:27Z,B-1224,hiro.tanaka84@example.com,S-103,"Cobalt Supply Co",AU,EARBUDS-X2,172.40,USD,fp-0b6988,FALL10,US,76
+O-50289,2026-10-07T16:50:31Z,B-1140,otto.hassan34@example.com,S-122,"Cinder Gadgets",DE,SPEAKER-M,319.41,USD,fp-970170,SHIP0,US,808
+O-50023,2026-10-07T16:53:41Z,B-1014,esme.walsh70@example.com,S-102,"Northwing Gadgets",US,YOGA-MAT,174.03,USD,fp-989f36,,SG,57
+O-50220,2026-10-07T17:06:39Z,B-1202,otto.quist57@example.com,S-109,"Orchard Direct",US,CAM-DASH,220.89,USD,fp-0bf7d8,,CA,213
+O-50270,2026-10-07T17:23:11Z,B-1133,quinn.hassan71@example.com,S-118,"Yonder Parts",US,YOGA-MAT,29.48,USD,fp-0efde6,,FR,282
+O-50346,2026-10-07T18:05:46Z,B-1083,ada.brooks18@example.com,S-115,"Umber Trading",NL,SPEAKER-M,67.36,USD,fp-b8aea6,,AU,682
+O-50054,"10/07/2026 18:12",B-1147,jonas.varga93@example.com,S-123,"Drift Supply Co",AU,DRONE-MINI,309.54,USD,fp-bf6dac,,CA,417
+O-50196,2026-10-07T18:47:34Z,B-1056,chloe.ito8@example.com,S-121,"Beacon Electronics Ltd",NL,YOGA-MAT,214.41,USD,fp-5ddf44,,FR,848
+O-50275,2026-10-07T19:39:21Z,B-1187,maya.xu52@example.com,S-125,"Falcon Trading",GB,WATCH-S3,10.84,USD,fp-030241,SHIP0,CA,238
+O-50210,2026-10-07T19:45:43Z,,esme.alvarez20@example.com,S-102,"Northwing Gadgets",US,CAM-DASH,181.37,$,fp-ee42dd,,AU,634
+O-50004,2026-10-07T19:58:13Z,B-1042,otto.quist69@example.com,S-121,"Beacon Electronics Ltd",NL,CAM-DASH,314.97,USD,fp-f4c12d,FALL10,DE,856
+O-50345,2026-10-07T20:21:28Z,B-1096,quinn.okafor35@example.com,S-114,"Tidewater Outfitters",DE,CONSOLE-CTRL,235.68,USD,fp-6b6fc8,SHIP0,US,426
+O-50237,2026-10-07T20:41:01Z,B-1137,ben.walsh44@example.com,S-121,"Beacon Electronics Ltd",NL,KNIFE-SET,213.44,USD,fp-d7533a,SHIP0,GB,765
+O-50132,2026-10-07T20:55:11Z,B-1095,chloe.petrov3@example.com,S-116,"Vantage Home",AU,HEADSET-7,282.63,USD,fp-eafe39,SHIP0,NL,326
+O-50002,2026-10-07T21:01:43Z,B-1129,umar.ito68@example.com,S-106,"Kestrel Home",AU,BLENDER-PRO,233.96,USD,fp-dff6e4,SHIP0,CA,681
+O-50248,2026-10-07T21:38:56Z,B-1076,quinn.yilmaz1@example.com,S-128,"Ivory Parts",AU,ROUTER-AX,157.46,USD,fp-87411e,,US,123
+O-50140,2026-10-07T21:39:46Z,B-1050,gwen.larsen41@example.com,S-113,"Summit Supply Co",GB,DRONE-MINI,170.23,USD,fp-bb5e20,,US,124
+O-50078,2026-10-07T21:43:00Z,B-1119,maya.nakamura96@example.com,S-122,"Cinder Gadgets",DE,BLENDER-PRO,297.51,USD,fp-6b85c4,,US,566
+O-50030,2026-10-07T22:42:26Z,B-1127,rosa.yilmaz6@example.com,S-105,"Juniper Trading",US,CONSOLE-CTRL,270.48,USD,fp-40556d,,SG,31
+O-50012,"10/07/2026 22:50",B-1027,otto.mendes96@example.com,S-101,"Brightline Electronics",SG,KETTLE-1.7,231.74,USD,fp-515594,,FR,116
+O-50350,2026-10-07T23:13:46Z,B-1051,kira.reyes59@example.com,S-116,"Vantage Home",AU,LAMP-ARC,104.79,USD,fp-09420a,,DE,481
+O-50314,2026-10-07T23:44:05Z,B-1147,jonas.varga93@example.com,S-126,"Granite Home",AU,CHARGER-65W,120.78,USD,fp-bf6dac,,CA,417
+O-50191,2026-10-07T23:54:13Z,B-1002,esme.nakamura69@example.com,S-121,"Beacon Electronics Ltd",NL,EARBUDS-X2,126.81,USD,fp-a32111,,NL,408
+O-50329,2026-10-07T23:58:46Z,B-1190,ada.brooks71@example.com,S-114,"Tidewater Outfitters",DE,CAM-DASH,144.38,USD,fp-cb1ec5,SHIP0,SG,175
+O-50026,2026-10-08T00:54:29Z,B-1053,zoe.hassan14@example.com,S-128,"Ivory Parts",AU,CHARGER-65W,198.56,USD,fp-87f80a,SHIP0,FR,116
+O-50179,2026-10-08T00:57:40Z,B-1113,umar.hassan39@example.com,S-114,"Tidewater Outfitters",DE,SPEAKER-M,182.39,USD,fp-c9ea92,,US,524
+O-50073,2026-10-08T02:08:05Z,B-1094,otto.yilmaz16@example.com,S-107,"Lumen Audio",US,ROUTER-AX,21.01,$,fp-660419,,CA,592
+O-50395,2026-10-08T02:28:07Z,B-2006,quinntanaka758@mailbox.example,S-102,"Northwing Gadgets",US,SPEAKER-M,189.14,USD,fp-e0d5c7,WELCOME25,AU,2
+O-50148,2026-10-08T02:31:33Z,B-1005,maya.dubois62@example.com,S-125,"Falcon Trading",GB,BACKPACK-30L,61.85,USD,fp-cd06d1,,US,679
+O-50416,2026-10-08T03:23:33Z,B-2013,inesusman667@mailbox.example,S-101,"Brightline Electronics Ltd",SG,HEADSET-7,351.43,USD,fp-21bb04,,US,2
+O-50311,2026-10-08T04:05:45Z,B-1123,jonas.alvarez17@example.com,S-107,"Lumen Audio",US,CAM-DASH,43.10,$,fp-d9b3cc,,US,63
+O-50089,2026-10-08T04:37:43Z,B-1010,tara.larsen61@example.com,S-129,"Jade Direct",CA,LAMP-ARC,51.94,USD,fp-3b0f9d,,FR,155
+O-50407,2026-10-08T04:37:47Z,B-2001,luistanaka761@mailbox.example,S-102,"Northwing Gadgets",US,WATCH-S3,340.83,USD,fp-21bb04,WELCOME25,AU,2
+O-50163,2026-10-08T04:54:41Z,B-1216,farid.zimmer34@example.com,S-112,"Redwood Gadgets",NL,ROUTER-AX,99.65,USD,fp-18de5f,,SG,147
+O-50251,2026-10-08T05:05:52Z,B-1011,otto.petrov62@example.com,S-124,"Ember Outfitters",CA,WATCH-S3,144.23,USD,fp-2bf913,FALL10,DE,349
+O-50136,2026-10-08T05:07:50Z,B-1053,zoe.hassan14@example.com,S-116,"Vantage Home",AU,DRONE-MINI,27.71,USD,fp-87f80a,FALL10,CA,116
+O-50323,2026-10-08T05:14:43Z,B-1087,zoe.chen34@example.com,S-102,"Northwing Gadgets",US,HEADSET-7,12.35,$,fp-691245,FALL10,AU,270
+O-50025,2026-10-08T06:04:42Z,B-1025,zoe.walsh97@example.com,S-118,"Yonder Parts",US,YOGA-MAT,250.43,USD,fp-f4c0b5,,US,234
+O-50290,2026-10-08T06:13:08Z,B-1082,vera.singh92@example.com,S-110,"Pioneer Goods",FR,ROUTER-AX,316.48,USD,fp-75baca,,FR,729
+O-50420,2026-10-08T07:03:21Z,B-2004,hirofischer159@mailbox.example,S-101,"Brightline Electronics",SG,EARBUDS-X2,355.10,USD,fp-7c1e9a,WELCOME25,US,0
+O-50064,2026-10-08T07:05:39Z,B-1082,vera.singh92@example.com,S-115,"Umber Trading",NL,CHARGER-65W,75.15,USD,fp-75baca,,US,729
+O-50376,2026-10-08T07:35:52Z,B-2034,noorquist891@mailbox.example,S-101,"Brightline Elec",SG,WATCH-S3,334.03,USD,fp-21bb04,,AU,0
+O-50037,2026-10-08T08:00:50Z,B-1167,hiro.evans54@example.com,S-115,"Umber Trading",NL,CAM-DASH,107.62,USD,fp-78492d,,US,501
+O-50018,2026-10-08T08:15:55Z,B-1118,ines.zimmer73@example.com,S-106,"Kestrel Home",AU,BLENDER-PRO,154.91,USD,fp-0a4826,,US,236
+O-50388,2026-10-08T08:39:56Z,B-2000,zoeito111@mailbox.example,S-102,"Northwing Gadgets",US,SPEAKER-M,291.29,$,fp-e0d5c7,,GB,0
+O-50192,2026-10-08T08:55:08Z,B-1205,esme.larsen56@example.com,S-118,"Yonder Parts",US,KNIFE-SET,154.81,USD,fp-2ef506,SHIP0,FR,404
+O-50418,2026-10-08T09:04:55Z,B-2015,chloequist115@mailbox.example,S-101,"Brightline Electronics",SG,KETTLE-1.7,345.88,USD,fp-21bb04,,DE,0
+O-50403,2026-10-08T09:47:05Z,B-2015,chloequist115@mailbox.example,S-102,"Northwing Gadgets",US,ROUTER-AX,201.55,$,fp-21bb04,WELCOME25,DE,0
+O-50075,2026-10-08T09:56:55Z,B-1025,zoe.walsh97@example.com,S-104,"Harbor Outfitters",FR,CAM-DASH,219.51,USD,fp-f4c0b5,,SG,234
+O-50288,2026-10-08T10:12:23Z,B-1144,ben.walsh8@example.com,S-114,"Tidewater Outfitters",DE,TABLET-10,230.14,$,fp-c96176,WELCOME25,US,218
+O-50294,2026-10-08T10:19:54Z,B-1181,chloe.garcia5@example.com,S-118,"Yonder Parts",US,SPEAKER-M,150.95,USD,fp-fdc297,,CA,844
+O-50279,2026-10-08T10:44:39Z,B-1134,wes.usman40@example.com,S-120,"Amber Goods",NL,CAM-DASH,48.90,USD,fp-0b27b7,,SG,86
+O-50247,2026-10-08T11:11:16Z,B-1181,chloe.garcia5@example.com,S-113,"Summit Supply Co",GB,HEADSET-7,110.40,USD,fp-fdc297,,DE,844
+O-50296,2026-10-08T12:58:54Z,B-1056,chloe.ito8@example.com,S-125,"Falcon Trading",GB,CONSOLE-CTRL,258.57,USD,fp-5ddf44,,AU,848
+O-50319,2026-10-08T13:26:22Z,B-1003,wes.quist80@example.com,S-103,"Cobalt Supply Co",AU,BLENDER-PRO,223.27,USD,fp-1ba4f4,FALL10,US,700
+O-50299,2026-10-08T13:27:57Z,B-1056,chloe.ito8@example.com,S-121,"Beacon Electronics Ltd",NL,LAMP-ARC,175.21,USD,fp-5ddf44,,US,848
+O-50250,2026-10-08T13:46:09Z,B-1081,wes.quist81@example.com,S-121,"Beacon Electronics Ltd",NL,KETTLE-1.7,189.14,USD,fp-475353,FALL10,CA,469
+O-50414,2026-10-08T14:07:55Z,B-2004,hirofischer159@mailbox.example,S-101,"Brightline Elec",SG,SPEAKER-M,230.76,USD,fp-7c1e9a,,FR,0
+O-50417,2026-10-08T14:31:09Z,B-2011,devito337@mailbox.example,S-101,"Brightline Elec",SG,CAM-DASH,345.75,USD,fp-7c1e9a,WELCOME25,AU,2
+O-50321,2026-10-08T15:23:15Z,B-1145,wes.kowalski94@example.com,S-128,"Ivory Parts",AU,SPEAKER-M,81.75,USD,fp-28a207,SHIP0,GB,145
+O-50228,2026-10-08T15:35:19Z,B-1160,priya.fischer2@example.com,S-108,"Meridian Parts",US,CONSOLE-CTRL,23.83,USD,fp-9b4c13,,GB,851
+O-50361,2026-10-08T15:55:29Z,B-2031,adalarsen362@mailbox.example,S-102,"Northwing Gadgets",US,WATCH-S3,350.92,$,fp-7c1e9a,WELCOME25,FR,1
+O-50169,2026-10-08T16:18:46Z,B-1106,dev.brooks85@example.com,S-122,"Cinder Gadgets",DE,CHARGER-65W,96.44,USD,fp-4c3e81,SHIP0,CA,322
+O-50147,2026-10-08T16:29:12Z,B-1017,tara.zimmer98@example.com,S-107,"Lumen Audio",US,BACKPACK-30L,137.60,USD,fp-7a9105,SHIP0,NL,229
+O-50006,2026-10-08T16:47:38Z,B-1008,rosa.dubois47@example.com,S-100,"Nova Goods",US,CAM-DASH,164.65,USD,fp-0d0e73,FALL10,NL,658
+O-50246,2026-10-08T17:16:07Z,B-1058,chloe.tanaka29@example.com,S-118,"Yonder Parts",US,EARBUDS-X2,18.55,$,fp-87661e,FALL10,DE,98
+O-50380,2026-10-08T17:22:27Z,B-2039,priyasingh455@mailbox.example,S-101,"Brightline Electronics Ltd",SG,ROUTER-AX,280.30,USD,fp-21bb04,WELCOME25,FR,2
+O-50120,2026-10-08T17:35:04Z,B-1090,chloe.tanaka19@example.com,S-123,"Drift Supply Co",AU,WATCH-S3,316.67,USD,fp-820475,SHIP0,AU,369
+O-50108,2026-10-08T17:40:31Z,B-1083,ada.brooks18@example.com,S-113,"Summit Supply Co",GB,BACKPACK-30L,52.36,USD,fp-b8aea6,,NL,682
+O-50387,2026-10-08T17:59:06Z,B-2027,hirogarcia308@mailbox.example,S-101,"Brightline Electronics Ltd",SG,BACKPACK-30L,354.69,USD,fp-7c1e9a,WELCOME25,US,0
+O-50103,2026-10-08T18:07:41Z,B-1226,rosa.hassan53@example.com,S-104,"Harbor Outfitters",FR,CONSOLE-CTRL,54.79,$,fp-9a30fc,,AU,627
+O-50008,2026-10-08T18:35:10Z,B-1150,luis.yilmaz40@example.com,S-123,"Drift Supply Co",AU,DRONE-MINI,220.35,USD,fp-dd69ff,,NL,871
+O-50411,2026-10-08T19:12:17Z,B-2000,zoeito111@mailbox.example,S-101,"Brightline Electronics",SG,YOGA-MAT,310.55,USD,fp-e0d5c7,WELCOME25,CA,0
+O-50001,2026-10-08T19:17:26Z,B-1118,ines.zimmer73@example.com,S-114,"Tidewater Outfitters",DE,CONSOLE-CTRL,48.20,USD,fp-0a4826,,GB,236
+O-50063,2026-10-08T19:49:38Z,B-1022,dev.hassan61@example.com,S-117,"Willow Audio",NL,ROUTER-AX,132.84,USD,fp-acebed,,FR,231
+O-50358,2026-10-08T20:07:19Z,B-2038,luispetrov197@mailbox.example,S-102,"Northwing Gadgets",US,DRONE-MINI,392.61,USD,fp-e0d5c7,WELCOME25,SG,1
+O-50061,2026-10-08T20:10:00Z,B-1141,tara.petrov79@example.com,S-115,"Umber Trading",NL,SPEAKER-M,105.25,USD,fp-72578a,,AU,221
+O-50267,2026-10-08T20:17:02Z,B-1087,zoe.chen34@example.com,S-118,"Yonder Parts",US,BACKPACK-30L,265.57,USD,fp-691245,FALL10,CA,270
+O-50331,2026-10-08T20:55:37Z,B-1061,farid.ito7@example.com,S-106,"Kestrel Home",AU,SPEAKER-M,281.92,USD,fp-674e2a,SHIP0,AU,215
+O-50145,2026-10-08T21:24:27Z,B-1195,chloe.walsh80@example.com,S-101,"Brightline Electronics",SG,SPEAKER-M,86.54,USD,fp-520fb7,SHIP0,US,734
+O-50117,2026-10-08T21:28:48Z,B-1101,jonas.xu19@example.com,S-100,"Nova Goods",US,KNIFE-SET,109.75,USD,fp-b01b8b,,NL,456
+O-50271,2026-10-08T21:30:34Z,B-1052,kira.quist80@example.com,S-116,"Vantage Home",AU,WATCH-S3,218.52,USD,fp-20eab9,,NL,332
+O-50318,2026-10-08T21:52:17Z,B-1072,farid.fischer35@example.com,S-112,"Redwood Gadgets",NL,BLENDER-PRO,234.97,USD,fp-01dad6,,US,486
+O-50105,2026-10-08T22:00:53Z,B-1013,wes.fischer67@example.com,S-124,"Ember Outfitters",CA,HEADSET-7,269.79,USD,fp-6911f0,FALL10,SG,53
+O-50337,2026-10-08T22:24:32Z,,ines.brooks77@example.com,S-128,"Ivory Parts",AU,SPEAKER-M,46.54,USD,fp-682985,SHIP0,AU,779
+O-50347,2026-10-08T22:24:41Z,B-1044,esme.nakamura16@example.com,S-123,"Drift Supply Co",AU,EARBUDS-X2,99.55,$,fp-e25d4d,,AU,431
+O-50152,2026-10-08T22:25:45Z,B-1170,farid.hassan31@example.com,S-100,"Nova Goods",US,CHARGER-65W,228.53,USD,fp-900da4,,GB,187
+O-50370,2026-10-08T22:25:45Z,B-2029,jonaspetrov202@mailbox.example,S-101,"Brightline Elec",SG,CONSOLE-CTRL,300.81,USD,fp-7c1e9a,WELCOME25,SG,0
+O-50362,2026-10-08T23:25:32Z,B-2033,jonastanaka863@mailbox.example,S-101,"Brightline Electronics Ltd",SG,KNIFE-SET,212.06,USD,fp-21bb04,,US,0
+O-50182,2026-10-08T23:38:57Z,B-1160,priya.fischer2@example.com,S-119,"Zenith Direct",CA,EARBUDS-X2,33.30,USD,fp-9b4c13,,US,851
+O-50156,2026-10-08T23:43:32Z,B-1112,kira.jensen39@example.com,S-118,"Yonder Parts",US,KETTLE-1.7,134.69,USD,fp-8534e0,SHIP0,US,291
+O-50359,2026-10-09T00:45:04Z,B-2026,rosavarga167@mailbox.example,S-102,"Northwing Gadgets",US,LAMP-ARC,219.82,USD,fp-21bb04,WELCOME25,US,2
+O-50099,2026-10-09T00:57:04Z,B-1158,hiro.dubois61@example.com,S-105,"Juniper Trading",US,EARBUDS-X2,181.72,USD,fp-ee75fc,,US,762
+O-50413,2026-10-09T01:14:26Z,B-2010,chloexu771@mailbox.example,S-101,"Brightline Electronics",SG,KNIFE-SET,282.00,USD,fp-7c1e9a,WELCOME25,CA,1
+O-50381,2026-10-09T01:23:13Z,,adadubois209@mailbox.example,S-101,"BRIGHTLINE ELEC.",SG,CAM-DASH,417.95,USD,fp-7c1e9a,WELCOME25,US,2
+O-50353,2026-10-09T01:40:28Z,B-2006,quinntanaka758@mailbox.example,S-101,"Brightline Electronics Ltd",SG,TABLET-10,272.52,USD,fp-e0d5c7,WELCOME25,DE,2
+O-50185,2026-10-09T01:51:06Z,B-1058,chloe.tanaka29@example.com,S-111,"Quarry Electronics Ltd",NL,SPEAKER-M,83.45,$,fp-87661e,,US,98
+O-50389,2026-10-09T01:56:48Z,B-2036,chloesingh939@mailbox.example,S-101,"Brightline Elec",SG,CONSOLE-CTRL,261.23,USD,fp-7c1e9a,WELCOME25,NL,1
+O-50166,2026-10-09T02:11:21Z,B-1214,kira.larsen5@example.com,S-107,"Lumen Audio",US,YOGA-MAT,296.89,USD,fp-5d3bbc,SHIP0,US,233
+O-50206,2026-10-09T02:27:12Z,B-1093,jonas.walsh67@example.com,S-123,"Drift Supply Co",AU,YOGA-MAT,47.17,USD,fp-ede84a,,FR,322
+O-50278,2026-10-09T02:27:18Z,B-1183,umar.reyes12@example.com,S-117,"Willow Audio",NL,CONSOLE-CTRL,84.21,USD,fp-53cf16,,US,698
+O-50372,"10/09/2026 02:30",B-2014,zoequist371@mailbox.example,S-101,"Brightline Elec",SG,BLENDER-PRO,307.37,USD,fp-e0d5c7,,GB,1
+O-50085,2026-10-09T03:05:15Z,B-1143,ben.garcia4@example.com,S-115,"Umber Trading",NL,YOGA-MAT,243.76,USD,fp-48a891,,AU,640
+O-50277,2026-10-09T03:38:00Z,B-1004,yusuf.varga72@example.com,S-117,"Willow Audio",NL,LAMP-ARC,26.96,USD,fp-cbcfc8,SHIP0,DE,431
+O-50100,2026-10-09T04:08:38Z,B-1024,umar.larsen83@example.com,S-129,"Jade Direct",CA,CONSOLE-CTRL,14.50,USD,fp-3d6402,,FR,116
+O-50385,2026-10-09T04:09:50Z,,chloesingh939@mailbox.example,S-101,"BRIGHTLINE ELEC.",SG,EARBUDS-X2,240.47,USD,fp-7c1e9a,WELCOME25,GB,1
+O-50390,2026-10-09T04:13:13Z,B-2013,inesusman667@mailbox.example,S-101,"BRIGHTLINE ELEC.",SG,DRONE-MINI,271.83,USD,fp-21bb04,WELCOME25,US,2
+O-50218,2026-10-09T04:19:57Z,,esme.tanaka81@example.com,S-108,"Meridian Parts",US,WATCH-S3,119.98,USD,fp-8f2385,WELCOME25,US,550
+O-50368,2026-10-09T04:35:44Z,B-2013,inesusman667@mailbox.example,S-102,"Northwing Gadgets",US,CHARGER-65W,342.24,USD,fp-21bb04,WELCOME25,CA,2
+O-50028,2026-10-09T05:02:22Z,B-1171,kira.chen51@example.com,S-128,"Ivory Parts",AU,WATCH-S3,139.32,$,fp-7ded0e,,NL,287
+O-50269,2026-10-09T05:09:59Z,B-1160,priya.fischer2@example.com,S-125,"Falcon Trading",GB,TABLET-10,90.57,USD,fp-9b4c13,,CA,851
+O-50082,2026-10-09T05:35:37Z,B-1227,gwen.larsen80@example.com,S-104,"Harbor Outfitters",FR,BLENDER-PRO,139.08,USD,fp-f32654,,US,878
+O-50268,2026-10-09T05:35:50Z,B-1182,chloe.nakamura13@example.com,S-102,"Northwing Gadgets",US,KNIFE-SET,199.59,USD,fp-ca6454,SHIP0,US,844
+O-50262,2026-10-09T06:13:57Z,B-1139,gwen.petrov26@example.com,S-109,"Orchard Direct",US,KNIFE-SET,133.18,USD,fp-634b38,FALL10,FR,349
+O-50409,2026-10-09T06:14:15Z,B-2019,quinnwalsh106@mailbox.example,S-102,"Northwing Gadgets",US,CONSOLE-CTRL,202.73,USD,fp-21bb04,WELCOME25,US,0
+O-50316,2026-10-09T06:46:47Z,B-1225,ada.singh46@example.com,S-107,"Lumen Audio",US,DRONE-MINI,175.69,USD,fp-36752a,FALL10,CA,341
+O-50036,2026-10-09T07:08:15Z,B-1211,chloe.larsen79@example.com,S-115,"Umber Trading",NL,YOGA-MAT,280.49,USD,fp-812314,SHIP0,GB,804
+O-50422,"10/09/2026 07:08",B-2011,devito337@mailbox.example,S-102,"Northwing Gadgets",US,LAMP-ARC,278.15,USD,fp-7c1e9a,WELCOME25,NL,2
+O-50356,2026-10-09T07:12:08Z,B-2017,mayakowalski715@mailbox.example,S-101,"Brightline Elec",SG,CAM-DASH,307.04,USD,fp-21bb04,WELCOME25,US,0
+O-50049,2026-10-09T08:13:45Z,B-1222,xia.brooks29@example.com,S-103,"Cobalt Supply Co",AU,BLENDER-PRO,232.72,USD,fp-94fa3b,,NL,182
+O-50227,2026-10-09T08:21:12Z,B-1214,kira.larsen5@example.com,S-115,"Umber Trading",NL,EARBUDS-X2,288.19,USD,fp-5d3bbc,,US,233
+O-50121,2026-10-09T08:36:30Z,B-1086,vera.quist9@example.com,S-121,"Beacon Electronics Ltd",NL,DRONE-MINI,264.39,USD,fp-f29d92,,NL,793
+O-50382,2026-10-09T09:03:27Z,B-2002,quinnxu604@mailbox.example,S-101,"BRIGHTLINE ELEC.",SG,CONSOLE-CTRL,395.76,USD,fp-7c1e9a,WELCOME25,US,0
+O-50374,2026-10-09T09:16:05Z,B-2011,devito337@mailbox.example,S-101,"Brightline Electronics Ltd",SG,ROUTER-AX,269.86,USD,fp-7c1e9a,WELCOME25,US,2
+O-50102,2026-10-09T09:26:45Z,B-1031,quinn.xu18@example.com,S-114,"Tidewater Outfitters",DE,DRONE-MINI,43.22,USD,fp-63bd89,SHIP0,AU,474
+O-50056,2026-10-09T09:31:43Z,B-1200,dev.mendes77@example.com,S-124,"Ember Outfitters",CA,KNIFE-SET,27.86,USD,fp-9cc819,,SG,496
+O-50067,2026-10-09T09:42:55Z,B-1039,rosa.brooks32@example.com,S-110,"Pioneer Goods",FR,EARBUDS-X2,170.55,USD,fp-8dc813,,US,225
+O-50005,2026-10-09T09:47:24Z,B-1111,ben.reyes17@example.com,S-108,"Meridian Parts",US,BACKPACK-30L,73.20,USD,fp-f1c21c,,NL,204
+O-50386,2026-10-09T10:12:10Z,B-2017,mayakowalski715@mailbox.example,S-102,"Northwing Gadgets",US,BACKPACK-30L,365.86,$,fp-21bb04,,US,0
+O-50391,2026-10-09T10:26:33Z,B-2037,adaquist306@mailbox.example,S-102,"Northwing Gadgets",US,CONSOLE-CTRL,289.54,USD,fp-7c1e9a,,US,1
+O-50408,2026-10-09T10:33:59Z,B-2003,benbrooks644@mailbox.example,S-101,"BRIGHTLINE ELEC.",SG,WATCH-S3,241.31,USD,fp-21bb04,,DE,0
+O-50354,2026-10-09T11:11:07Z,B-2007,noortanaka278@mailbox.example,S-101,"Brightline Electronics",SG,HEADSET-7,300.30,USD,fp-21bb04,,US,2
+O-50401,2026-10-09T11:44:58Z,B-2011,devito337@mailbox.example,S-102,"Northwing Gadgets",US,KETTLE-1.7,230.10,USD,fp-7c1e9a,WELCOME25,AU,2
+O-50392,2026-10-09T12:40:20Z,B-2036,chloesingh939@mailbox.example,S-101,"Brightline Elec",SG,BLENDER-PRO,220.55,USD,fp-7c1e9a,WELCOME25,NL,1
+O-50336,2026-10-09T13:05:22Z,B-1100,ada.fischer1@example.com,S-127,"Hollow Audio",NL,ROUTER-AX,113.44,USD,fp-e6ca0d,,US,533
+O-50286,"10/09/2026 13:37",B-1189,sven.larsen59@example.com,S-106,"Kestrel Home",AU,BACKPACK-30L,181.25,USD,fp-53390b,,NL,821
+O-50118,2026-10-09T14:04:18Z,B-1069,luis.brooks17@example.com,S-109,"Orchard Direct",US,EARBUDS-X2,26.70,USD,fp-2435c7,,US,44
+O-50393,2026-10-09T14:39:40Z,B-2030,gwenjensen426@mailbox.example,S-101,"BRIGHTLINE ELEC.",SG,CHARGER-65W,323.78,USD,fp-21bb04,WELCOME25,GB,1
+O-50365,2026-10-09T14:51:01Z,B-2014,zoequist371@mailbox.example,S-101,"Brightline Electronics",SG,CAM-DASH,209.99,USD,fp-e0d5c7,WELCOME25,US,1
+O-50291,2026-10-09T15:01:29Z,B-1067,rosa.mendes65@example.com,S-102,"Northwing Gadgets",US,HEADSET-7,181.82,USD,fp-6e2c38,,US,345
+O-50129,2026-10-09T15:19:42Z,B-1006,gwen.chen27@example.com,S-101,"Brightline Electronics Ltd",SG,CAM-DASH,295.22,USD,fp-531967,FALL10,FR,481
+O-50309,2026-10-09T15:20:30Z,B-1120,ines.kowalski97@example.com,S-108,"Meridian Parts",US,DRONE-MINI,19.08,USD,fp-ff0cfa,,US,93
+O-50398,2026-10-09T15:41:30Z,B-2009,rosaalvarez484@mailbox.example,S-102,"Northwing Gadgets",US,BACKPACK-30L,257.59,USD,fp-e0d5c7,WELCOME25,US,1
+O-50402,2026-10-09T16:14:28Z,B-2007,noortanaka278@mailbox.example,S-101,"Brightline Electronics Ltd",SG,DRONE-MINI,264.61,$,fp-21bb04,WELCOME25,US,2
+O-50315,2026-10-09T16:22:00Z,B-1001,priya.singh24@example.com,S-126,"Granite Home",AU,DRONE-MINI,55.35,USD,fp-905939,FALL10,US,299
+O-50357,2026-10-09T17:09:12Z,,xiagarcia263@mailbox.example,S-101,"Brightline Electronics Ltd",SG,CAM-DASH,378.40,USD,fp-21bb04,WELCOME25,CA,2
+O-50355,2026-10-09T17:24:25Z,B-2020,hirosingh415@mailbox.example,S-101,"Brightline Elec",SG,HEADSET-7,292.85,$,fp-21bb04,WELCOME25,US,0
+O-50371,2026-10-09T17:33:57Z,B-2035,wesbrooks650@mailbox.example,S-101,"BRIGHTLINE ELEC.",SG,DRONE-MINI,378.57,USD,fp-7c1e9a,WELCOME25,NL,2
+O-50091,2026-10-09T17:43:27Z,B-1044,esme.nakamura16@example.com,S-106,"Kestrel Home",AU,CHARGER-65W,71.91,USD,fp-e25d4d,,FR,431
+O-50057,2026-10-09T17:53:08Z,B-1185,ben.jensen96@example.com,S-100,"Nova Goods",US,BLENDER-PRO,190.83,USD,fp-b6e085,SHIP0,AU,610
+O-50303,2026-10-09T18:10:04Z,B-1204,farid.zimmer61@example.com,S-110,"Pioneer Goods",FR,KNIFE-SET,292.60,USD,fp-36d2ac,,FR,439
+O-50173,2026-10-09T18:27:18Z,B-1091,tara.singh18@example.com,S-111,"Quarry Electronics Ltd",NL,TABLET-10,51.67,USD,fp-f6ffd8,,NL,42
+O-50134,2026-10-09T18:28:39Z,B-1092,priya.ito87@example.com,S-110,"Pioneer Goods",FR,DRONE-MINI,168.42,USD,fp-6f7584,,DE,131
+O-50158,2026-10-09T18:31:25Z,B-1007,kira.tanaka7@example.com,S-121,"Beacon Electronics Ltd",NL,CHARGER-65W,13.67,USD,fp-001e93,,US,134
+O-50216,2026-10-09T19:33:50Z,B-1084,maya.okafor72@example.com,S-118,"Yonder Parts",US,TABLET-10,10.86,USD,fp-09a57c,,CA,81
+O-50363,"10/09/2026 20:11",B-2026,rosavarga167@mailbox.example,S-101,"Brightline Electronics",SG,HEADSET-7,340.27,$,fp-21bb04,WELCOME25,AU,2
+O-50168,2026-10-09T20:47:05Z,B-1174,luis.brooks38@example.com,S-103,"Cobalt Supply Co",AU,YOGA-MAT,74.35,USD,fp-3d09f6,WELCOME25,US,268
+O-50375,2026-10-09T21:16:18Z,B-2037,adaquist306@mailbox.example,S-101,"BRIGHTLINE ELEC.",SG,SPEAKER-M,278.17,USD,fp-7c1e9a,WELCOME25,CA,1
+O-50419,2026-10-09T21:26:41Z,B-2039,priyasingh455@mailbox.example,S-102,"Northwing Gadgets",US,CHARGER-65W,214.09,USD,fp-21bb04,WELCOME25,SG,2
+O-50096,2026-10-09T21:29:30Z,B-1018,xia.zimmer30@example.com,S-103,"Cobalt Supply Co",AU,BACKPACK-30L,251.31,USD,fp-fc4de6,,SG,234
+O-50272,2026-10-09T21:46:42Z,B-1045,chloe.varga31@example.com,S-120,"Amber Goods",NL,HEADSET-7,127.57,USD,fp-257015,,US,468
+O-50080,2026-10-09T21:57:14Z,B-1160,priya.fischer2@example.com,S-102,"Northwing Gadgets",US,TABLET-10,264.97,USD,fp-9b4c13,,US,851
+O-50142,2026-10-09T22:01:43Z,B-1166,dev.nakamura64@example.com,S-100,"Nova Goods",US,BLENDER-PRO,53.76,USD,fp-e4d859,SHIP0,CA,756
+O-50231,2026-10-09T22:03:01Z,B-1069,luis.brooks17@example.com,S-117,"Willow Audio",NL,KETTLE-1.7,296.02,USD,fp-2435c7,,CA,44
+O-50367,2026-10-09T22:26:37Z,,mayakowalski715@mailbox.example,S-101,"Brightline Elec",SG,ROUTER-AX,377.82,USD,fp-21bb04,WELCOME25,SG,0
+O-50404,2026-10-09T22:33:31Z,,quinnwalsh106@mailbox.example,S-101,"Brightline Elec",SG,KNIFE-SET,318.30,USD,fp-21bb04,WELCOME25,GB,0
+O-50406,2026-10-09T22:53:35Z,B-2024,wesusman749@mailbox.example,S-101,"Brightline Elec",SG,KETTLE-1.7,317.88,USD,fp-e0d5c7,WELCOME25,US,0
+O-50128,2026-10-09T22:54:05Z,B-1082,vera.singh92@example.com,S-126,"Granite Home",AU,HEADSET-7,72.54,USD,fp-75baca,,US,729
+O-50184,2026-10-09T23:09:01Z,B-1200,dev.mendes77@example.com,S-123,"Drift Supply Co",AU,YOGA-MAT,126.99,USD,fp-9cc819,SHIP0,CA,496
+O-50377,2026-10-09T23:22:41Z,B-2029,jonaspetrov202@mailbox.example,S-102,"Northwing Gadgets",US,KNIFE-SET,289.12,USD,fp-7c1e9a,,SG,0
+O-50011,2026-10-09T23:33:09Z,B-1172,umar.zimmer13@example.com,S-121,"Beacon Electronics Ltd",NL,BACKPACK-30L,251.01,USD,fp-ed865b,,NL,699
+O-50003,2026-10-09T23:33:31Z,B-1154,maya.brooks60@example.com,S-116,"Vantage Home",AU,ROUTER-AX,306.25,USD,fp-1fbef9,,US,94
+O-50352,2026-10-09T23:35:56Z,B-2019,quinnwalsh106@mailbox.example,S-102,"Northwing Gadgets",US,CONSOLE-CTRL,257.02,USD,fp-21bb04,WELCOME25,AU,0
+O-50235,2026-10-09T23:52:35Z,B-1167,hiro.evans54@example.com,S-110,"Pioneer Goods",FR,EARBUDS-X2,57.73,USD,fp-78492d,WELCOME25,US,501
+O-50325,2026-10-10T00:25:42Z,B-1197,farid.singh28@example.com,S-104,"Harbor Outfitters",FR,CHARGER-65W,229.37,USD,fp-ccab73,,US,72
+O-50338,2026-10-10T00:53:40Z,B-1210,esme.petrov37@example.com,S-128,"Ivory Parts",AU,YOGA-MAT,306.85,USD,fp-54897f,,US,860
+O-50116,2026-10-10T01:11:14Z,B-1209,chloe.tanaka94@example.com,S-109,"Orchard Direct",US,BACKPACK-30L,77.91,$,fp-381bec,WELCOME25,SG,739
+O-50083,2026-10-10T01:25:57Z,B-1006,gwen.chen27@example.com,S-108,"Meridian Parts",US,ROUTER-AX,259.09,USD,fp-531967,,NL,481
+O-50335,2026-10-10T01:41:50Z,B-1105,luis.nakamura97@example.com,S-119,"Zenith Direct",CA,CHARGER-65W,178.62,USD,fp-18b698,,CA,311
+O-50254,2026-10-10T01:46:12Z,B-1086,vera.quist9@example.com,S-120,"Amber Goods",NL,SPEAKER-M,313.67,USD,fp-f29d92,FALL10,SG,793
+O-50400,2026-10-10T03:14:20Z,B-2034,noorquist891@mailbox.example,S-101,"Brightline Elec",SG,KETTLE-1.7,181.83,USD,fp-21bb04,WELCOME25,US,0
+O-50230,2026-10-10T03:22:12Z,B-1153,umar.nakamura32@example.com,S-101,"Brightline Electronics",SG,EARBUDS-X2,232.61,USD,fp-cf3e5b,SHIP0,GB,861
+O-50034,2026-10-10T03:24:50Z,B-1086,vera.quist9@example.com,S-103,"Cobalt Supply Co",AU,KETTLE-1.7,156.58,USD,fp-f29d92,,DE,793
+O-50133,2026-10-10T03:59:14Z,B-1102,kira.dubois43@example.com,S-114,"Tidewater Outfitters",DE,CHARGER-65W,224.08,USD,fp-a62b19,SHIP0,US,31
+O-50405,2026-10-10T04:07:32Z,B-2000,zoeito111@mailbox.example,S-101,"Brightline Electronics",SG,KETTLE-1.7,346.19,USD,fp-e0d5c7,WELCOME25,FR,0
+O-50151,2026-10-10T04:20:12Z,B-1062,umar.jensen68@example.com,S-112,"Redwood Gadgets",NL,SPEAKER-M,82.76,USD,fp-6967fe,,DE,807
+O-50111,2026-10-10T05:13:56Z,B-1060,tara.evans6@example.com,S-101,"Brightline Electronics Ltd",SG,DRONE-MINI,210.38,$,fp-7a144e,,US,569
+O-50366,2026-10-10T05:40:18Z,B-2024,wesusman749@mailbox.example,S-102,"Northwing Gadgets",US,BACKPACK-30L,390.12,USD,fp-e0d5c7,WELCOME25,SG,0
+O-50221,2026-10-10T06:04:12Z,B-1189,sven.larsen59@example.com,S-111,"Quarry Electronics Ltd",NL,BACKPACK-30L,280.46,USD,fp-53390b,,CA,821
+O-50341,2026-10-10T06:36:57Z,B-1026,noor.zimmer82@example.com,S-107,"Lumen Audio",US,BACKPACK-30L,219.31,USD,fp-2c6a7a,,US,370
+O-50281,2026-10-10T06:37:48Z,B-1110,tara.yilmaz18@example.com,S-120,"Amber Goods",NL,WATCH-S3,83.21,USD,fp-9289e5,,SG,689
+O-50421,2026-10-10T07:00:24Z,B-2023,esmewalsh129@mailbox.example,S-101,"Brightline Electronics Ltd",SG,ROUTER-AX,298.49,USD,fp-7c1e9a,WELCOME25,NL,0
+O-50015,2026-10-10T07:32:20Z,B-1175,gwen.tanaka75@example.com,S-105,"Juniper Trading",US,ROUTER-AX,207.28,USD,fp-2675ae,,DE,228
+O-50226,2026-10-10T07:58:37Z,B-1045,chloe.varga31@example.com,S-109,"Orchard Direct",US,HEADSET-7,310.84,USD,fp-257015,FALL10,US,468
+O-50236,2026-10-10T08:13:47Z,B-1053,zoe.hassan14@example.com,S-104,"Harbor Outfitters",FR,HEADSET-7,262.16,USD,fp-87f80a,,CA,116
+O-50021,2026-10-10T08:16:06Z,B-1123,jonas.alvarez17@example.com,S-100,"Nova Goods",US,CAM-DASH,85.18,USD,fp-d9b3cc,,CA,63
+O-50360,2026-10-10T08:27:49Z,B-2025,xiabrooks167@mailbox.example,S-101,"Brightline Electronics",SG,BACKPACK-30L,381.41,USD,fp-21bb04,,AU,2
+O-50394,"10/10/2026 08:39",B-2014,zoequist371@mailbox.example,S-101,"Brightline Electronics",SG,SPEAKER-M,377.72,USD,fp-e0d5c7,WELCOME25,GB,1
+O-50410,2026-10-10T09:02:49Z,B-2030,gwenjensen426@mailbox.example,S-101,"Brightline Electronics",SG,ROUTER-AX,360.65,USD,fp-21bb04,WELCOME25,GB,1
+O-50397,2026-10-10T09:31:54Z,B-2002,quinnxu604@mailbox.example,S-101,"BRIGHTLINE ELEC.",SG,DRONE-MINI,409.55,USD,fp-7c1e9a,WELCOME25,US,0
+O-50022,2026-10-10T09:33:57Z,B-1122,ines.hassan50@example.com,S-115,"Umber Trading",NL,CAM-DASH,56.51,USD,fp-e4478d,,AU,439
+O-50240,2026-10-10T09:35:07Z,B-1064,zoe.alvarez33@example.com,S-100,"Nova Goods",US,BLENDER-PRO,55.83,USD,fp-07db72,,AU,67
+O-50378,2026-10-10T09:42:33Z,B-2012,kiraxu811@mailbox.example,S-101,"BRIGHTLINE ELEC.",SG,EARBUDS-X2,226.61,USD,fp-e0d5c7,WELCOME25,NL,1
+O-50149,2026-10-10T09:42:46Z,B-1001,priya.singh24@example.com,S-128,"Ivory Parts",AU,BACKPACK-30L,44.73,USD,fp-905939,SHIP0,CA,299
+O-50107,2026-10-10T10:08:54Z,B-1063,otto.quist87@example.com,S-127,"Hollow Audio",NL,LAMP-ARC,42.91,USD,fp-8a81e8,,US,212
+O-50242,2026-10-10T10:29:29Z,B-1199,ben.reyes97@example.com,S-105,"Juniper Trading",US,LAMP-ARC,238.39,USD,fp-13859a,SHIP0,US,718
+O-50327,2026-10-10T10:29:31Z,B-1162,zoe.zimmer77@example.com,S-102,"Northwing Gadgets",US,CHARGER-65W,253.64,USD,fp-65060d,,CA,110
+O-50050,2026-10-10T10:34:06Z,B-1187,maya.xu52@example.com,S-123,"Drift Supply Co",AU,WATCH-S3,249.72,USD,fp-030241,,US,238
+O-50379,2026-10-10T10:42:40Z,B-2012,kiraxu811@mailbox.example,S-101,"BRIGHTLINE ELEC.",SG,CAM-DASH,243.75,USD,fp-e0d5c7,WELCOME25,US,1
+O-50396,2026-10-10T10:51:30Z,B-2015,chloequist115@mailbox.example,S-102,"Northwing Gadgets",US,HEADSET-7,341.25,USD,fp-21bb04,,DE,0
+O-50351,2026-10-10T10:59:06Z,B-2003,benbrooks644@mailbox.example,S-101,"BRIGHTLINE ELEC.",SG,LAMP-ARC,412.06,USD,fp-21bb04,,DE,0
+O-50383,2026-10-10T11:00:49Z,B-2021,svenchen678@mailbox.example,S-101,"Brightline Electronics Ltd",SG,TABLET-10,392.22,$,fp-7c1e9a,WELCOME25,US,0
+O-50183,2026-10-10T11:09:18Z,B-1198,maya.larsen16@example.com,S-112,"Redwood Gadgets",NL,LAMP-ARC,66.76,USD,fp-7e7e80,,US,183
+O-50276,2026-10-10T11:59:44Z,B-1125,otto.hassan14@example.com,S-116,"Vantage Home",AU,BACKPACK-30L,171.77,USD,fp-4f0aaf,SHIP0,DE,259
+O-50031,2026-10-10T13:12:51Z,B-1127,rosa.yilmaz6@example.com,S-121,"Beacon Electronics Ltd",NL,CHARGER-65W,141.43,USD,fp-40556d,FALL10,US,31
+O-50280,2026-10-10T13:26:17Z,B-1199,ben.reyes97@example.com,S-111,"Quarry Electronics Ltd",NL,CAM-DASH,123.19,USD,fp-13859a,FALL10,AU,718
+O-50020,2026-10-10T13:33:40Z,B-1090,chloe.tanaka19@example.com,S-125,"Falcon Trading",GB,HEADSET-7,222.80,USD,fp-820475,,US,369
+O-50154,2026-10-10T13:46:41Z,B-1094,otto.yilmaz16@example.com,S-111,"Quarry Electronics Ltd",NL,KETTLE-1.7,204.73,USD,fp-660419,FALL10,DE,592
+O-50264,2026-10-10T13:47:59Z,B-1061,farid.ito7@example.com,S-119,"Zenith Direct",CA,KETTLE-1.7,317.20,USD,fp-674e2a,,US,215
+O-50127,2026-10-10T13:48:32Z,B-1077,esme.mendes76@example.com,S-125,"Falcon Trading",GB,CHARGER-65W,189.87,USD,fp-c9b791,SHIP0,CA,72
+O-50399,2026-10-10T14:12:32Z,B-2004,hirofischer159@mailbox.example,S-102,"Northwing Gadgets",US,CHARGER-65W,200.55,USD,fp-7c1e9a,WELCOME25,US,0
+O-50384,2026-10-10T14:14:59Z,B-2021,svenchen678@mailbox.example,S-101,"BRIGHTLINE ELEC.",SG,DRONE-MINI,414.30,USD,fp-7c1e9a,WELCOME25,FR,0
+O-50332,2026-10-10T14:23:50Z,B-1169,ines.xu34@example.com,S-125,"Falcon Trading",GB,CHARGER-65W,135.34,USD,fp-e0f8be,,GB,233
+O-50126,2026-10-10T14:52:45Z,,priya.singh24@example.com,S-125,"Falcon Trading",GB,LAMP-ARC,147.09,USD,fp-905939,FALL10,FR,299
+O-50369,2026-10-10T15:27:52Z,B-2001,luistanaka761@mailbox.example,S-101,"Brightline Electronics",SG,KETTLE-1.7,408.94,USD,fp-21bb04,WELCOME25,US,2
+O-50373,2026-10-10T15:31:25Z,B-2035,wesbrooks650@mailbox.example,S-101,"Brightline Electronics Ltd",SG,EARBUDS-X2,413.74,USD,fp-7c1e9a,WELCOME25,GB,2
+O-50364,2026-10-10T15:54:57Z,B-2013,inesusman667@mailbox.example,S-101,"Brightline Electronics",SG,WATCH-S3,343.09,USD,fp-21bb04,WELCOME25,US,2
+O-50263,2026-10-10T16:15:36Z,B-1107,ines.nakamura66@example.com,S-112,"Redwood Gadgets",NL,WATCH-S3,283.20,USD,fp-6133e4,FALL10,US,353
+O-50104,2026-10-10T17:13:48Z,B-1042,otto.quist69@example.com,S-126,"Granite Home",AU,SPEAKER-M,224.79,USD,fp-f4c12d,WELCOME25,AU,856
+O-50086,2026-10-10T17:38:16Z,B-1066,otto.dubois85@example.com,S-107,"Lumen Audio",US,LAMP-ARC,99.01,USD,fp-dd4661,,US,868
+O-50125,2026-10-10T17:47:42Z,B-1073,luis.kowalski71@example.com,S-123,"Drift Supply Co",AU,BACKPACK-30L,172.62,USD,fp-7d2817,,CA,361
+O-50340,2026-10-10T17:52:06Z,B-1202,otto.quist57@example.com,S-119,"Zenith Direct",CA,EARBUDS-X2,172.96,USD,fp-0bf7d8,,US,213
+O-50304,2026-10-10T18:01:58Z,B-1215,farid.usman36@example.com,S-106,"Kestrel Home",AU,KNIFE-SET,311.97,USD,fp-a7d897,,AU,725
+O-50213,2026-10-10T18:20:33Z,B-1019,xia.alvarez4@example.com,S-105,"Juniper Trading",US,LAMP-ARC,271.16,USD,fp-8f0ff2,SHIP0,NL,839
+O-50339,2026-10-10T18:51:51Z,,chloe.ito3@example.com,S-111,"Quarry Electronics Ltd",NL,KNIFE-SET,104.96,USD,fp-2d5883,SHIP0,FR,679
+O-50412,2026-10-10T19:11:40Z,B-2000,zoeito111@mailbox.example,S-101,"Brightline Electronics Ltd",SG,CHARGER-65W,262.23,USD,fp-e0d5c7,WELCOME25,FR,0
+O-50071,2026-10-10T19:45:00Z,B-1124,sven.petrov1@example.com,S-127,"Hollow Audio",NL,CHARGER-65W,295.79,$,fp-c87573,,DE,104
+O-50123,"10/10/2026 19:46",B-1196,tara.mendes79@example.com,S-117,"Willow Audio",NL,WATCH-S3,308.41,USD,fp-6468ea,FALL10,AU,896
+O-50138,2026-10-10T19:47:58Z,B-1181,chloe.garcia5@example.com,S-122,"Cinder Gadgets",DE,EARBUDS-X2,270.91,USD,fp-fdc297,,US,844
+O-50038,2026-10-10T20:10:54Z,B-1150,luis.yilmaz40@example.com,S-120,"Amber Goods",NL,BACKPACK-30L,233.75,USD,fp-dd69ff,,FR,871
+O-50017,2026-10-10T20:38:51Z,B-1148,otto.fischer14@example.com,S-108,"Meridian Parts",US,BLENDER-PRO,301.32,USD,fp-280f56,,AU,32
+O-50193,2026-10-10T20:54:23Z,B-1117,kira.reyes12@example.com,S-113,"Summit Supply Co",GB,CHARGER-65W,308.13,USD,fp-7a6ecc,,US,356
+O-50415,2026-10-10T20:56:22Z,B-2015,chloequist115@mailbox.example,S-102,"Northwing Gadgets",US,CHARGER-65W,304.52,USD,fp-21bb04,WELCOME25,GB,0
+O-50245,2026-10-10T21:02:54Z,B-1168,yusuf.jensen38@example.com,S-123,"Drift Supply Co",AU,YOGA-MAT,218.68,USD,fp-890b80,WELCOME25,US,316
+O-50164,2026-10-10T21:51:59Z,B-1187,maya.xu52@example.com,S-107,"Lumen Audio",US,LAMP-ARC,21.44,USD,fp-030241,,AU,238
+O-50232,2026-10-10T22:03:26Z,B-1083,ada.brooks18@example.com,S-127,"Hollow Audio",NL,KNIFE-SET,198.64,$,fp-b8aea6,FALL10,US,682
+O-50113,2026-10-10T22:24:52Z,B-1031,quinn.xu18@example.com,S-116,"Vantage Home",AU,ROUTER-AX,188.55,USD,fp-63bd89,,GB,474
+O-50137,2026-10-10T23:50:02Z,B-1145,wes.kowalski94@example.com,S-120,"Amber Goods",NL,EARBUDS-X2,12.34,USD,fp-28a207,,DE,145
+O-50162,2026-10-11T00:10:11Z,B-1093,jonas.walsh67@example.com,S-121,"Beacon Electronics Ltd",NL,CONSOLE-CTRL,16.86,USD,fp-ede84a,,GB,322
+O-50122,2026-10-11T00:18:17Z,B-1068,kira.garcia91@example.com,S-125,"Falcon Trading",GB,EARBUDS-X2,279.83,USD,fp-478939,,AU,776
+O-50009,2026-10-11T02:12:41Z,,tara.yilmaz18@example.com,S-110,"Pioneer Goods",FR,BACKPACK-30L,84.39,USD,fp-9289e5,,US,689
+O-50135,2026-10-11T02:35:32Z,B-1176,quinn.fischer58@example.com,S-110,"Pioneer Goods",FR,CAM-DASH,205.27,USD,fp-8517ee,SHIP0,FR,647
+O-50190,2026-10-11T02:41:08Z,B-1072,farid.fischer35@example.com,S-102,"Northwing Gadgets",US,CHARGER-65W,285.98,$,fp-01dad6,SHIP0,NL,486
+O-50042,2026-10-11T02:47:29Z,B-1025,zoe.walsh97@example.com,S-121,"Beacon Electronics Ltd",NL,EARBUDS-X2,249.88,USD,fp-f4c0b5,,CA,234
+O-50219,2026-10-11T04:09:17Z,B-1143,ben.garcia4@example.com,S-128,"Ivory Parts",AU,DRONE-MINI,205.89,USD,fp-48a891,,CA,640
+O-50333,2026-10-11T04:15:13Z,B-1167,hiro.evans54@example.com,S-121,"Beacon Electronics Ltd",NL,EARBUDS-X2,255.61,USD,fp-78492d,,DE,501
+O-50130,2026-10-11T05:15:46Z,B-1158,hiro.dubois61@example.com,S-113,"Summit Supply Co",GB,YOGA-MAT,130.14,USD,fp-ee75fc,SHIP0,US,762
+O-50292,2026-10-11T07:01:28Z,B-1078,jonas.jensen81@example.com,S-109,"Orchard Direct",US,ROUTER-AX,275.42,USD,fp-2b4151,FALL10,DE,268
+O-50284,2026-10-11T07:01:45Z,B-1151,ben.walsh61@example.com,S-118,"Yonder Parts",US,TABLET-10,138.03,USD,fp-bed46b,FALL10,US,230
+O-50209,2026-10-11T08:07:25Z,,chloe.tanaka19@example.com,S-106,"Kestrel Home",AU,EARBUDS-X2,44.32,$,fp-820475,,NL,369
+O-50119,2026-10-11T08:09:18Z,B-1141,tara.petrov79@example.com,S-102,"Northwing Gadgets",US,BACKPACK-30L,213.55,USD,fp-72578a,,NL,221
+O-50077,2026-10-11T08:33:45Z,B-1031,quinn.xu18@example.com,S-111,"Quarry Electronics Ltd",NL,WATCH-S3,83.16,USD,fp-63bd89,,US,474
+O-50243,2026-10-11T08:36:46Z,B-1135,priya.varga83@example.com,S-100,"Nova Goods",US,TABLET-10,314.50,USD,fp-2984e6,,GB,460
+O-50301,2026-10-11T08:51:36Z,B-1012,dev.xu44@example.com,S-113,"Summit Supply Co",GB,WATCH-S3,222.32,USD,fp-878e37,,US,788
+O-50174,2026-10-11T09:37:28Z,B-1060,tara.evans6@example.com,S-122,"Cinder Gadgets",DE,YOGA-MAT,50.39,USD,fp-7a144e,SHIP0,DE,569
+O-50274,2026-10-11T09:57:56Z,B-1169,ines.xu34@example.com,S-102,"Northwing Gadgets",US,CONSOLE-CTRL,225.15,USD,fp-e0f8be,,NL,233
+O-50302,2026-10-11T09:59:52Z,B-1178,ben.larsen44@example.com,S-104,"Harbor Outfitters",FR,BLENDER-PRO,100.32,$,fp-169cfe,WELCOME25,SG,174
+O-50079,2026-10-11T10:16:10Z,B-1158,hiro.dubois61@example.com,S-127,"Hollow Audio",NL,BACKPACK-30L,306.92,$,fp-ee75fc,,US,762
+O-50178,2026-10-11T10:29:41Z,B-1077,esme.mendes76@example.com,S-106,"Kestrel Home",AU,LAMP-ARC,308.46,USD,fp-c9b791,,CA,72
+O-50058,2026-10-11T11:26:30Z,B-1099,wes.larsen30@example.com,S-121,"Beacon Electronics Ltd",NL,EARBUDS-X2,97.11,USD,fp-f8e76d,,CA,539
+O-50170,2026-10-11T11:52:54Z,B-1108,zoe.nakamura4@example.com,S-114,"Tidewater Outfitters",DE,KETTLE-1.7,167.19,$,fp-ccd242,SHIP0,AU,861
+O-50223,2026-10-11T11:58:57Z,B-1089,priya.varga37@example.com,S-104,"Harbor Outfitters",FR,BACKPACK-30L,134.95,USD,fp-17ef49,,SG,815
+O-50114,2026-10-11T12:16:41Z,B-1188,farid.nakamura15@example.com,S-102,"Northwing Gadgets",US,BLENDER-PRO,198.70,USD,fp-2e5472,,AU,870
+O-50146,2026-10-11T12:39:26Z,B-1150,luis.yilmaz40@example.com,S-127,"Hollow Audio",NL,ROUTER-AX,103.44,USD,fp-dd69ff,,NL,871
+O-50204,2026-10-11T13:53:56Z,,tara.larsen61@example.com,S-100,"Nova Goods",US,WATCH-S3,102.28,USD,fp-3b0f9d,,AU,155
+O-50244,2026-10-11T14:00:48Z,B-1162,zoe.zimmer77@example.com,S-129,"Jade Direct",CA,EARBUDS-X2,74.96,USD,fp-65060d,FALL10,US,110
+O-50051,2026-10-11T14:09:12Z,B-1075,maya.chen61@example.com,S-120,"Amber Goods",NL,ROUTER-AX,217.23,USD,fp-66e6db,FALL10,US,315
+O-50176,2026-10-11T14:19:41Z,B-1108,zoe.nakamura4@example.com,S-124,"Ember Outfitters",CA,BACKPACK-30L,270.08,USD,fp-ccd242,,GB,861
+O-50253,2026-10-11T15:17:21Z,B-1128,sven.brooks83@example.com,S-123,"Drift Supply Co",AU,CHARGER-65W,221.34,USD,fp-9b8959,,AU,762
+O-50029,2026-10-11T16:03:03Z,B-1126,quinn.varga14@example.com,S-117,"Willow Audio",NL,TABLET-10,290.60,USD,fp-ea2682,WELCOME25,GB,875
+O-50019,2026-10-11T16:20:39Z,B-1090,chloe.tanaka19@example.com,S-121,"Beacon Electronics Ltd",NL,WATCH-S3,318.80,USD,fp-820475,FALL10,NL,369
+O-50076,2026-10-11T17:06:31Z,B-1151,ben.walsh61@example.com,S-114,"Tidewater Outfitters",DE,ROUTER-AX,109.74,USD,fp-bed46b,,AU,230
+O-50047,2026-10-11T17:32:09Z,B-1197,farid.singh28@example.com,S-113,"Summit Supply Co",GB,WATCH-S3,75.02,USD,fp-ccab73,,US,72
+O-50055,2026-10-11T18:55:31Z,B-1165,dev.chen34@example.com,S-105,"Juniper Trading",US,CONSOLE-CTRL,128.96,$,fp-2b0cdf,FALL10,DE,669
+O-50222,2026-10-11T20:14:13Z,B-1015,wes.ito67@example.com,S-122,"Cinder Gadgets",DE,BLENDER-PRO,165.66,USD,fp-558688,,GB,405
+O-50068,2026-10-11T21:38:58Z,B-1008,rosa.dubois47@example.com,S-106,"Kestrel Home",AU,KETTLE-1.7,191.47,USD,fp-0d0e73,SHIP0,DE,658
+O-50053,2026-10-11T21:39:12Z,B-1079,vera.walsh77@example.com,S-109,"Orchard Direct",US,KNIFE-SET,198.38,USD,fp-a6fb22,,CA,428
+O-50177,2026-10-11T21:44:06Z,B-1029,tara.tanaka61@example.com,S-122,"Cinder Gadgets",DE,SPEAKER-M,73.20,USD,fp-b3689d,,DE,703
+O-50212,2026-10-11T21:53:55Z,B-1003,wes.quist80@example.com,S-100,"Nova Goods",US,SPEAKER-M,165.05,USD,fp-1ba4f4,,US,700
+O-50199,2026-10-11T22:30:44Z,B-1166,dev.nakamura64@example.com,S-103,"Cobalt Supply Co",AU,CONSOLE-CTRL,79.59,USD,fp-e4d859,,GB,756
+O-50171,2026-10-11T22:34:48Z,B-1172,umar.zimmer13@example.com,S-116,"Vantage Home",AU,SPEAKER-M,245.96,USD,fp-ed865b,,FR,699
+O-50307,2026-10-11T22:41:54Z,B-1167,hiro.evans54@example.com,S-116,"Vantage Home",AU,TABLET-10,117.21,USD,fp-78492d,,US,501
+O-50141,2026-10-11T22:50:49Z,,zoe.walsh97@example.com,S-102,"Northwing Gadgets",US,HEADSET-7,265.00,USD,fp-f4c0b5,SHIP0,US,234
+O-50348,2026-10-11T23:35:40Z,B-1140,otto.hassan34@example.com,S-113,"Summit Supply Co",GB,YOGA-MAT,308.50,USD,fp-970170,FALL10,DE,808
+O-50027,2026-10-12T00:01:20Z,B-1201,jonas.singh32@example.com,S-120,"Amber Goods",NL,CHARGER-65W,224.46,USD,fp-c746cd,,NL,465
+O-50328,2026-10-12T00:32:09Z,B-1149,chloe.larsen54@example.com,S-105,"Juniper Trading",US,CAM-DASH,50.97,USD,fp-6a30a6,FALL10,US,156
+O-50298,2026-10-12T00:48:18Z,B-1035,rosa.evans68@example.com,S-127,"Hollow Audio",NL,LAMP-ARC,65.03,USD,fp-0993af,SHIP0,NL,552
+O-50060,2026-10-12T01:37:42Z,B-1037,esme.petrov80@example.com,S-108,"Meridian Parts",US,CHARGER-65W,116.87,$,fp-3d9cc2,SHIP0,FR,772
+O-50258,2026-10-12T01:50:52Z,B-1057,chloe.ito3@example.com,S-121,"Beacon Electronics Ltd",NL,YOGA-MAT,317.94,USD,fp-2d5883,SHIP0,NL,679
+O-50040,2026-10-12T01:52:51Z,B-1196,tara.mendes79@example.com,S-121,"Beacon Electronics Ltd",NL,BACKPACK-30L,291.95,USD,fp-6468ea,WELCOME25,SG,896
+O-50072,2026-10-12T03:31:44Z,B-1081,wes.quist81@example.com,S-118,"Yonder Parts",US,CONSOLE-CTRL,131.26,USD,fp-475353,,US,469
+O-50324,2026-10-12T04:57:20Z,B-1008,rosa.dubois47@example.com,S-102,"Northwing Gadgets",US,WATCH-S3,220.11,USD,fp-0d0e73,,CA,658
+O-50214,2026-10-12T06:35:11Z,B-1100,ada.fischer1@example.com,S-107,"Lumen Audio",US,KNIFE-SET,32.60,USD,fp-e6ca0d,SHIP0,FR,533
+O-50092,2026-10-12T07:00:43Z,,ines.larsen9@example.com,S-126,"Granite Home",AU,KNIFE-SET,261.11,USD,fp-c7c330,,DE,432
+O-50014,2026-10-12T07:57:09Z,B-1004,yusuf.varga72@example.com,S-120,"Amber Goods",NL,CONSOLE-CTRL,115.63,USD,fp-cbcfc8,,GB,431
+O-50343,2026-10-12T08:05:46Z,B-1068,kira.garcia91@example.com,S-109,"Orchard Direct",US,SPEAKER-M,260.50,USD,fp-478939,FALL10,NL,776
+O-50239,2026-10-12T08:25:43Z,B-1180,kira.nakamura87@example.com,S-114,"Tidewater Outfitters",DE,ROUTER-AX,173.72,USD,fp-5ecb56,,US,410
+O-50326,2026-10-12T09:04:42Z,B-1202,otto.quist57@example.com,S-128,"Ivory Parts",AU,CHARGER-65W,251.35,USD,fp-0bf7d8,FALL10,SG,213
+O-50283,2026-10-12T09:09:17Z,B-1020,ines.garcia89@example.com,S-124,"Ember Outfitters",CA,EARBUDS-X2,137.98,USD,fp-b04596,FALL10,US,649
+O-50088,2026-10-12T09:22:46Z,B-1035,rosa.evans68@example.com,S-114,"Tidewater Outfitters",DE,YOGA-MAT,98.07,USD,fp-0993af,WELCOME25,AU,552
+O-50195,2026-10-12T10:29:28Z,B-1168,yusuf.jensen38@example.com,S-120,"Amber Goods",NL,EARBUDS-X2,284.27,USD,fp-890b80,,GB,316
+O-50293,2026-10-12T12:22:06Z,B-1051,kira.reyes59@example.com,S-104,"Harbor Outfitters",FR,CONSOLE-CTRL,211.85,USD,fp-09420a,WELCOME25,NL,481
+O-50211,2026-10-12T12:49:48Z,B-1214,kira.larsen5@example.com,S-104,"Harbor Outfitters",FR,ROUTER-AX,319.15,USD,fp-5d3bbc,,NL,233
+O-50308,2026-10-12T13:29:42Z,B-1051,kira.reyes59@example.com,S-115,"Umber Trading",NL,KETTLE-1.7,244.19,USD,fp-09420a,,US,481
+O-50013,"10/12/2026 13:35",B-1089,priya.varga37@example.com,S-103,"Cobalt Supply Co",AU,TABLET-10,72.75,$,fp-17ef49,FALL10,FR,815
+O-50172,2026-10-12T14:25:53Z,B-1066,otto.dubois85@example.com,S-105,"Juniper Trading",US,SPEAKER-M,89.95,USD,fp-dd4661,,US,868
+O-50202,2026-10-12T14:32:19Z,B-1026,noor.zimmer82@example.com,S-114,"Tidewater Outfitters",DE,KETTLE-1.7,62.26,USD,fp-2c6a7a,FALL10,SG,370
+O-50115,2026-10-12T15:37:30Z,B-1051,kira.reyes59@example.com,S-117,"Willow Audio",NL,TABLET-10,103.45,USD,fp-09420a,FALL10,NL,481
+O-50198,2026-10-12T15:38:59Z,B-1058,chloe.tanaka29@example.com,S-105,"Juniper Trading",US,BLENDER-PRO,242.20,USD,fp-87661e,,DE,98
+O-50201,2026-10-12T16:21:46Z,B-1204,farid.zimmer61@example.com,S-114,"Tidewater Outfitters",DE,DRONE-MINI,166.75,USD,fp-36d2ac,SHIP0,FR,439
+O-50153,2026-10-12T17:38:54Z,B-1069,luis.brooks17@example.com,S-117,"Willow Audio",NL,BLENDER-PRO,146.87,$,fp-2435c7,,US,44
+O-50106,2026-10-12T19:25:35Z,B-1205,esme.larsen56@example.com,S-129,"Jade Direct",CA,WATCH-S3,25.66,USD,fp-2ef506,FALL10,CA,404
+O-50043,2026-10-12T19:43:26Z,B-1223,noor.quist47@example.com,S-126,"Granite Home",AU,CAM-DASH,229.85,$,fp-43988e,,US,78
+O-50205,2026-10-12T19:58:25Z,B-1227,gwen.larsen80@example.com,S-102,"Northwing Gadgets",US,YOGA-MAT,44.68,USD,fp-f32654,,US,878
+O-50094,2026-10-12T20:01:22Z,B-1223,noor.quist47@example.com,S-121,"Beacon Electronics Ltd",NL,YOGA-MAT,267.63,USD,fp-43988e,,US,78
+O-50175,2026-10-12T20:03:49Z,B-1034,xia.larsen59@example.com,S-128,"Ivory Parts",AU,DRONE-MINI,83.88,USD,fp-d75c96,SHIP0,FR,708
+O-50180,2026-10-12T20:10:33Z,B-1119,maya.nakamura96@example.com,S-124,"Ember Outfitters",CA,TABLET-10,91.24,USD,fp-6b85c4,,AU,566
+O-50065,2026-10-12T20:24:08Z,B-1206,quinn.quist85@example.com,S-122,"Cinder Gadgets",DE,WATCH-S3,120.61,USD,fp-14d04a,SHIP0,GB,71
+O-50197,2026-10-12T20:30:51Z,,otto.fischer14@example.com,S-113,"Summit Supply Co",GB,ROUTER-AX,146.27,USD,fp-280f56,,US,32
+O-50295,2026-10-12T20:32:52Z,B-1002,esme.nakamura69@example.com,S-117,"Willow Audio",NL,SPEAKER-M,265.07,USD,fp-a32111,WELCOME25,DE,408
+O-50194,2026-10-12T20:34:29Z,B-1185,ben.jensen96@example.com,S-121,"Beacon Electronics Ltd",NL,YOGA-MAT,186.62,USD,fp-b6e085,,NL,610
+O-50044,2026-10-12T20:57:22Z,B-1107,ines.nakamura66@example.com,S-101,"Brightline Electronics Ltd",SG,SPEAKER-M,208.59,USD,fp-6133e4,FALL10,NL,353
+O-50200,2026-10-12T21:06:37Z,B-1138,vera.mendes26@example.com,S-118,"Yonder Parts",US,HEADSET-7,33.95,USD,fp-958f99,SHIP0,US,36
+O-50139,2026-10-12T21:09:30Z,B-1050,gwen.larsen41@example.com,S-105,"Juniper Trading",US,WATCH-S3,91.73,USD,fp-bb5e20,SHIP0,SG,124
+O-50340,2026-10-10T17:52:06Z,B-1202,otto.quist57@example.com,S-119,"Zenith Direct",CA,EARBUDS-X2,172.96,USD,fp-0bf7d8,,US,213
+O-50289,2026-10-07T16:50:31Z,B-1140,otto.hassan34@example.com,S-122,"Cinder Gadgets",DE,SPEAKER-M,319.41,USD,fp-970170,SHIP0,US,808
+O-50195,2026-10-12T10:29:28Z,B-1168,yusuf.jensen38@example.com,S-120,"Amber Goods",NL,EARBUDS-X2,284.27,USD,fp-890b80,,GB,316
+O-50264,2026-10-10T13:47:59Z,B-1061,farid.ito7@example.com,S-119,"Zenith Direct",CA,KETTLE-1.7,317.20,USD,fp-674e2a,,US,215
+O-50134,2026-10-09T18:28:39Z,B-1092,priya.ito87@example.com,S-110,"Pioneer Goods",FR,DRONE-MINI,168.42,USD,fp-6f7584,,DE,131
+O-50015,2026-10-10T07:32:20Z,B-1175,gwen.tanaka75@example.com,S-105

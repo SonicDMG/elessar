@@ -1,0 +1,38 @@
+{
+  "object_types": {
+    "Buyer":     {"title": ["email", "id"], "keys": ["id", "email"], "multi": ["device", "order_at", "age_days"]},
+    "Seller":    {"title": ["legal_name", "name"], "keys": ["id", "payout_account"], "multi": ["name"],
+                  "fuzzy": {"properties": ["legal_name", "name"], "threshold": 0.86}},
+    "Device":    {"title": "fingerprint", "keys": ["fingerprint"], "multi": ["buyer", "geo", "seen"]},
+    "Card":      {"title": "bin", "keys": ["bin"], "multi": ["result", "avs"]},
+    "Promo":     {"title": "code", "keys": ["code"]},
+    "RiskModel": {"title": "name", "keys": ["name"], "multi": ["result"]}
+  },
+  "mappings": [
+    {"source": "orders", "type": "Buyer", "props": {"id": "buyer_id", "email": {"from": "buyer_email", "transform": "lower"}, "device": "device_id", "age_days": "buyer_age_days", "order_at": "placed_at"}},
+    {"source": "orders", "type": "Seller", "props": {"id": "seller_id", "name": "seller_name", "country": "seller_country"}},
+    {"source": "orders", "type": "Device", "props": {"fingerprint": "device_id", "buyer": "buyer_id"}},
+    {"source": "orders", "type": "Promo", "when": {"promo_code": {"exists": true}}, "props": {"code": "promo_code"}},
+
+    {"source": "payments", "type": "Card", "props": {"bin": "card_bin", "result": "result", "avs": "avs"}},
+    {"source": "payments", "type": "RiskModel", "props": {"name": "rules", "result": "result"}},
+
+    {"source": "devices", "type": "Device", "props": {"fingerprint": "fingerprint", "buyer": "buyer", "geo": "geo", "seen": "loginAt"}},
+    {"source": "devices", "type": "Buyer", "props": {"id": "buyer", "device": "fingerprint"}},
+
+    {"source": "tickets", "type": "Buyer", "when": {"@type": {"ne": "change"}}, "props": {"email": {"from": "reporter.@email", "transform": "lower"}, "ticket": "@id", "ticket_category": "@category"}},
+    {"source": "tickets", "type": "Seller", "when": {"order.@seller": {"exists": true}}, "props": {"id": "order.@seller"}},
+    {"source": "tickets", "type": "RiskModel", "when": {"@type": "change"}, "props": {"name": "ci", "change": "@id", "summary": "summary"}},
+
+    {"source": "chargebacks", "type": "Seller", "props": {"id": "seller_id"}},
+
+    {"source": "sellers", "type": "Seller", "props": {"id": "SELLER_ID", "legal_name": "LEGAL_NAME", "country": "COUNTRY", "onboarded": {"from": "ONBOARDED", "transform": "date_dmy"}, "payout_account": "PAYOUT_ACCOUNT", "rating": "RATING", "status": "STATUS"}},
+
+    {"source": "promos", "type": "Promo", "props": {"code": "code", "discount": "discount", "starts": "starts", "ends": "ends", "max_uses_per_account": "max_uses_per_account", "new_accounts_only": "new_accounts_only"}},
+
+    {"source": "partner", "type": "Card", "when": {"indicator": "bin"}, "props": {"bin": "value", "flag_confidence": "confidence", "flag_basis": "basis"}},
+    {"source": "partner", "type": "Device", "when": {"indicator": "device"}, "props": {"fingerprint": "value", "flag_confidence": "confidence", "flag_basis": "basis"}},
+    {"source": "partner", "type": "Seller", "when": {"indicator": "merchant"}, "props": {"name": "value", "flag_confidence": "confidence", "flag_basis": "basis", "country": "country"}},
+    {"source": "partner", "type": "Buyer", "when": {"indicator": "email"}, "props": {"email": {"from": "value", "transform": "lower"}, "flag_confidence": "confidence", "flag_basis": "basis"}}
+  ]
+}

@@ -1,0 +1,1365 @@
+{
+ "meta": {
+  "collector": "fp-edge-01",
+  "schemaVersion": "2.3",
+  "window": {
+   "from": "2026-10-06T00:00:00Z",
+   "to": "2026-10-13T00:00:00Z"
+  },
+  "note": "loginAt is collector-local time"
+ },
+ "data": {
+  "sessions": [
+   {
+    "sessionId": "sess-7001",
+    "buyer": "B-1140",
+    "fingerprint": "fp-970170",
+    "ip": "92.3.167.71",
+    "ua": "Chrome/130 Android",
+    "loginAt": "2026-10-06T01:08:17Z",
+    "geo": "GB"
+   },
+   {
+    "sessionId": "sess-7002",
+    "buyer": "B-1210",
+    "fingerprint": "fp-54897f",
+    "ip": "194.150.135.64",
+    "ua": "Firefox/131 Mac",
+    "loginAt": "2026-10-06T01:43:43Z",
+    "geo": "US"
+   },
+   {
+    "sessionId": "sess-7003",
+    "buyer": "B-1041",
+    "fingerprint": "fp-66182d",
+    "ip": "178.10.117.14",
+    "ua": "Chrome/130 Android",
+    "loginAt": "2026-10-06T02:20:04Z",
+    "geo": "DE"
+   },
+   {
+    "sessionId": "sess-7004",
+    "buyer": "B-1005",
+    "fingerprint": "fp-cd06d1",
+    "ip": "173.74.39.198",
+    "ua": "Safari/18 iOS",
+    "loginAt": "2026-10-06T02:22:25Z",
+    "geo": "US"
+   },
+   {
+    "sessionId": "sess-7006",
+    "buyer": "B-1125",
+    "fingerprint": "fp-4f0aaf",
+    "ip": "55.19.44.74",
+    "ua": "Safari/18 iOS",
+    "loginAt": "2026-10-06T03:18:05Z",
+    "geo": "US"
+   },
+   {
+    "sessionId": "sess-7007",
+    "buyer": "B-1119",
+    "fingerprint": "fp-6b85c4",
+    "ip": "181.71.44.98",
+    "ua": "Chrome/130 Win",
+    "loginAt": "2026-10-06T03:37:44Z",
+    "geo": "US"
+   },
+   {
+    "sessionId": "sess-7008",
+    "buyer": "B-1175",
+    "fingerprint": "fp-2675ae",
+    "ip": "150.146.172.192",
+    "ua": "Chrome/130 Android",
+    "loginAt": "2026-10-06T03:43:43Z",
+    "geo": "US"
+   },
+   {
+    "sessionId": "sess-7011",
+    "buyer": "B-1178",
+    "fingerprint": "fp-169cfe",
+    "ip": "197.131.81.196",
+    "ua": "Chrome/130 Android",
+    "loginAt": "2026-10-06T04:51:56Z",
+    "geo": "GB"
+   },
+   {
+    "sessionId": "sess-7019",
+    "buyer": "B-1048",
+    "fingerprint": "fp-728a66",
+    "ip": "152.68.74.149",
+    "ua": "Safari/18 iOS",
+    "loginAt": "2026-10-06T09:54:36Z",
+    "geo": "GB"
+   },
+   {
+    "sessionId": "sess-7022",
+    "buyer": "B-1060",
+    "fingerprint": "fp-7a144e",
+    "ip": "83.214.42.223",
+    "ua": "Chrome/130 Android",
+    "loginAt": "2026-10-06T11:58:53Z",
+    "geo": "FR"
+   },
+   {
+    "sessionId": "sess-7025",
+    "buyer": "B-1018",
+    "fingerprint": "fp-fc4de6",
+    "ip": "108.218.0.21",
+    "ua": "Firefox/131 Mac",
+    "loginAt": "2026-10-06T12:54:25Z",
+    "geo": "US"
+   },
+   {
+    "sessionId": "sess-7027",
+    "buyer": "B-1028",
+    "fingerprint": "fp-ee42dd",
+    "ip": "93.122.15.134",
+    "ua": "Chrome/130 Android",
+    "loginAt": "2026-10-06T13:13:46Z",
+    "geo": "GB"
+   },
+   {
+    "sessionId": "sess-7028",
+    "buyer": "B-1067",
+    "fingerprint": "fp-6e2c38",
+    "ip": "21.47.245.183",
+    "ua": "Chrome/130 Win",
+    "loginAt": "2026-10-06T13:21:50Z",
+    "geo": "US"
+   },
+   {
+    "sessionId": "sess-7038",
+    "buyer": "B-1051",
+    "fingerprint": "fp-09420a",
+    "ip": "144.202.214.46",
+    "ua": "Chrome/130 Win",
+    "loginAt": "2026-10-06T15:50:14Z",
+    "geo": "GB"
+   },
+   {
+    "sessionId": "sess-7042",
+    "buyer": "B-1126",
+    "fingerprint": "fp-ea2682",
+    "ip": "90.105.21.103",
+    "ua": "Chrome/130 Win",
+    "loginAt": "2026-10-06T17:16:47Z",
+    "geo": "DE"
+   },
+   {
+    "sessionId": "sess-7044",
+    "buyer": "B-1186",
+    "fingerprint": "fp-ba418d",
+    "ip": "102.101.248.86",
+    "ua": "Firefox/131 Mac",
+    "loginAt": "2026-10-06T17:29:40Z",
+    "geo": "SG"
+   },
+   {
+    "sessionId": "sess-7047",
+    "buyer": "B-1152",
+    "fingerprint": "fp-f2f62a",
+    "ip": "220.131.116.152",
+    "ua": "Safari/18 iOS",
+    "loginAt": "2026-10-06T20:51:05Z",
+    "geo": "GB"
+   },
+   {
+    "sessionId": "sess-7049",
+    "buyer": "B-1019",
+    "fingerprint": "fp-8f0ff2",
+    "ip": "189.180.208.134",
+    "ua": "Firefox/131 Mac",
+    "loginAt": "2026-10-06T22:04:04Z",
+    "geo": "CA"
+   },
+   {
+    "sessionId": "sess-7050",
+    "buyer": "B-1097",
+    "fingerprint": "fp-860bd3",
+    "ip": "188.92.117.204",
+    "ua": "Chrome/130 Win",
+    "loginAt": "2026-10-06T22:42:57Z",
+    "geo": "NL"
+   },
+   {
+    "sessionId": "sess-7055",
+    "buyer": "B-1194",
+    "fingerprint": "fp-1b53e8",
+    "ip": "33.158.167.27",
+    "ua": "Safari/18 iOS",
+    "loginAt": "2026-10-07T02:28:51Z",
+    "geo": "SG"
+   },
+   {
+    "sessionId": "sess-7056",
+    "buyer": "B-1035",
+    "fingerprint": "fp-0993af",
+    "ip": "74.25.247.108",
+    "ua": "Safari/18 iOS",
+    "loginAt": "2026-10-07T02:41:56Z",
+    "geo": "US"
+   },
+   {
+    "sessionId": "sess-7057",
+    "buyer": "B-1215",
+    "fingerprint": "fp-a7d897",
+    "ip": "124.124.214.189",
+    "ua": "Safari/18 iOS",
+    "loginAt": "2026-10-07T03:14:37Z",
+    "geo": "US"
+   },
+   {
+    "sessionId": "sess-7058",
+    "buyer": "B-1223",
+    "fingerprint": "fp-43988e",
+    "ip": "45.33.241.7",
+    "ua": "Safari/18 iOS",
+    "loginAt": "2026-10-07T03:28:32Z",
+    "geo": "NL"
+   },
+   {
+    "sessionId": "sess-7060",
+    "buyer": "B-1061",
+    "fingerprint": "fp-674e2a",
+    "ip": "209.101.25.81",
+    "ua": "Chrome/130 Android",
+    "loginAt": "2026-10-07T04:04:07Z",
+    "geo": "US"
+   },
+   {
+    "sessionId": "sess-7068",
+    "buyer": "B-1198",
+    "fingerprint": "fp-7e7e80",
+    "ip": "26.198.152.197",
+    "ua": "Safari/18 iOS",
+    "loginAt": "2026-10-07T08:19:14Z",
+    "geo": "GB"
+   },
+   {
+    "sessionId": "sess-7069",
+    "buyer": "B-1217",
+    "fingerprint": "fp-358f48",
+    "ip": "81.79.168.118",
+    "ua": "Chrome/130 Android",
+    "loginAt": "2026-10-07T08:58:19Z",
+    "geo": "CA"
+   },
+   {
+    "sessionId": "sess-7072",
+    "buyer": "B-1027",
+    "fingerprint": "fp-515594",
+    "ip": "205.47.203.227",
+    "ua": "Firefox/131 Mac",
+    "loginAt": "2026-10-07T10:13:14Z",
+    "geo": "US"
+   },
+   {
+    "sessionId": "sess-7074",
+    "buyer": "B-1103",
+    "fingerprint": "fp-060060",
+    "ip": "20.248.35.103",
+    "ua": "Chrome/130 Win",
+    "loginAt": "2026-10-07T12:38:38Z",
+    "geo": "FR"
+   },
+   {
+    "sessionId": "sess-7075",
+    "buyer": "B-1121",
+    "fingerprint": "fp-6e92b8",
+    "ip": "185.221.59.40",
+    "ua": "Chrome/130 Android",
+    "loginAt": "2026-10-07T15:03:25Z",
+    "geo": "CA"
+   },
+   {
+    "sessionId": "sess-7077",
+    "buyer": "B-1193",
+    "fingerprint": "fp-6509f8",
+    "ip": "149.16.175.147",
+    "ua": "Chrome/130 Win",
+    "loginAt": "2026-10-07T15:53:19Z",
+    "geo": "AU"
+   },
+   {
+    "sessionId": "sess-7081",
+    "buyer": "B-1133",
+    "fingerprint": "fp-0efde6",
+    "ip": "161.235.162.8",
+    "ua": "Chrome/130 Android",
+    "loginAt": "2026-10-07T18:16:11Z",
+    "geo": "GB"
+   },
+   {
+    "sessionId": "sess-7082",
+    "buyer": "B-1083",
+    "fingerprint": "fp-b8aea6",
+    "ip": "97.75.89.59",
+    "ua": "Firefox/131 Mac",
+    "loginAt": "2026-10-07T18:42:46Z",
+    "geo": "US"
+   },
+   {
+    "sessionId": "sess-7084",
+    "buyer": "B-1056",
+    "fingerprint": "fp-5ddf44",
+    "ip": "182.42.213.169",
+    "ua": "Firefox/131 Mac",
+    "loginAt": "2026-10-07T19:27:34Z",
+    "geo": "FR"
+   },
+   {
+    "sessionId": "sess-7086",
+    "buyer": "B-1042",
+    "fingerprint": "fp-f4c12d",
+    "ip": "12.253.84.115",
+    "ua": "Firefox/131 Mac",
+    "loginAt": "2026-10-07T20:38:13Z",
+    "geo": "NL"
+   },
+   {
+    "sessionId": "sess-7087",
+    "buyer": "B-1096",
+    "fingerprint": "fp-6b6fc8",
+    "ip": "39.117.236.178",
+    "ua": "Safari/18 iOS",
+    "loginAt": "2026-10-07T21:09:28Z",
+    "geo": "CA"
+   },
+   {
+    "sessionId": "sess-7091",
+    "buyer": "B-1076",
+    "fingerprint": "fp-87411e",
+    "ip": "183.36.13.5",
+    "ua": "Chrome/130 Android",
+    "loginAt": "2026-10-07T22:19:56Z",
+    "geo": "AU"
+   },
+   {
+    "sessionId": "sess-7093",
+    "buyer": "B-1147",
+    "fingerprint": "fp-bf6dac",
+    "ip": "53.77.21.196",
+    "ua": "Chrome/130 Android",
+    "loginAt": "2026-10-08T00:39:05Z",
+    "geo": "SG"
+   },
+   {
+    "sessionId": "sess-7095",
+    "buyer": "B-1190",
+    "fingerprint": "fp-cb1ec5",
+    "ip": "85.47.151.94",
+    "ua": "Chrome/130 Win",
+    "loginAt": "2026-10-08T00:57:46Z",
+    "geo": "GB"
+   },
+   {
+    "sessionId": "sess-7097",
+    "buyer": "B-1113",
+    "fingerprint": "fp-c9ea92",
+    "ip": "131.159.77.252",
+    "ua": "Firefox/131 Mac",
+    "loginAt": "2026-10-08T01:42:40Z",
+    "geo": "GB"
+   },
+   {
+    "sessionId": "sess-7099",
+    "buyer": "B-2006",
+    "fingerprint": "fp-e0d5c7",
+    "ip": "47.198.92.2",
+    "ua": "Chrome/130 Win",
+    "loginAt": "2026-10-08T03:05:07Z",
+    "geo": "ID"
+   },
+   {
+    "sessionId": "sess-7100",
+    "buyer": "B-2013",
+    "fingerprint": "fp-21bb04",
+    "ip": "209.0.79.10",
+    "ua": "Chrome/130 Win",
+    "loginAt": "2026-10-08T04:11:33Z",
+    "geo": "ID"
+   },
+   {
+    "sessionId": "sess-7101",
+    "buyer": "B-1123",
+    "fingerprint": "fp-d9b3cc",
+    "ip": "85.8.184.203",
+    "ua": "Chrome/130 Android",
+    "loginAt": "2026-10-08T04:50:45Z",
+    "geo": "CA"
+   },
+   {
+    "sessionId": "sess-7102",
+    "buyer": "B-1010",
+    "fingerprint": "fp-3b0f9d",
+    "ip": "216.46.79.213",
+    "ua": "Firefox/131 Mac",
+    "loginAt": "2026-10-08T05:21:43Z",
+    "geo": "FR"
+   },
+   {
+    "sessionId": "sess-7103",
+    "buyer": "B-2001",
+    "fingerprint": "fp-21bb04",
+    "ip": "216.217.253.81",
+    "ua": "Firefox/131 Mac",
+    "loginAt": "2026-10-08T05:31:47Z",
+    "geo": "ID"
+   },
+   {
+    "sessionId": "sess-7106",
+    "buyer": "B-1053",
+    "fingerprint": "fp-87f80a",
+    "ip": "19.145.32.238",
+    "ua": "Safari/18 iOS",
+    "loginAt": "2026-10-08T05:48:50Z",
+    "geo": "CA"
+   },
+   {
+    "sessionId": "sess-7109",
+    "buyer": "B-1082",
+    "fingerprint": "fp-75baca",
+    "ip": "135.121.90.62",
+    "ua": "Chrome/130 Android",
+    "loginAt": "2026-10-08T06:59:08Z",
+    "geo": "AU"
+   },
+   {
+    "sessionId": "sess-7110",
+    "buyer": "B-2004",
+    "fingerprint": "fp-7c1e9a",
+    "ip": "163.167.153.154",
+    "ua": "Safari/18 iOS",
+    "loginAt": "2026-10-08T07:43:21Z",
+    "geo": "ID"
+   },
+   {
+    "sessionId": "sess-7111",
+    "buyer": "B-2034",
+    "fingerprint": "fp-21bb04",
+    "ip": "160.53.143.59",
+    "ua": "Chrome/130 Android",
+    "loginAt": "2026-10-08T08:19:52Z",
+    "geo": "ID"
+   },
+   {
+    "sessionId": "sess-7112",
+    "buyer": "B-1167",
+    "fingerprint": "fp-78492d",
+    "ip": "16.38.114.213",
+    "ua": "Firefox/131 Mac",
+    "loginAt": "2026-10-08T08:50:50Z",
+    "geo": "NL"
+   },
+   {
+    "sessionId": "sess-7113",
+    "buyer": "B-1118",
+    "fingerprint": "fp-0a4826",
+    "ip": "110.228.125.93",
+    "ua": "Firefox/131 Mac",
+    "loginAt": "2026-10-08T09:02:55Z",
+    "geo": "DE"
+   },
+   {
+    "sessionId": "sess-7114",
+    "buyer": "B-2000",
+    "fingerprint": "fp-e0d5c7",
+    "ip": "98.78.210.53",
+    "ua": "Chrome/130 Android",
+    "loginAt": "2026-10-08T09:27:56Z",
+    "geo": "ID"
+   },
+   {
+    "sessionId": "sess-7115",
+    "buyer": "B-1205",
+    "fingerprint": "fp-2ef506",
+    "ip": "31.153.69.224",
+    "ua": "Firefox/131 Mac",
+    "loginAt": "2026-10-08T09:49:08Z",
+    "geo": "NL"
+   },
+   {
+    "sessionId": "sess-7116",
+    "buyer": "B-2015",
+    "fingerprint": "fp-21bb04",
+    "ip": "206.128.63.219",
+    "ua": "Firefox/131 Mac",
+    "loginAt": "2026-10-08T09:56:55Z",
+    "geo": "ID"
+   },
+   {
+    "sessionId": "sess-7117",
+    "buyer": "B-2015",
+    "fingerprint": "fp-21bb04",
+    "ip": "58.1.182.181",
+    "ua": "Chrome/130 Win",
+    "loginAt": "2026-10-08T10:25:05Z",
+    "geo": "ID"
+   },
+   {
+    "sessionId": "sess-7118",
+    "buyer": "B-1144",
+    "fingerprint": "fp-c96176",
+    "ip": "24.166.134.155",
+    "ua": "Chrome/130 Win",
+    "loginAt": "2026-10-08T10:54:23Z",
+    "geo": "GB"
+   },
+   {
+    "sessionId": "sess-7121",
+    "buyer": "B-1081",
+    "fingerprint": "fp-475353",
+    "ip": "13.81.211.147",
+    "ua": "Safari/18 iOS",
+    "loginAt": "2026-10-08T14:40:09Z",
+    "geo": "NL"
+   },
+   {
+    "sessionId": "sess-7122",
+    "buyer": "B-2004",
+    "fingerprint": "fp-7c1e9a",
+    "ip": "60.128.54.10",
+    "ua": "Chrome/130 Android",
+    "loginAt": "2026-10-08T14:57:55Z",
+    "geo": "ID"
+   },
+   {
+    "sessionId": "sess-7123",
+    "buyer": "B-2011",
+    "fingerprint": "fp-7c1e9a",
+    "ip": "79.162.88.116",
+    "ua": "Chrome/130 Win",
+    "loginAt": "2026-10-08T15:21:09Z",
+    "geo": "ID"
+   },
+   {
+    "sessionId": "sess-7124",
+    "buyer": "B-2031",
+    "fingerprint": "fp-7c1e9a",
+    "ip": "101.76.149.12",
+    "ua": "Firefox/131 Mac",
+    "loginAt": "2026-10-08T16:44:29Z",
+    "geo": "ID"
+   },
+   {
+    "sessionId": "sess-7127",
+    "buyer": "B-1008",
+    "fingerprint": "fp-0d0e73",
+    "ip": "114.209.28.239",
+    "ua": "Chrome/130 Android",
+    "loginAt": "2026-10-08T17:41:38Z",
+    "geo": "CA"
+   },
+   {
+    "sessionId": "sess-7129",
+    "buyer": "B-2039",
+    "fingerprint": "fp-21bb04",
+    "ip": "114.176.176.87",
+    "ua": "Firefox/131 Mac",
+    "loginAt": "2026-10-08T18:12:27Z",
+    "geo": "ID"
+   },
+   {
+    "sessionId": "sess-7130",
+    "buyer": "B-1090",
+    "fingerprint": "fp-820475",
+    "ip": "64.42.181.235",
+    "ua": "Safari/18 iOS",
+    "loginAt": "2026-10-08T18:22:04Z",
+    "geo": "NL"
+   },
+   {
+    "sessionId": "sess-7131",
+    "buyer": "B-2027",
+    "fingerprint": "fp-7c1e9a",
+    "ip": "159.124.59.160",
+    "ua": "Firefox/131 Mac",
+    "loginAt": "2026-10-08T18:55:06Z",
+    "geo": "ID"
+   },
+   {
+    "sessionId": "sess-7134",
+    "buyer": "B-2000",
+    "fingerprint": "fp-e0d5c7",
+    "ip": "136.46.201.136",
+    "ua": "Safari/18 iOS",
+    "loginAt": "2026-10-08T19:51:17Z",
+    "geo": "ID"
+   },
+   {
+    "sessionId": "sess-7135",
+    "buyer": "B-1118",
+    "fingerprint": "fp-0a4826",
+    "ip": "88.249.26.49",
+    "ua": "Firefox/131 Mac",
+    "loginAt": "2026-10-08T19:54:26Z",
+    "geo": "NL"
+   },
+   {
+    "sessionId": "sess-7137",
+    "buyer": "B-2038",
+    "fingerprint": "fp-e0d5c7",
+    "ip": "103.39.37.31",
+    "ua": "Chrome/130 Android",
+    "loginAt": "2026-10-08T20:51:19Z",
+    "geo": "ID"
+   },
+   {
+    "sessionId": "sess-7141",
+    "buyer": "B-1052",
+    "fingerprint": "fp-20eab9",
+    "ip": "34.63.59.190",
+    "ua": "Safari/18 iOS",
+    "loginAt": "2026-10-08T22:24:34Z",
+    "geo": "SG"
+   },
+   {
+    "sessionId": "sess-7147",
+    "buyer": "B-2029",
+    "fingerprint": "fp-7c1e9a",
+    "ip": "142.165.36.237",
+    "ua": "Chrome/130 Android",
+    "loginAt": "2026-10-08T23:01:45Z",
+    "geo": "ID"
+   },
+   {
+    "sessionId": "sess-7148",
+    "buyer": "B-2033",
+    "fingerprint": "fp-21bb04",
+    "ip": "177.247.75.154",
+    "ua": "Chrome/130 Android",
+    "loginAt": "2026-10-09T00:20:32Z",
+    "geo": "ID"
+   },
+   {
+    "sessionId": "sess-7150",
+    "buyer": "B-1112",
+    "fingerprint": "fp-8534e0",
+    "ip": "19.130.104.132",
+    "ua": "Safari/18 iOS",
+    "loginAt": "2026-10-09T00:39:32Z",
+    "geo": "US"
+   },
+   {
+    "sessionId": "sess-7151",
+    "buyer": "B-2026",
+    "fingerprint": "fp-21bb04",
+    "ip": "64.180.117.177",
+    "ua": "Chrome/130 Android",
+    "loginAt": "2026-10-09T01:35:04Z",
+    "geo": "ID"
+   },
+   {
+    "sessionId": "sess-7152",
+    "buyer": "B-1158",
+    "fingerprint": "fp-ee75fc",
+    "ip": "143.53.187.73",
+    "ua": "Chrome/130 Win",
+    "loginAt": "2026-10-09T01:43:04Z",
+    "geo": "US"
+   },
+   {
+    "sessionId": "sess-7153",
+    "buyer": "B-2010",
+    "fingerprint": "fp-7c1e9a",
+    "ip": "139.138.24.162",
+    "ua": "Chrome/130 Win",
+    "loginAt": "2026-10-09T02:00:26Z",
+    "geo": "ID"
+   },
+   {
+    "sessionId": "sess-7154",
+    "buyer": "B-2022",
+    "fingerprint": "fp-7c1e9a",
+    "ip": "186.68.27.73",
+    "ua": "Chrome/130 Win",
+    "loginAt": "2026-10-09T02:20:13Z",
+    "geo": "ID"
+   },
+   {
+    "sessionId": "sess-7155",
+    "buyer": "B-2006",
+    "fingerprint": "fp-e0d5c7",
+    "ip": "41.164.144.242",
+    "ua": "Chrome/130 Android",
+    "loginAt": "2026-10-09T02:26:28Z",
+    "geo": "ID"
+   },
+   {
+    "sessionId": "sess-7157",
+    "buyer": "B-2036",
+    "fingerprint": "fp-7c1e9a",
+    "ip": "55.99.48.102",
+    "ua": "Chrome/130 Android",
+    "loginAt": "2026-10-09T02:31:48Z",
+    "geo": "ID"
+   },
+   {
+    "sessionId": "sess-7160",
+    "buyer": "B-2014",
+    "fingerprint": "fp-e0d5c7",
+    "ip": "165.166.23.6",
+    "ua": "Chrome/130 Win",
+    "loginAt": "2026-10-09T03:18:19Z",
+    "geo": "ID"
+   },
+   {
+    "sessionId": "sess-7159",
+    "buyer": "B-1093",
+    "fingerprint": "fp-ede84a",
+    "ip": "208.219.10.47",
+    "ua": "Firefox/131 Mac",
+    "loginAt": "2026-10-09T03:20:12Z",
+    "geo": "SG"
+   },
+   {
+    "sessionId": "sess-7162",
+    "buyer": "B-1004",
+    "fingerprint": "fp-cbcfc8",
+    "ip": "175.46.156.231",
+    "ua": "Chrome/130 Win",
+    "loginAt": "2026-10-09T04:32:00Z",
+    "geo": "AU"
+   },
+   {
+    "sessionId": "sess-7163",
+    "buyer": "B-1024",
+    "fingerprint": "fp-3d6402",
+    "ip": "163.233.27.78",
+    "ua": "Firefox/131 Mac",
+    "loginAt": "2026-10-09T04:52:38Z",
+    "geo": "SG"
+   },
+   {
+    "sessionId": "sess-7164",
+    "buyer": "B-2036",
+    "fingerprint": "fp-7c1e9a",
+    "ip": "62.22.112.9",
+    "ua": "Firefox/131 Mac",
+    "loginAt": "2026-10-09T04:59:50Z",
+    "geo": "ID"
+   },
+   {
+    "sessionId": "sess-7166",
+    "buyer": "B-1171",
+    "fingerprint": "fp-7ded0e",
+    "ip": "40.40.23.189",
+    "ua": "Chrome/130 Android",
+    "loginAt": "2026-10-09T05:44:22Z",
+    "geo": "CA"
+   },
+   {
+    "sessionId": "sess-7167",
+    "buyer": "B-1227",
+    "fingerprint": "fp-f32654",
+    "ip": "39.84.71.233",
+    "ua": "Chrome/130 Win",
+    "loginAt": "2026-10-09T06:13:37Z",
+    "geo": "NL"
+   },
+   {
+    "sessionId": "sess-7169",
+    "buyer": "B-1139",
+    "fingerprint": "fp-634b38",
+    "ip": "44.187.39.43",
+    "ua": "Firefox/131 Mac",
+    "loginAt": "2026-10-09T06:50:57Z",
+    "geo": "US"
+   },
+   {
+    "sessionId": "sess-7170",
+    "buyer": "B-2019",
+    "fingerprint": "fp-21bb04",
+    "ip": "132.50.170.187",
+    "ua": "Chrome/130 Android",
+    "loginAt": "2026-10-09T06:56:15Z",
+    "geo": "ID"
+   },
+   {
+    "sessionId": "sess-7172",
+    "buyer": "B-1211",
+    "fingerprint": "fp-812314",
+    "ip": "171.200.94.159",
+    "ua": "Firefox/131 Mac",
+    "loginAt": "2026-10-09T07:43:15Z",
+    "geo": "AU"
+   },
+   {
+    "sessionId": "sess-7173",
+    "buyer": "B-2011",
+    "fingerprint": "fp-7c1e9a",
+    "ip": "185.124.171.100",
+    "ua": "Chrome/130 Android",
+    "loginAt": "2026-10-09T07:48:49Z",
+    "geo": "ID"
+   },
+   {
+    "sessionId": "sess-7174",
+    "buyer": "B-2017",
+    "fingerprint": "fp-21bb04",
+    "ip": "133.220.1.239",
+    "ua": "Chrome/130 Android",
+    "loginAt": "2026-10-09T07:53:08Z",
+    "geo": "ID"
+   },
+   {
+    "sessionId": "sess-7176",
+    "buyer": "B-1086",
+    "fingerprint": "fp-f29d92",
+    "ip": "112.164.100.203",
+    "ua": "Chrome/130 Win",
+    "loginAt": "2026-10-09T09:33:30Z",
+    "geo": "US"
+   },
+   {
+    "sessionId": "sess-7178",
+    "buyer": "B-2011",
+    "fingerprint": "fp-7c1e9a",
+    "ip": "156.22.68.180",
+    "ua": "Firefox/131 Mac",
+    "loginAt": "2026-10-09T09:52:05Z",
+    "geo": "ID"
+   },
+   {
+    "sessionId": "sess-7177",
+    "buyer": "B-2002",
+    "fingerprint": "fp-7c1e9a",
+    "ip": "77.162.177.134",
+    "ua": "Safari/18 iOS",
+    "loginAt": "2026-10-09T10:00:27Z",
+    "geo": "ID"
+   },
+   {
+    "sessionId": "sess-7182",
+    "buyer": "B-2037",
+    "fingerprint": "fp-7c1e9a",
+    "ip": "168.12.188.177",
+    "ua": "Firefox/131 Mac",
+    "loginAt": "2026-10-09T11:14:33Z",
+    "geo": "ID"
+   },
+   {
+    "sessionId": "sess-7183",
+    "buyer": "B-2003",
+    "fingerprint": "fp-21bb04",
+    "ip": "146.49.218.82",
+    "ua": "Firefox/131 Mac",
+    "loginAt": "2026-10-09T11:29:59Z",
+    "geo": "ID"
+   },
+   {
+    "sessionId": "sess-7184",
+    "buyer": "B-2007",
+    "fingerprint": "fp-21bb04",
+    "ip": "159.237.212.222",
+    "ua": "Safari/18 iOS",
+    "loginAt": "2026-10-09T11:46:07Z",
+    "geo": "ID"
+   },
+   {
+    "sessionId": "sess-7185",
+    "buyer": "B-2011",
+    "fingerprint": "fp-7c1e9a",
+    "ip": "185.81.25.63",
+    "ua": "Safari/18 iOS",
+    "loginAt": "2026-10-09T12:21:58Z",
+    "geo": "ID"
+   },
+   {
+    "sessionId": "sess-7186",
+    "buyer": "B-2036",
+    "fingerprint": "fp-7c1e9a",
+    "ip": "199.160.44.250",
+    "ua": "Chrome/130 Win",
+    "loginAt": "2026-10-09T13:31:20Z",
+    "geo": "ID"
+   },
+   {
+    "sessionId": "sess-7188",
+    "buyer": "B-1189",
+    "fingerprint": "fp-53390b",
+    "ip": "119.74.87.46",
+    "ua": "Chrome/130 Win",
+    "loginAt": "2026-10-09T14:30:41Z",
+    "geo": "US"
+   },
+   {
+    "sessionId": "sess-7189",
+    "buyer": "B-2030",
+    "fingerprint": "fp-21bb04",
+    "ip": "169.248.202.165",
+    "ua": "Chrome/130 Android",
+    "loginAt": "2026-10-09T15:20:40Z",
+    "geo": "ID"
+   },
+   {
+    "sessionId": "sess-7191",
+    "buyer": "B-1006",
+    "fingerprint": "fp-531967",
+    "ip": "183.248.41.248",
+    "ua": "Safari/18 iOS",
+    "loginAt": "2026-10-09T16:07:42Z",
+    "geo": "AU"
+   },
+   {
+    "sessionId": "sess-7193",
+    "buyer": "B-2009",
+    "fingerprint": "fp-e0d5c7",
+    "ip": "90.50.129.229",
+    "ua": "Chrome/130 Android",
+    "loginAt": "2026-10-09T16:23:30Z",
+    "geo": "ID"
+   },
+   {
+    "sessionId": "sess-7194",
+    "buyer": "B-1001",
+    "fingerprint": "fp-905939",
+    "ip": "183.195.207.247",
+    "ua": "Firefox/131 Mac",
+    "loginAt": "2026-10-09T17:08:00Z",
+    "geo": "NL"
+   },
+   {
+    "sessionId": "sess-7195",
+    "buyer": "B-2016",
+    "fingerprint": "fp-21bb04",
+    "ip": "193.44.9.87",
+    "ua": "Chrome/130 Win",
+    "loginAt": "2026-10-09T18:05:12Z",
+    "geo": "ID"
+   },
+   {
+    "sessionId": "sess-7196",
+    "buyer": "B-2020",
+    "fingerprint": "fp-21bb04",
+    "ip": "47.32.207.21",
+    "ua": "Safari/18 iOS",
+    "loginAt": "2026-10-09T18:17:25Z",
+    "geo": "ID"
+   },
+   {
+    "sessionId": "sess-7197",
+    "buyer": "B-2035",
+    "fingerprint": "fp-7c1e9a",
+    "ip": "69.219.110.154",
+    "ua": "Chrome/130 Android",
+    "loginAt": "2026-10-09T18:32:57Z",
+    "geo": "ID"
+   },
+   {
+    "sessionId": "sess-7198",
+    "buyer": "B-1204",
+    "fingerprint": "fp-36d2ac",
+    "ip": "203.131.239.104",
+    "ua": "Safari/18 iOS",
+    "loginAt": "2026-10-09T19:03:04Z",
+    "geo": "AU"
+   },
+   {
+    "sessionId": "sess-7203",
+    "buyer": "B-2037",
+    "fingerprint": "fp-7c1e9a",
+    "ip": "60.209.103.227",
+    "ua": "Chrome/130 Win",
+    "loginAt": "2026-10-09T21:58:18Z",
+    "geo": "ID"
+   },
+   {
+    "sessionId": "sess-7204",
+    "buyer": "B-2039",
+    "fingerprint": "fp-21bb04",
+    "ip": "62.37.178.100",
+    "ua": "Firefox/131 Mac",
+    "loginAt": "2026-10-09T22:15:41Z",
+    "geo": "ID"
+   },
+   {
+    "sessionId": "sess-7208",
+    "buyer": "B-2024",
+    "fingerprint": "fp-e0d5c7",
+    "ip": "116.33.175.208",
+    "ua": "Safari/18 iOS",
+    "loginAt": "2026-10-09T23:39:35Z",
+    "geo": "ID"
+   },
+   {
+    "sessionId": "sess-7210",
+    "buyer": "B-2029",
+    "fingerprint": "fp-7c1e9a",
+    "ip": "90.1.156.103",
+    "ua": "Firefox/131 Mac",
+    "loginAt": "2026-10-10T00:07:41Z",
+    "geo": "ID"
+   },
+   {
+    "sessionId": "sess-7213",
+    "buyer": "B-2019",
+    "fingerprint": "fp-21bb04",
+    "ip": "206.41.6.250",
+    "ua": "Firefox/131 Mac",
+    "loginAt": "2026-10-10T00:14:56Z",
+    "geo": "ID"
+   },
+   {
+    "sessionId": "sess-7211",
+    "buyer": "B-1172",
+    "fingerprint": "fp-ed865b",
+    "ip": "21.78.76.27",
+    "ua": "Chrome/130 Win",
+    "loginAt": "2026-10-10T00:31:09Z",
+    "geo": "FR"
+   },
+   {
+    "sessionId": "sess-7217",
+    "buyer": "B-1102",
+    "fingerprint": "fp-a62b19",
+    "ip": "117.166.134.11",
+    "ua": "Chrome/130 Win",
+    "loginAt": "2026-10-10T04:52:14Z",
+    "geo": "CA"
+   },
+   {
+    "sessionId": "sess-7218",
+    "buyer": "B-2000",
+    "fingerprint": "fp-e0d5c7",
+    "ip": "111.188.176.61",
+    "ua": "Firefox/131 Mac",
+    "loginAt": "2026-10-10T04:53:32Z",
+    "geo": "ID"
+   },
+   {
+    "sessionId": "sess-7219",
+    "buyer": "B-1062",
+    "fingerprint": "fp-6967fe",
+    "ip": "54.238.187.134",
+    "ua": "Chrome/130 Win",
+    "loginAt": "2026-10-10T05:09:12Z",
+    "geo": "US"
+   },
+   {
+    "sessionId": "sess-7220",
+    "buyer": "B-1189",
+    "fingerprint": "fp-53390b",
+    "ip": "104.84.193.88",
+    "ua": "Safari/18 iOS",
+    "loginAt": "2026-10-10T06:39:12Z",
+    "geo": "FR"
+   },
+   {
+    "sessionId": "sess-7222",
+    "buyer": "B-2023",
+    "fingerprint": "fp-7c1e9a",
+    "ip": "176.23.155.112",
+    "ua": "Safari/18 iOS",
+    "loginAt": "2026-10-10T07:57:24Z",
+    "geo": "ID"
+   },
+   {
+    "sessionId": "sess-7223",
+    "buyer": "B-1053",
+    "fingerprint": "fp-87f80a",
+    "ip": "184.62.24.99",
+    "ua": "Chrome/130 Win",
+    "loginAt": "2026-10-10T08:48:47Z",
+    "geo": "US"
+   },
+   {
+    "sessionId": "sess-7225",
+    "buyer": "B-2025",
+    "fingerprint": "fp-21bb04",
+    "ip": "163.238.216.206",
+    "ua": "Safari/18 iOS",
+    "loginAt": "2026-10-10T09:15:49Z",
+    "geo": "ID"
+   },
+   {
+    "sessionId": "sess-7227",
+    "buyer": "B-2012",
+    "fingerprint": "fp-e0d5c7",
+    "ip": "14.227.244.120",
+    "ua": "Firefox/131 Mac",
+    "loginAt": "2026-10-10T10:37:33Z",
+    "geo": "ID"
+   },
+   {
+    "sessionId": "sess-7229",
+    "buyer": "B-2015",
+    "fingerprint": "fp-21bb04",
+    "ip": "71.220.47.76",
+    "ua": "Chrome/130 Android",
+    "loginAt": "2026-10-10T11:30:30Z",
+    "geo": "ID"
+   },
+   {
+    "sessionId": "sess-7231",
+    "buyer": "B-1198",
+    "fingerprint": "fp-7e7e80",
+    "ip": "17.27.237.162",
+    "ua": "Firefox/131 Mac",
+    "loginAt": "2026-10-10T11:44:18Z",
+    "geo": "US"
+   },
+   {
+    "sessionId": "sess-7230",
+    "buyer": "B-2021",
+    "fingerprint": "fp-7c1e9a",
+    "ip": "65.15.143.71",
+    "ua": "Firefox/131 Mac",
+    "loginAt": "2026-10-10T11:52:49Z",
+    "geo": "ID"
+   },
+   {
+    "sessionId": "sess-7232",
+    "buyer": "B-1125",
+    "fingerprint": "fp-4f0aaf",
+    "ip": "30.180.167.127",
+    "ua": "Firefox/131 Mac",
+    "loginAt": "2026-10-10T12:41:44Z",
+    "geo": "SG"
+   },
+   {
+    "sessionId": "sess-7236",
+    "buyer": "B-1061",
+    "fingerprint": "fp-674e2a",
+    "ip": "95.94.193.43",
+    "ua": "Chrome/130 Android",
+    "loginAt": "2026-10-10T14:23:59Z",
+    "geo": "GB"
+   },
+   {
+    "sessionId": "sess-7234",
+    "buyer": "B-1090",
+    "fingerprint": "fp-820475",
+    "ip": "140.236.219.85",
+    "ua": "Safari/18 iOS",
+    "loginAt": "2026-10-10T14:28:40Z",
+    "geo": "US"
+   },
+   {
+    "sessionId": "sess-7235",
+    "buyer": "B-1094",
+    "fingerprint": "fp-660419",
+    "ip": "53.21.148.186",
+    "ua": "Chrome/130 Android",
+    "loginAt": "2026-10-10T14:40:41Z",
+    "geo": "FR"
+   },
+   {
+    "sessionId": "sess-7239",
+    "buyer": "B-2021",
+    "fingerprint": "fp-7c1e9a",
+    "ip": "72.97.225.29",
+    "ua": "Safari/18 iOS",
+    "loginAt": "2026-10-10T14:59:59Z",
+    "geo": "ID"
+   },
+   {
+    "sessionId": "sess-7238",
+    "buyer": "B-2004",
+    "fingerprint": "fp-7c1e9a",
+    "ip": "96.113.74.68",
+    "ua": "Chrome/130 Android",
+    "loginAt": "2026-10-10T15:00:32Z",
+    "geo": "ID"
+   },
+   {
+    "sessionId": "sess-7241",
+    "buyer": "B-2035",
+    "fingerprint": "fp-7c1e9a",
+    "ip": "120.30.197.168",
+    "ua": "Safari/18 iOS",
+    "loginAt": "2026-10-10T16:13:25Z",
+    "geo": "ID"
+   },
+   {
+    "sessionId": "sess-7246",
+    "buyer": "B-1057",
+    "fingerprint": "fp-2d5883",
+    "ip": "187.190.150.41",
+    "ua": "Firefox/131 Mac",
+    "loginAt": "2026-10-10T19:40:51Z",
+    "geo": "US"
+   },
+   {
+    "sessionId": "sess-7247",
+    "buyer": "B-2000",
+    "fingerprint": "fp-e0d5c7",
+    "ip": "200.125.133.139",
+    "ua": "Firefox/131 Mac",
+    "loginAt": "2026-10-10T19:54:40Z",
+    "geo": "ID"
+   },
+   {
+    "sessionId": "sess-7248",
+    "buyer": "B-1124",
+    "fingerprint": "fp-c87573",
+    "ip": "27.201.211.193",
+    "ua": "Chrome/130 Win",
+    "loginAt": "2026-10-10T20:37:00Z",
+    "geo": "CA"
+   },
+   {
+    "sessionId": "sess-7251",
+    "buyer": "B-1148",
+    "fingerprint": "fp-280f56",
+    "ip": "144.17.171.35",
+    "ua": "Chrome/130 Win",
+    "loginAt": "2026-10-10T21:28:51Z",
+    "geo": "AU"
+   },
+   {
+    "sessionId": "sess-7252",
+    "buyer": "B-1117",
+    "fingerprint": "fp-7a6ecc",
+    "ip": "195.195.199.50",
+    "ua": "Safari/18 iOS",
+    "loginAt": "2026-10-10T21:43:23Z",
+    "geo": "CA"
+   },
+   {
+    "sessionId": "sess-7260",
+    "buyer": "B-1078",
+    "fingerprint": "fp-2b4151",
+    "ip": "28.90.118.216",
+    "ua": "Chrome/130 Win",
+    "loginAt": "2026-10-11T07:47:28Z",
+    "geo": "AU"
+   },
+   {
+    "sessionId": "sess-7264",
+    "buyer": "B-1060",
+    "fingerprint": "fp-7a144e",
+    "ip": "188.111.165.112",
+    "ua": "Chrome/130 Android",
+    "loginAt": "2026-10-11T10:33:28Z",
+    "geo": "GB"
+   },
+   {
+    "sessionId": "sess-7265",
+    "buyer": "B-1169",
+    "fingerprint": "fp-e0f8be",
+    "ip": "136.97.124.47",
+    "ua": "Firefox/131 Mac",
+    "loginAt": "2026-10-11T10:45:56Z",
+    "geo": "NL"
+   },
+   {
+    "sessionId": "sess-7266",
+    "buyer": "B-1077",
+    "fingerprint": "fp-c9b791",
+    "ip": "121.109.208.253",
+    "ua": "Firefox/131 Mac",
+    "loginAt": "2026-10-11T11:28:41Z",
+    "geo": "DE"
+   },
+   {
+    "sessionId": "sess-7267",
+    "buyer": "B-1099",
+    "fingerprint": "fp-f8e76d",
+    "ip": "133.247.109.37",
+    "ua": "Chrome/130 Android",
+    "loginAt": "2026-10-11T12:13:30Z",
+    "geo": "US"
+   },
+   {
+    "sessionId": "sess-7270",
+    "buyer": "B-1188",
+    "fingerprint": "fp-2e5472",
+    "ip": "60.26.115.34",
+    "ua": "Firefox/131 Mac",
+    "loginAt": "2026-10-11T13:08:41Z",
+    "geo": "FR"
+   },
+   {
+    "sessionId": "sess-7274",
+    "buyer": "B-1197",
+    "fingerprint": "fp-ccab73",
+    "ip": "176.78.15.224",
+    "ua": "Safari/18 iOS",
+    "loginAt": "2026-10-11T18:18:09Z",
+    "geo": "CA"
+   },
+   {
+    "sessionId": "sess-7275",
+    "buyer": "B-1165",
+    "fingerprint": "fp-2b0cdf",
+    "ip": "73.80.239.200",
+    "ua": "Safari/18 iOS",
+    "loginAt": "2026-10-11T19:47:31Z",
+    "geo": "US"
+   },
+   {
+    "sessionId": "sess-7279",
+    "buyer": "B-1025",
+    "fingerprint": "fp-f4c0b5",
+    "ip": "25.240.171.108",
+    "ua": "Safari/18 iOS",
+    "loginAt": "2026-10-11T23:44:49Z",
+    "geo": "NL"
+   },
+   {
+    "sessionId": "sess-7280",
+    "buyer": "B-1201",
+    "fingerprint": "fp-c746cd",
+    "ip": "188.53.42.182",
+    "ua": "Firefox/131 Mac",
+    "loginAt": "2026-10-12T00:51:20Z",
+    "geo": "DE"
+   },
+   {
+    "sessionId": "sess-7282",
+    "buyer": "B-1035",
+    "fingerprint": "fp-0993af",
+    "ip": "89.48.22.253",
+    "ua": "Chrome/130 Android",
+    "loginAt": "2026-10-12T01:46:18Z",
+    "geo": "AU"
+   },
+   {
+    "sessionId": "sess-7284",
+    "buyer": "B-1180",
+    "fingerprint": "fp-5ecb56",
+    "ip": "214.214.178.96",
+    "ua": "Chrome/130 Android",
+    "loginAt": "2026-10-12T09:02:43Z",
+    "geo": "SG"
+   },
+   {
+    "sessionId": "sess-7285",
+    "buyer": "B-1020",
+    "fingerprint": "fp-b04596",
+    "ip": "117.119.12.111",
+    "ua": "Safari/18 iOS",
+    "loginAt": "2026-10-12T09:51:17Z",
+    "geo": "US"
+   },
+   {
+    "sessionId": "sess-7292",
+    "buyer": "B-1119",
+    "fingerprint": "fp-6b85c4",
+    "ip": "25.229.191.90",
+    "ua": "Safari/18 iOS",
+    "loginAt": "2026-10-12T21:09:33Z",
+    "geo": "SG"
+   },
+   {
+    "sessionId": "sess-7293",
+    "buyer": "B-1206",
+    "fingerprint": "fp-14d04a",
+    "ip": "81.68.109.254",
+    "ua": "Firefox/131 Mac",
+    "loginAt": "2026-10-12T21:20:08Z",
+    "geo": "NL"
+   },
+   {
+    "sessionId": "sess-7295",
+    "buyer": "B-1138",
+    "fingerprint": "fp-958f99",
+    "ip": "216.37.221.78",
+    "ua": "Chrome/130 Win",
+    "loginAt": "2026-10-12T22:00:37Z",
+    "geo": "US"
+   }
+  ]
+ }
+}
