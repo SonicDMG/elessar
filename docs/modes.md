@@ -26,11 +26,12 @@ export function unmount() {}        // stop timers, drop listeners
 | `ctx.highlight(ids, ms)` | pulse pieces on the Board view (no-op while another mode is showing) |
 | `ctx.sprites` | the `sprites.js` module: `COLORS`, `drawPiece`, `drawText`, `rgba`, `mix` |
 
-Each mode owns exactly two files: `web/<mode>.js` and `web/<mode>.css`. Both
+Each mode owns exactly two files: `web/<mode>.js` and `web/<mode>.css`
+(`life`, `topology`, `landscape`). Both
 are already linked from `index.html`. Modes must not edit `index.html`,
 `app.js`, `board.js`, `panel.js`, `sprites.js` or `style.css`.
 
-Mode containers: `#mode-life` and `#mode-topology`, each a `.mode-view`
+Mode containers: `#mode-life`, `#mode-topology` and `#mode-landscape`, each a `.mode-view`
 (flex column, `flex: 1`, `min-height: 0`). The Board view keeps its own
 markup. The current mode is in the URL as `?mode=<name>` and survives
 reloads; `board` is the default.
@@ -164,6 +165,51 @@ incident replay.
   pause per event.
 - Clicking a node selects the piece (`ctx.select`).
 - Works with no sources connected and on both packs.
+
+## Landscape mode (Agent D): spike map on a surface plot
+
+A fitness landscape of the evidence: every evidence term is a spike on an
+isometric floor, a smoothed surface rises over them, contour lines show the
+relief, and the best-backed hypothesis is the highest ridge. Same CRT pixel
+style, hand-rolled isometric canvas, no dependency.
+
+- **A spike is one evidence term**: for each hypothesis, each entry of
+  `detail.breakdown.support` (height = `term`, i.e. `w × p`) and each entry of
+  `detail.breakdown.inhibit` (a **pit** going below the floor, depth =
+  `w × p`, drawn red). Terms below 0.01 are omitted.
+- **Floor axes.** X: hypotheses side by side as lanes, ordered so hypotheses
+  that share the most support (sum of shared terms) are adjacent (the same
+  greedy rule Life uses), each lane in the hypothesis's species colour (use
+  Life's palette order so colours match across modes). Y: evidence rows,
+  signals first grouped by source in rack order, then participants grouped
+  by object type; a row exists only for evidence that appears in at least one
+  derivation. A spike stands in the cell (hypothesis lane, evidence row).
+- **Surface.** A heightfield over the floor grid: each cell's net value is
+  support term minus inhibitor cut; smooth with a small kernel (about 1.5
+  cells) and draw as a shaded isometric mesh (lighter facing the light,
+  darker away, in the lane's hue) with painter's ordering so spikes and
+  surface occlude correctly. Draw contour lines on the floor at fixed levels
+  (0.05, 0.1, 0.2, 0.4, 0.6) and label the highest ridge. Each lane gets a
+  beacon at its crest with code, label and belief; off-board hypotheses keep
+  their lane, dimmed and hatched, tagged "off board", so their pits remain
+  visible.
+- **Camera.** Isometric 2:1, four rotation stops (buttons and keys Q/E),
+  zoom (+/−, wheel), fit. Integer pixel scale as the board does.
+- **Interaction.** Hover a spike: tooltip "S4 Prod traffic to staging → H3
+  Misconfigured change · 0.65 × 0.86 = 0.56" (pits: "cuts by"). Click a spike
+  to `ctx.select` the signal or participant; click a lane beacon or label to
+  select the hypothesis. The selected piece's spikes are highlighted and the
+  rest dimmed.
+- **Time.** A scrubber over `GET /api/timeline` slices with play/pause (same
+  endpoint and slice shape Life and Topology use; refetch when the board
+  fingerprint changes). Spikes and the surface interpolate between slices
+  (~300 ms). The live end uses `state`. Label slice 0 / undated evidence as
+  Topology does.
+- **Readout line** under the floor: "Highest ridge: H3 Misconfigured change
+  86% · tallest spike: S4 → H3 0.56 · deepest pit: S5 → H2 −0.79", plus a
+  legend (lane colours, height scale, pits = inhibitors, engine in use from
+  `state.engine`).
+- Works with no sources connected (flat floor, a note) and on both packs.
 
 ## Verification each mode must do before reporting
 

@@ -4,6 +4,7 @@ import * as P from "./panel.js";
 import * as sprites from "./sprites.js";
 import * as Life from "./life.js";
 import * as Topology from "./topology.js";
+import * as Landscape from "./landscape.js";
 
 const $ = (s) => document.querySelector(s);
 const board = new Board($("#board"), $("#glow"), $("#tip"));
@@ -20,7 +21,7 @@ board.onSelect = (id) => {
 // ---------------------------------------------------------------- modes
 // Board is built in; Life and Topology are modules with mount/update/unmount
 // (see docs/modes.md). They share the session through `ctx`.
-const MODES = { life: Life, topology: Topology };
+const MODES = { life: Life, topology: Topology, landscape: Landscape };
 let mode = "board";
 const ctx = {
   get state() { return state; },
