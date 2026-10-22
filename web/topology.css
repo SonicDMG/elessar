@@ -26,6 +26,8 @@
   background: repeating-linear-gradient(to bottom, transparent 0, transparent calc(var(--scan, 3px) * 2), rgba(0, 0, 0, 0.18) calc(var(--scan, 3px) * 2), rgba(0, 0, 0, 0.18) calc(var(--scan, 3px) * 3));
 }
 .topo-labels { position: absolute; inset: 0; pointer-events: none; z-index: 1; }
+.topo-label { pointer-events: auto; cursor: pointer; }
+.topo-label:hover { color: var(--participant); }
 .topo-label { position: absolute; left: 0; top: 0; max-width: 150px; padding: 0 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   font: 15px/1.05 var(--pixel); letter-spacing: 0.5px; color: var(--text); background: rgba(7, 9, 12, 0.72); }
 .topo-label b { color: var(--participant); font-weight: 400; }
@@ -42,6 +44,8 @@
 .topo-banner b { font-weight: 400; padding: 0 5px; margin-right: 4px; border: 1px solid currentColor; }
 .topo-banner .live { color: #3fcf76; }
 .topo-banner .replay { color: var(--gold); animation: topo-blink 1s steps(2) infinite; }
+.topo-banner .approx { font: 11px var(--mono); color: var(--gold); border: 1px dashed #6b5a22; padding: 0 4px; }
+.topo-banner .dim { font: 11px var(--mono); }
 @keyframes topo-blink { 50% { opacity: 0.45; } }
 .topo-foot { position: absolute; left: 8px; bottom: 5px; z-index: 3; pointer-events: none; font-size: 10.5px; color: var(--dim); }
 .topo-note { flex: none; padding: 5px 10px; font-size: 12px; color: var(--text); background: #0a0e13; border: 1px dashed var(--line); }

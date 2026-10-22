@@ -150,6 +150,7 @@ export function mount(el, ctx) {
     scale: 3, W: 0, H: 0, k: 1,
     flash: new Map(), hover: null, lastSel: undefined, labelKey: "",
     t: null,                  // replay time in ms, or null for live
+    tl: null, tlSeq: 0,       // the re-inferred timeline: {fp, status, slices}
     playing: false, timer: 0, raf: 0,
     mapEl: q(".topo-map"), canvas: q("canvas"), labels: q(".topo-labels"), banner: q(".topo-banner"),
     note: q(".topo-note"), foot: q(".topo-foot"), tip: q(".topo-tip"), crumbs: q(".topo-crumbs"),
@@ -177,6 +178,8 @@ export function update(state) {
   }
   if (!SUBMAPS.has(C.map) && !state.sources.some((s) => s.id === C.map)) C.map = "root";
   readEvents(state);
+  syncTimeline(state);
+  rebuildSpan();
   // a replay position outside the new span (events changed) snaps back to live
   if (C.t != null && (!C.span || C.t > C.span.max)) C.t = null;
   derive();
@@ -271,14 +274,73 @@ function readEvents(state) {
     .map((e) => ({ ...e, t: Number.isFinite(e.t) ? e.t : Date.parse(e.at), participants: e.participants || [] }))
     .filter((e) => Number.isFinite(e.t))
     .sort((a, b) => a.t - b.t);
-  if (!C.events.length) { C.span = null; return; }
-  // The scrubber is spaced by event order, not by clock: one even step per
-  // distinct timestamp, so a record dated years earlier (a hire date, say)
-  // does not squash the incident into a single pixel. Its far left is "before
-  // the first event".
-  const stops = [...new Set(C.events.map((e) => e.t))];
+}
+
+// The scrubber is spaced by step, not by clock: one even step per timeline
+// slice (or per distinct event time until the timeline arrives), so a record
+// dated years earlier (a hire date, say) does not squash the incident into a
+// single pixel. Its far left is slice 0, "before any timed record"; its far
+// right, past the last slice, is live.
+function rebuildSpan() {
+  const sl = timeline();
+  const stops = sl ? sl.filter((x) => x.t != null).map((x) => x.t)
+    : C.events ? [...new Set(C.events.map((e) => e.t))] : [];
+  if (!C.events || !stops.length) { C.span = null; return; }
   const first = stops[0], last = stops[stops.length - 1];
   C.span = { min: first - 1, max: last, stops, years: last - first > 300 * 86400e3, days: last - first > 20 * 3600e3 };
+}
+
+// The board re-inferred at every event time (GET /api/timeline), refetched
+// whenever something that feeds inference changes (a fingerprint of every
+// node's belief and status). Until it arrives, or if it fails, replay falls
+// back to coloring by event severity and says so.
+function syncTimeline(state) {
+  const fp = `${state.scenario.id}|${state.engine}|${state.nodes.map((n) => `${n.id}:${n.p.toFixed(4)}:${n.status}`).join(",")}`;
+  if (C.tl && C.tl.fp === fp) return;
+  const seq = ++C.tlSeq;
+  C.tl = { fp, status: "loading", slices: null };
+  const done = (status, slices) => {
+    if (!C || seq !== C.tlSeq) return; // unmounted, or a newer fetch is on its way
+    C.tl = { fp, status, slices };
+    rebuildSpan();
+    if (C.t != null && (!C.span || C.t > C.span.max)) C.t = null;
+    derive();
+    renderTicks();
+    renderReplay();
+    markRows();
+  };
+  fetch(`/api/timeline?scenario=${encodeURIComponent(state.scenario.id)}`)
+    .then((r) => (r.ok ? r.json() : Promise.reject(new Error(r.statusText))))
+    .then((d) => done(Array.isArray(d.slices) && d.slices.length ? "ok" : "error", d.slices || null))
+    .catch(() => done("error", null));
+}
+
+const timeline = () => (C.tl && C.tl.status === "ok" ? C.tl.slices : null);
+
+// The slice in force at replay time t: the last one at or before t, or slice
+// 0 (before any timed record) when t precedes them all. Null when live or when
+// there is no timeline.
+function sliceAt(t) {
+  const sl = timeline();
+  if (!sl || t == null) return null;
+  let cur = sl[0];
+  for (const x of sl) if (x.t != null && x.t <= t) cur = x;
+  return cur;
+}
+
+// A node as it stood at a slice: belief and status, and for hypotheses
+// presence and the derivation terms. The live node when there is no slice.
+function nodeAt(n, sl) {
+  if (!sl) return n;
+  const rec = (n.band === "hypothesis" ? sl.hypotheses : n.band === "signal" ? sl.signals : sl.participants || {})[n.id];
+  if (!rec) return n;
+  const v = { ...n, p: rec.p, status: rec.status };
+  if (n.band === "hypothesis") {
+    v.present = rec.present;
+    v.offboard = rec.present ? null : { reason: `explained away at this point in the replay (${Math.round(rec.p * 100)}%)` };
+    v.detail = { ...n.detail, breakdown: { support: rec.support || [], inhibit: rec.inhibit || [] } };
+  }
+  return v;
 }
 
 // Events touching a participant up to time t (all of them when live).
@@ -287,12 +349,16 @@ function touching(id, t) {
   return C.events.filter((e) => (t == null || e.t <= t) && e.participants.includes(id));
 }
 
-// Status of one participant: from belief when live, from the worst event
-// severity seen so far when replaying. Dimmed when every touching event is acked.
+// Status of one participant: from belief when live, from the timeline slice
+// when replaying (falling back to the worst event severity seen so far while
+// there is no timeline). Dimmed when every touching event is acked.
 function nodeStatus(n, t) {
-  if (!n.present) return { status: "unmanaged", ghost: !n.offboard, off: !!n.offboard, dim: false };
+  const sl = sliceAt(t), rec = sl && sl.participants && sl.participants[n.id];
+  if (rec && !rec.present) return { status: "unmanaged", ghost: true, dim: false }; // not named yet at this point
+  if (!rec && !n.present) return { status: "unmanaged", ghost: !n.offboard, off: !!n.offboard, dim: false };
   const evs = touching(n.id, t);
   const dim = evs.length > 0 && evs.every((e) => e.acked);
+  if (rec) return { status: rec.status === "unresolved" ? "unknown" : statusFor(rec.p), dim, p: rec.p };
   if (t == null) return { status: n.status === "unresolved" ? "unknown" : statusFor(n.p), dim };
   if (!evs.length) return { status: "unknown", dim };
   return { status: statusFor(Math.max(...evs.map((e) => e.severity || 0))), dim };
@@ -312,7 +378,7 @@ function worst(list) {
 const sourcesOf = (n) => (n.detail && n.detail.sources) || [];
 const thickFor = (w) => (w >= 4 ? 3 : w >= 2 ? 2 : 1);
 const thickForMass = (m) => (m >= 0.4 ? 3 : m >= 0.15 ? 2 : 1);
-const leaderOf = (s) => s.nodes.filter((n) => n.band === "hypothesis").reduce((a, b) => (!a || b.p > a.p ? b : a), null);
+const leaderOf = (hyps) => hyps.reduce((a, b) => (!a || b.p > a.p ? b : a), null);
 
 // Rebuild what the current submap shows: icons, links and their labels.
 function derive() {
@@ -338,8 +404,9 @@ function derive() {
                    color: rgb(src.connected ? STATUS[it.status].color : STATUS.unmanaged.color), ids: [] });
     });
     // the Hypotheses beacon, top right of the ring, labelled beside it: the
-    // leader's code and belief
-    const lead = leaderOf(s);
+    // leader's code and belief (at the replay slice when replaying)
+    const sl = sliceAt(T);
+    const lead = leaderOf(s.nodes.filter((n) => n.band === "hypothesis").map((n) => nodeAt(n, sl)));
     const rs = Math.max(30, ...[...C.srcPos.values()].map((p) => p.x));
     const top = Math.min(0, ...[...C.srcPos.values()].map((p) => p.y));
     items.push({ id: "@hyp", kind: "hyproot", submap: true, x: rs + 40, y: top, side: "right", glyph: "beacon", lead,
@@ -370,11 +437,13 @@ function derive() {
   if (!C.panned) frameCamera();
 }
 
-// Hypotheses submap: always live (beliefs have no timestamps). Off-board
-// hypotheses stay drawn, dimmed, with the red edges that explained them away.
+// Hypotheses submap, live or at the replay slice (beliefs, presence and
+// derivation terms from the timeline). Off-board hypotheses stay drawn,
+// dimmed, with the red edges that explained them away.
 function hypItems(s, items, edges) {
-  const nodes = new Map(s.nodes.map((n) => [n.id, n]));
-  const hyps = s.nodes.filter((n) => n.band === "hypothesis");
+  const sl = sliceAt(C.t);
+  const nodes = new Map(s.nodes.map((n) => [n.id, nodeAt(n, sl)]));
+  const hyps = [...nodes.values()].filter((n) => n.band === "hypothesis");
   if (hyps.some((hy) => !C.hypPos.has(hy.id) || termsOf(hy).some((t) => nodes.has(t.from) && !C.hypPos.has(t.from)))) hypLayout(s);
   const byId = new Map();
   for (const [id, p] of C.hypPos) {
@@ -389,7 +458,7 @@ function hypItems(s, items, edges) {
       it = n.status === "dormant" ? { status: "unmanaged", ghost: true } : { status: statusFor(n.p), dim: false };
       it.glyph = "pulse";
     } else {
-      it = { ...nodeStatus(n, null), glyph: glyphFor(n.detail && n.detail.type) };
+      it = { ...nodeStatus(n, C.t), glyph: glyphFor(n.detail && n.detail.type) };
     }
     Object.assign(it, { id, kind: n.band, node: n, x: p.x, y: p.y, side: p.side });
     items.push(it);
@@ -642,9 +711,10 @@ function labelHtml(it) {
   return `<b class="b-participant">${h(n.code)}</b> ${h(n.label)}${tag}`;
 }
 
+// Labels are clickable too: the same as clicking their icon.
 function renderLabels() {
-  C.labels.innerHTML = C.items.map((it) =>
-    `<div class="topo-label${it.ghost || it.status === "unmanaged" || it.off ? " faint" : ""}${it.side ? ` side-${it.side}` : ""}">${labelHtml(it)}</div>`).join("");
+  C.labels.innerHTML = C.items.map((it, i) =>
+    `<div class="topo-label${it.ghost || it.status === "unmanaged" || it.off ? " faint" : ""}${it.side ? ` side-${it.side}` : ""}" data-i="${i}">${labelHtml(it)}</div>`).join("");
   C.labelKey = "";
 }
 
@@ -666,10 +736,15 @@ function placeLabels() {
 function renderMapText() {
   const s = C.state;
   const live = C.t == null;
+  const sl = sliceAt(C.t);
+  const why = C.tl && C.tl.status === "loading" ? "timeline loading" : "timeline unavailable";
   C.banner.innerHTML = live
     ? `<b class="live">LIVE</b> status from beliefs`
-    : `<b class="replay">REPLAY</b> ${clock(C.t)} · ${C.events.filter((e) => e.t <= C.t).length}/${C.events.length} events`
-      + (C.map === "@hyp" ? ` · <span class="warn">this map stays live: beliefs have no timestamps</span>` : "");
+    : sl
+      ? `<b class="replay">REPLAY</b> ${sl.t == null ? "before any timed record" : clock(sl.t)} · slice ${sl.index}/${C.tl.slices.length - 1}`
+        + ` · ${sl.events_seen}/${C.events.length} events · board re-inferred`
+      : `<b class="replay">REPLAY</b> ${clock(C.t)} · ${C.events.filter((e) => e.t <= C.t).length}/${C.events.length} events`
+        + ` · <span class="approx">approximate</span> <span class="dim">${why}: colored by event severity${C.map === "@hyp" ? "; this map shows live beliefs" : ""}</span>`;
 
   let note = "";
   const keys = `1–${s.sources.length}`;
@@ -712,7 +787,7 @@ function showTip(e, it) {
   const st = STATUS[it.status].label + (it.dim ? " · acked" : "");
   if (it.kind === "all") body = `<b>ALL</b> participants<br><span>${st} · ${it.count} on the board</span>`;
   else if (it.kind === "hyproot") {
-    body = `<b>Hypotheses</b><br><span>${it.lead ? `leader ${h(it.lead.code)} ${h(it.lead.label)} · ${Math.round(it.lead.p * 100)}% belief` : "no hypotheses"} · always live</span>`;
+    body = `<b>Hypotheses</b><br><span>${it.lead ? `leader ${h(it.lead.code)} ${h(it.lead.label)} · ${Math.round(it.lead.p * 100)}% belief` : "no hypotheses"}${C.t == null ? "" : " · at this replay point"}</span>`;
   } else if (it.kind === "hypothesis" || it.kind === "signal") {
     const n = it.node;
     const where = it.off ? `off board: ${h((n.offboard && n.offboard.reason) || "explained away")}`
@@ -725,7 +800,7 @@ function showTip(e, it) {
     body = `<b>${h(it.src.name)}</b><br><span>${it.src.connected ? `${st} · names ${it.count} participant${it.count === 1 ? "" : "s"}` : "not connected · unmanaged"}</span>`;
   } else {
     const n = it.node, evs = touching(n.id, C.t);
-    const where = it.ghost ? "not named by any source yet" : it.off ? "off the board" : `${st} · ${Math.round(n.p * 100)}% belief`;
+    const where = it.ghost ? "not named by any source yet" : it.off ? "off the board" : `${st} · ${Math.round((it.p ?? n.p) * 100)}% belief`;
     const evText = C.events ? ` · ${evs.length} event${evs.length === 1 ? "" : "s"}${evs.length ? ` (${evs.filter((x) => x.acked).length} acked)` : ""}` : "";
     body = `<b>${h(n.code)}</b> ${h(n.label)}<br><span>${h((n.detail && n.detail.type) || "participant")} · ${where}${evText}</span>`;
   }
@@ -745,14 +820,15 @@ function clock(t) {
   return (date ? `${date} ` : "") + iso.slice(11, 19);
 }
 
-// scrubber position (0..100) of a time: how many timestamps have happened by then
-const pct = (t) => (C.span.stops.filter((s) => s <= t).length / C.span.stops.length) * 100;
+// scrubber position (0..100) of a time: how many steps have happened by then;
+// the far right (100) is live, one step past the last slice
+const pct = (t) => (C.span.stops.filter((s) => s <= t).length / (C.span.stops.length + 1)) * 100;
 
 function renderTicks() {
   if (!C.span) { C.ticks.innerHTML = ""; return; }
   // a break mark wherever the clock jumps more than six hours between stops
   const { stops } = C.span;
-  const gaps = stops.slice(1).map((t, i) => (t - stops[i] > 6 * 3600e3 ? `<b class="gap" style="left:${((i + 1.5) / stops.length) * 100}%"></b>` : ""));
+  const gaps = stops.slice(1).map((t, i) => (t - stops[i] > 6 * 3600e3 ? `<b class="gap" style="left:${((i + 1.5) / (stops.length + 1)) * 100}%"></b>` : ""));
   C.ticks.innerHTML = gaps.join("") + C.events.map((e) => {
     const sev = e.severity || 0;
     return `<i style="left:${pct(e.t).toFixed(2)}%;--s:${STATUS[statusFor(sev)].color};height:${4 + Math.round(sev * 10)}px"
@@ -777,6 +853,7 @@ function setT(t) {
   derive();
   renderReplay();
   markRows();
+  scrollToCursor();
 }
 
 function play() {
@@ -810,8 +887,8 @@ function pause() {
 function scrub(e) {
   const r = C.rail.getBoundingClientRect();
   const f = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width));
-  const i = Math.round(f * C.span.stops.length);
-  setT(i === 0 ? C.span.min : C.span.stops[i - 1]);
+  const n = C.span.stops.length, i = Math.round(f * (n + 1));
+  setT(i > n ? null : i === 0 ? C.span.min : C.span.stops[i - 1]);
 }
 
 // Arrow keys step event by event; End returns to live.
@@ -867,11 +944,12 @@ function renderEvents() {
   markRows();
 }
 
-// Replay marks (future rows dimmed, the latest one is the cursor) and rows
-// that touch the selected piece.
+// Replay marks (future rows dimmed; the slice's arrived events, or without a
+// timeline the latest row, are the cursor) and rows that touch the selected piece.
 function markRows() {
   if (!C.events) return;
   const byId = new Map(C.events.map((e) => [e.id, e]));
+  const sl = sliceAt(C.t), arrived = sl ? new Set(sl.arrived || []) : null;
   const rows = [...C.evList.querySelectorAll("li[data-ev]")];
   let cur = null;
   for (const li of rows) {
@@ -880,8 +958,8 @@ function markRows() {
     const future = C.t != null && e.t > C.t;
     li.classList.toggle("future", future);
     li.classList.toggle("sel", !!C.ctx.selected && e.participants.includes(C.ctx.selected));
-    li.classList.remove("cur");
-    if (C.t != null && !future) cur = li;
+    li.classList.toggle("cur", !!arrived && arrived.has(e.id));
+    if (!arrived && C.t != null && !future) cur = li;
   }
   if (cur) cur.classList.add("cur");
 }
@@ -924,14 +1002,20 @@ function wire() {
     C.dragged = !!(C.drag && C.drag.moved);
     C.drag = null;
   });
-  cv.addEventListener("click", (e) => {
-    if (C.dragged) { C.dragged = false; return; }
-    const it = hit(e);
+  const activate = (it) => {
     if (!it) return;
     if (it.kind === "all") go("all");
     else if (it.kind === "hyproot") go("@hyp");
     else if (it.kind === "source") go(it.src.id);
     else C.ctx.select(it.id);
+  };
+  cv.addEventListener("click", (e) => {
+    if (C.dragged) { C.dragged = false; return; }
+    activate(hit(e));
+  });
+  C.labels.addEventListener("click", (e) => {
+    const el = e.target.closest(".topo-label");
+    if (el) activate(C.items[Number(el.dataset.i)]);
   });
   cv.addEventListener("pointerleave", () => { C.hover = null; C.tip.hidden = true; });
   cv.addEventListener("dblclick", (e) => { if (!hit(e)) { C.panned = false; frameCamera(); } });

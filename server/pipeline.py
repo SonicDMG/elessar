@@ -269,7 +269,43 @@ def parse_time(value, unit):
         return datetime.fromtimestamp(int(value), timezone.utc)
     if unit == "date_dmy":
         return datetime.strptime(_date_dmy(str(value)), "%Y-%m-%d").replace(tzinfo=timezone.utc)
-    return datetime.strptime(str(value), "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
+    text = str(value).strip()
+    for fmt in ("%Y-%m-%dT%H:%M:%SZ", "%Y-%m-%dT%H:%MZ", "%Y-%m-%dT%H:%M:%S.%fZ", "%Y-%m-%d"):
+        try:
+            return datetime.strptime(text, fmt).replace(tzinfo=timezone.utc)
+        except ValueError:
+            continue
+    raise ValueError(f"not an ISO UTC timestamp: {text!r}")
+
+
+DOCUMENT_TIME_KEYS = ("constant", "regex", "path")
+
+
+def document_time(raw, fmt, spec):
+    """A whole source's timestamp from its document rather than its records:
+    `time.document` is {"constant": ...}, {"regex": ...} (group 1 over the
+    raw text) or {"path": ...} (a root path for nested-json/columnar, or
+    "@attr" / a child path on an XML root)."""
+    doc = spec["document"]
+    unit = spec.get("unit", "iso")
+    if "constant" in doc:
+        return parse_time(doc["constant"], unit)
+    if "regex" in doc:
+        m = re.search(doc["regex"], raw)
+        if not m or not m.groups():
+            raise ValueError(f"document regex {doc['regex']!r} found no group in the source text")
+        return parse_time(m.group(1), unit)
+    path = doc["path"]
+    if fmt in ("nested-json", "columnar"):
+        v = get_path(json.loads(raw), path)
+    elif fmt == "xml":
+        root = ET.fromstring(raw)
+        v = root.attrib.get(path[1:]) if path.startswith("@") else root.findtext(path)
+    else:
+        raise ValueError(f"document path is not supported for {fmt}; use a regex or a constant")
+    if v in (None, ""):
+        raise ValueError(f"document path {path!r} is empty")
+    return parse_time(v, unit)
 
 
 def record_time(data, spec):

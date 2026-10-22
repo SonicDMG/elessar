@@ -250,6 +250,21 @@ Records whose field is empty produce no event; a source without `time`
 produces none. The validator rejects an unknown unit and warns when a path
 never appears in the data or a value does not parse.
 
+Timestamps make a source part of the time-lapse (Life) and replay
+(Topology). Per record: `"time": {"field": "t", "unit": "ms"}` (`field` may
+be a list of paths tried in order; units `ms`, `s`, `iso`, `date_dmy`). For a
+source dated as a whole, such as a bulletin or an export with a header date,
+use `"time": {"document": {...}, "unit": "iso"}` where `document` is
+`{"constant": "..."}`, `{"regex": "..."}` (group 1 over the raw text) or
+`{"path": "..."}` (a root path for nested-json/columnar, `@attr` or a child
+path on an XML root). Records with no time config, an empty value, or a
+value that does not parse are **undated**; `--check` reports them. The
+manifest's top-level `unknown_time` says how undated records take part in
+the time-lapse: `throughout` (reference data, present in every slice; the
+default), `at_connect` (dated when their source was connected) or `after`
+(arrive in one final slice after every timed record). Undated records are
+listed in `state.undated` so views can label them.
+
 | format | options |
 |---|---|
 | `csv` | `delimiter` (default `,`) |

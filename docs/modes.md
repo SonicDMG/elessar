@@ -83,6 +83,18 @@ Timestamps come from a new optional per-source manifest field:
 unit and warns when the field never appears. Records in a source without
 `time`, or whose field is empty, produce no event.
 
+### `state.undated` and `unknown_time`
+
+Records that could not be dated (no time config, empty or unparseable
+value) are listed in `state.undated` with the same shape as events minus
+`at`/`t`, plus `why`. `state.unknown_time` is the pack's policy for them:
+`throughout` (present in every timeline slice; slice 0 lists their ids in
+`undated`), `at_connect` (they become normal events dated at connect time,
+`dated_by: "connect"`), or `after` (a final timeline slice with
+`undated_arrive: true` brings them in). Views should label undated evidence
+as such wherever it is shown. Events also carry `dated_by`: `record`,
+`document` (the whole source has one date) or `connect`.
+
 ### `state.links`
 
 Participant pairs joined by a shared record, undirected, one entry per pair:

@@ -73,6 +73,7 @@
       "kind": "External advisory",
       "format": "kv",
       "file": "sources/records.txt",
+      "time": {"document": {"regex": "generated (\\S+)"}, "unit": "iso"},
       "confidence": 0.8,
       "latency_ms": 400,
       "color": "#e3b341",

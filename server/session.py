@@ -58,6 +58,7 @@ class Session:
         self.lock = threading.Lock()
         self.agent_lock = threading.Lock()
         self._parsed = {}
+        self._doc_times = {}
         self.reset()
 
     def reset(self):
@@ -86,6 +87,7 @@ class Session:
         c.pack, c.base_url = self.pack, self.base_url
         c.lock, c.agent_lock = threading.Lock(), threading.Lock()
         c._parsed = dict(self._parsed)
+        c._doc_times = dict(self._doc_times)
         c.connected, c.errors = dict(self.connected), dict(self.errors)
         c.committed, c.rejected = list(self.committed), set(self.rejected)
         c.judgements, c.crown, c.kept = dict(self.judgements), self.crown, set(self.kept)
@@ -134,23 +136,52 @@ class Session:
 
     # ------------------------------------------------------------ the recompute
 
-    def _record_t(self, sid, r):
-        """Epoch ms of a record, or None when its source has no time config
-        or the field is missing. Untimed records count as reference data."""
-        tconf = self.pack["sources"][sid].get("time")
-        if not tconf:
-            return None
-        try:
-            t = pipeline.record_time(r["data"], tconf)
-        except (TypeError, ValueError, OverflowError):
-            return None
-        return None if t is None else int(t.timestamp() * 1000)
+    def _doc_t(self, sid):
+        """Epoch ms of a source dated as a whole (`time.document`), memoized per payload."""
+        s = self.pack["sources"][sid]
+        raw = self.connected[sid]["raw"] if sid in self.connected else None
+        if raw is None:
+            if s["transport"] != "file":
+                return None
+            with open(s["path"], encoding="utf-8") as f:
+                raw = f.read()
+        key = (sid, len(raw), hash(raw))
+        if key not in self._doc_times:
+            try:
+                self._doc_times[key] = int(pipeline.document_time(raw, s["format"], s["time"]).timestamp() * 1000)
+            except Exception:  # a document that will not date counts as undated
+                self._doc_times[key] = None
+        return self._doc_times[key]
 
-    def compute(self, until=None, track=True):
+    def _connect_t(self, sid):
+        c = self.connected.get(sid)
+        return int(pipeline.parse_time(c["at"], "iso").timestamp() * 1000) if c else None
+
+    def _record_t(self, sid, r):
+        """Epoch ms of a record. None means undated: no time config, an empty
+        field, or a value that does not parse. Under unknown_time=at_connect
+        undated records are dated at their source's connect time."""
+        tconf = self.pack["sources"][sid].get("time")
+        t = None
+        if tconf and "document" in tconf:
+            t = self._doc_t(sid)
+        elif tconf:
+            try:
+                parsed = pipeline.record_time(r["data"], tconf)
+                t = None if parsed is None else int(parsed.timestamp() * 1000)
+            except (TypeError, ValueError, OverflowError):
+                t = None
+        if t is None and self.pack["unknown_time"] == "at_connect":
+            return self._connect_t(sid)
+        return t
+
+    def compute(self, until=None, track=True, undated=True):
         """The whole board from the session's decisions. With `until` (epoch
-        ms) only records timestamped at or before it take part, untimed
-        records throughout; `track=False` leaves session memory untouched,
-        for time slices that must not disturb the live board."""
+        ms) only records timestamped at or before it take part; `undated`
+        says whether records without a timestamp take part in that slice
+        (the pack's unknown_time policy decides when the timeline sets it).
+        `track=False` leaves session memory untouched, for time slices that
+        must not disturb the live board."""
         pack = self.pack
         order = [s for s in pack["source_order"] if s in self.connected]
         records, record_index, fragments = {}, {}, []
@@ -158,7 +189,7 @@ class Session:
         for sid in order:
             recs = self._records(sid)
             if until is not None:
-                recs = [r for r in recs if (lambda t: t is None or t <= until)(self._record_t(sid, r))]
+                recs = [r for r in recs if (lambda t: undated if t is None else t <= until)(self._record_t(sid, r))]
             records[sid] = recs
             for r in recs:
                 record_index[(sid, r["index"])] = r
@@ -333,7 +364,7 @@ class Session:
         for e in pack["edges"]:
             draw.append({"from": e["from"], "to": e["to"], "kind": e["kind"], "w": e["w"], "flow": e["w"] * p.get(e["from"], 0.0)})
 
-        events, links = self._timeline(order, records, frags_by_record, frag_participant, record_signals, acts)
+        events, undated, links = self._timeline(order, records, frags_by_record, frag_participant, record_signals, acts)
 
         sources = []
         for sid in pack["source_order"]:
@@ -365,6 +396,8 @@ class Session:
             "stages": stages,
             "merges": {"pending": pending, "committed": committed_info},
             "events": events,
+            "undated": undated,
+            "unknown_time": pack["unknown_time"],
             "links": links,
             "object_types": pack["object_types"],
             "feedback": self.feedback,
@@ -382,16 +415,25 @@ class Session:
         signal, participant and hypothesis looked like once the records up
         to that moment had arrived. Untimed records are present throughout."""
         events = self.state.get("events", [])
+        undated = [u["id"] for u in self.state.get("undated", [])]
+        policy = self.pack["unknown_time"]
         times = sorted({e["t"] for e in events})
         slices = []
         seen = 0
         for i, t in enumerate([None] + times):
-            st = self.compute(until=(-1 if t is None else t), track=False)
+            st = self.compute(until=(-1 if t is None else t), track=False, undated=(policy != "after"))
             arrived = [e["id"] for e in events if e["t"] == t] if t is not None else []
             seen += len(arrived)
             slices.append({**self._slice(st), "t": t, "at": next((e["at"] for e in events if e["t"] == t), None),
-                           "index": i, "events_seen": seen, "arrived": arrived})
-        return {"slices": slices, "final": self._slice(self.state), "event_count": len(events)}
+                           "index": i, "events_seen": seen, "arrived": arrived,
+                           "undated": undated if (i == 0 and policy == "throughout") else []})
+        if policy == "after" and undated:
+            last = times[-1] if times else -1
+            st = self.compute(until=last, track=False, undated=True)
+            slices.append({**self._slice(st), "t": last if times else None, "at": slices[-1]["at"], "index": len(slices),
+                           "events_seen": seen, "arrived": [], "undated": undated, "undated_arrive": True})
+        return {"slices": slices, "final": self._slice(self.state), "event_count": len(events),
+                "undated_count": len(undated), "unknown_time": policy}
 
     @staticmethod
     def _slice(st):
@@ -414,8 +456,10 @@ class Session:
         return out
 
     def _timeline(self, order, records, frags_by_record, frag_participant, record_signals, acts):
-        """Timestamped records as events, and participant pairs joined by a shared record."""
-        events, pairs = [], {}
+        """Timestamped records as events, undated records listed apart (or
+        dated at connect time under that policy), and participant pairs
+        joined by a shared record."""
+        events, undated, pairs = [], [], {}
         for sid in order:
             tconf = self.pack["sources"][sid].get("time")
             for r in records[sid]:
@@ -427,27 +471,37 @@ class Session:
                 for i, a in enumerate(parts):
                     for b in parts[i + 1:]:
                         pairs.setdefault((a, b), []).append({"source": sid, "pointer": r["pointer"]})
-                if not tconf:
-                    continue
-                try:
-                    t = pipeline.record_time(r["data"], tconf)
-                except (TypeError, ValueError, OverflowError):
-                    t = None
-                if t is None:
-                    continue
                 sigs = sorted(record_signals.get(key, ()))
                 eid = f"{sid}:{r['index']}"
-                events.append({
-                    "id": eid, "at": pipeline._iso(t), "t": int(t.timestamp() * 1000),
-                    "source": sid, "pointer": r["pointer"], "excerpt": r["excerpt"],
+                base = {
+                    "id": eid, "source": sid, "pointer": r["pointer"], "excerpt": r["excerpt"],
                     "participants": parts, "signals": sigs,
                     "severity": max((acts[g] for g in sigs), default=0.0),
                     "acked": eid in self.acked,
-                })
+                }
+                t_ms = self._record_t(sid, r)
+                if t_ms is None:
+                    undated.append({**base, "why": "no time config" if not tconf else "no usable time value"})
+                    continue
+                dated_by = "connect" if (self.pack["unknown_time"] == "at_connect" and t_ms == self._connect_t(sid)
+                                         and (not tconf or self._field_t(sid, r) is None)) else ("document" if tconf and "document" in tconf else "record")
+                events.append({**base, "at": pipeline._iso(datetime.fromtimestamp(t_ms / 1000, timezone.utc)), "t": t_ms,
+                               "dated_by": dated_by})
         events.sort(key=lambda e: e["t"])  # stable: ties keep source order, then record order
         links = [{"a": a, "b": b, "records": recs, "weight": len(recs)} for (a, b), recs in pairs.items()]
         links.sort(key=lambda l: (-l["weight"], l["a"], l["b"]))
-        return events, links
+        return events, undated, links
+
+    def _field_t(self, sid, r):
+        """The record's own parsed time (ignoring policy), or None."""
+        tconf = self.pack["sources"][sid].get("time")
+        if not tconf or "document" in tconf:
+            return None
+        try:
+            parsed = pipeline.record_time(r["data"], tconf)
+        except (TypeError, ValueError, OverflowError):
+            return None
+        return None if parsed is None else int(parsed.timestamp() * 1000)
 
     # ------------------------------------------------------------ actions
 

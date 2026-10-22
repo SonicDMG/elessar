@@ -15,6 +15,13 @@ MAX_BAND = 9
 PALETTE = ["#7ee787", "#f0883e", "#58a6ff", "#d2a8ff", "#f778ba", "#e3b341", "#56d4dd", "#ff7b72"]
 
 
+# How records without a timestamp take part in the time-lapse:
+#   throughout  reference data, present in every slice (default)
+#   at_connect  dated at the moment their source was connected
+#   after       arrive in one final slice after every timed record
+UNKNOWN_TIME = ("throughout", "at_connect", "after")
+
+
 class PackError(Exception):
     def __init__(self, pack_dir, errors):
         super().__init__(f"{pack_dir}: {len(errors)} error(s)")
@@ -103,19 +110,32 @@ def load_pack(pack_dir):
             errors.append(f"manifest: source '{sid}' confidence must be 0..1")
         tconf = s.get("time")
         if tconf is not None:
-            fields = tconf.get("field") if isinstance(tconf, dict) else None
-            if isinstance(fields, str):
-                fields = [fields]
-            if not fields or not all(isinstance(f, str) and f for f in fields):
-                errors.append(f"manifest: source '{sid}' time.field must be a path or a list of paths")
-            elif tconf.get("unit") not in pipeline.TIME_UNITS:
-                errors.append(f"manifest: source '{sid}' has unknown time.unit '{tconf.get('unit')}' (known: {list(pipeline.TIME_UNITS)})")
+            if not isinstance(tconf, dict) or ("field" in tconf) == ("document" in tconf):
+                errors.append(f"manifest: source '{sid}' time needs exactly one of 'field' (per record) or 'document' (whole source)")
+            else:
+                if "field" in tconf:
+                    fields = tconf["field"]
+                    if isinstance(fields, str):
+                        fields = [fields]
+                    if not fields or not all(isinstance(f, str) and f for f in fields):
+                        errors.append(f"manifest: source '{sid}' time.field must be a path or a list of paths")
+                else:
+                    doc = tconf["document"]
+                    if not isinstance(doc, dict) or len([k for k in pipeline.DOCUMENT_TIME_KEYS if k in doc]) != 1:
+                        errors.append(f"manifest: source '{sid}' time.document needs exactly one of {list(pipeline.DOCUMENT_TIME_KEYS)}")
+                    elif "path" in doc and s.get("format") not in ("nested-json", "columnar", "xml"):
+                        errors.append(f"manifest: source '{sid}' time.document.path works for nested-json, columnar and xml; use regex or constant for {s.get('format')}")
+                if tconf.get("unit") not in pipeline.TIME_UNITS:
+                    errors.append(f"manifest: source '{sid}' has unknown time.unit '{tconf.get('unit')}' (known: {list(pipeline.TIME_UNITS)})")
         s.setdefault("color", PALETTE[i % len(PALETTE)])
         s.setdefault("latency_ms", 150)
         s.setdefault("name", sid)
         sources[sid] = s
     if not sources:
         errors.append("manifest: no sources")
+    unknown_time = manifest.get("unknown_time", "throughout")
+    if unknown_time not in UNKNOWN_TIME:
+        errors.append(f"manifest: unknown_time must be one of {UNKNOWN_TIME} (got '{unknown_time}')")
 
     # --- mapping
     types = mapping.get("object_types", {})
@@ -236,6 +256,7 @@ def load_pack(pack_dir):
         raise PackError(pack_dir, errors)
 
     # --- parse every source once to catch format errors and dead field paths
+    untimed = []
     for sid, s in sources.items():
         if s["transport"] != "file":
             continue
@@ -254,18 +275,35 @@ def load_pack(pack_dir):
                 field, _ = pipeline._prop_spec(spec)
                 if all(pipeline.get_path(r["data"], field) in (None, "") for r in recs):
                     warnings.append(f"mapping #{mi + 1}: field '{field}' never appears in '{sid}'")
-        if s.get("time"):
-            fields = s["time"]["field"]
+        tconf = s.get("time")
+        if tconf and "document" in tconf:
+            try:
+                with open(s["path"], encoding="utf-8") as f:
+                    pipeline.document_time(f.read(), s["format"], tconf)
+            except Exception as e:  # any failure to date the document is a pack error
+                raise PackError(pack_dir, [f"manifest: source '{sid}' document time: {e}"])
+        elif tconf:
+            fields = tconf["field"]
             fields = fields if isinstance(fields, list) else [fields]
             for field in fields:
                 if all(pipeline.get_path(r["data"], field) in (None, "") for r in recs):
                     warnings.append(f"manifest: time field '{field}' never appears in '{sid}'")
+            bad, missing = [], 0
             for r in recs:
                 try:
-                    pipeline.record_time(r["data"], s["time"])
+                    if pipeline.record_time(r["data"], tconf) is None:
+                        missing += 1
                 except (TypeError, ValueError, OverflowError) as e:
-                    warnings.append(f"manifest: time of '{sid}' {r['pointer']} does not parse as {s['time']['unit']}: {e}")
-                    break
+                    bad.append(f"{r['pointer']} ({e})")
+            if bad:
+                warnings.append(f"manifest: {len(bad)} record(s) of '{sid}' have a time that does not parse as "
+                                f"{tconf['unit']} and will count as undated, e.g. {bad[0]}")
+            if missing:
+                warnings.append(f"manifest: {missing} record(s) of '{sid}' have no time value and will count as undated")
+        else:
+            untimed.append(sid)
+    if untimed and len(untimed) < len(sources):
+        warnings.append(f"undated sources (no time config), treated as unknown_time={unknown_time}: {', '.join(untimed)}")
 
     return {
         "id": pid,
@@ -273,6 +311,7 @@ def load_pack(pack_dir):
         "title": manifest.get("title", pid),
         "premise": manifest.get("premise", ""),
         "sources": sources,
+        "unknown_time": unknown_time,
         "source_order": [s["id"] for s in manifest["sources"]],
         "object_types": types,
         "mappings": list(enumerate(maps)),

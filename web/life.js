@@ -1,6 +1,8 @@
 // Life mode: competing species. Each hypothesis is a species in Conway's Game
-// of Life (B3/S23, Immigration colouring), seeded from the same derivation the
-// board uses. Same evidence, a different aggregation rule: the winner can differ.
+// of Life (B3/S23, Immigration colouring). Evidence arrives as a time-lapse:
+// the server re-infers the board at every event time (/api/timeline) and each
+// slice plants what its derivation gained since the last one, then Conway
+// runs. Same evidence, a different aggregation rule: the winner can differ.
 import { escapeHtml } from "./board.js";
 
 const COLS = 64;
@@ -10,18 +12,34 @@ const LABEL_H = 8;   // strip above the grid for the band codes
 const W = COLS * CELL;
 const H = LABEL_H + ROWS * CELL;
 
-// Seeding: each support term (w × p) fills that share × SEED_DENSITY of the
-// home band; the band never starts fuller than MAX_FILL (denser random soups
-// overcrowd and die, so more support must never mean fewer survivors). Each inhibitor
-// (w × p) then removes that share of the seeds, like the board's Π(1 − v·p).
+// Seeding: each support term (w × p) targets that share × SEED_DENSITY of the
+// home band; the band never fills past MAX_FILL (denser random soups
+// overcrowd and die, so more support must never mean fewer survivors). Over
+// the cap every term shrinks by the same factor, taken from the final slice so
+// a term's target never drops when later evidence arrives. Each slice plants
+// max(0, target − already planted) per term; each inhibitor removes its new
+// cut (cut now − cut at the previous slice) as a share of the species' live cells.
 const SEED_DENSITY = 0.35;
 const MAX_FILL = 0.4;
+const BORDER_SPREAD = 6; // shared evidence: columns of jitter around "nearest the border first"
 
 const SPEEDS = [{ label: "1x", gps: 4 }, { label: "2x", gps: 8 }, { label: "4x", gps: 16 }, { label: "8x", gps: 32 }];
 const CYCLE_WINDOW = 60; // generations remembered to notice a settled run
 
 // Species colours in pack order; the first is the board's hypothesis magenta.
 const PALETTE = ["#ff5fd2", "#5fb8ff", "#9cf06a", "#ffb04a", "#b48cff", "#ff6b6b", "#5ff0d8", "#f0e45f", "#e0e8f0"];
+
+// Evidence cells carry their source node's 3×3 pattern: 1 bright, 0 species
+// colour, . dark. Assigned by node order, reused after six. Born cells are plain.
+const PATTERNS = [
+  { name: "solid", px: "111111111" },
+  { name: "hatched", px: "001010100" },
+  { name: "dotted", px: "000010000" },
+  { name: "ringed", px: "1111.1111" },
+  { name: "checked", px: "101010101" },
+  { name: "barred", px: "000111000" },
+];
+const FINE_PX = 6; // below this many CSS pixels per cell, evidence is a flat two-tone shade
 
 let root = null;
 let ctx = null;
@@ -30,10 +48,16 @@ let sim = null;
 let timer = null;
 let playing = false;
 let speed = 1;
+let gensPerSlice = 6;
 let hover = null;
 let observer = null;
 let onKey = null;
+let cellPx = 8;
+let prefetch = null;  // {fp, promise}: the timeline for a board, fetched once
+let loadSeq = 0;
+let loadingFp = null;
 const evidenceOpen = new Map(); // species id → evidence list open, as the user left it
+const swatches = new Map();
 
 // ------------------------------------------------------------------ mode interface
 
@@ -43,16 +67,25 @@ export function mount(el, context) {
   sim = null;
   playing = false;
   hover = null;
+  prefetch = null;
+  loadingFp = null;
   root.innerHTML = `
     <div class="life">
       <div class="life-bar">
         <button data-act="play" class="life-play">play</button>
-        <button data-act="step">step</button>
-        <button data-act="reset" title="Back to generation 0 of this run">reset</button>
+        <button data-act="step" title="One generation">step</button>
+        <button data-act="next" title="Plant the next slice of evidence now">next slice</button>
+        <button data-act="reset" title="Back to the first slice of this run">reset</button>
         <span class="life-speed"><span class="dim">speed</span>${SPEEDS.map((s, i) => `<button data-speed="${i}">${s.label}</button>`).join("")}</span>
-        <span class="life-gen">GEN <b>0</b></span>
-        <span class="life-status dim"></span>
+        <label class="life-k dim" title="Conway generations between slices">gens/slice <input type="number" min="1" max="20" value="${gensPerSlice}"></label>
         <span class="life-nudge" hidden>board changed <button data-act="reseed" class="gold">reseed</button></span>
+      </div>
+      <div class="life-bar life-time">
+        <span class="life-gen">GEN <b>0000</b></span>
+        <span class="life-when"></span>
+        <input class="life-scrub" type="range" min="0" max="0" value="0" step="1" aria-label="timeline slice">
+        <span class="life-slice dim"></span>
+        <span class="life-status dim"></span>
       </div>
       <div class="life-main">
         <div class="life-stage">
@@ -66,14 +99,16 @@ export function mount(el, context) {
         <aside class="life-side"></aside>
       </div>
       <p class="life-read"></p>
-      <p class="life-note dim small">B3/S23. A born cell takes the majority colour of its three parents (all different: the higher board belief wins).
-        Seeds: each support term w×p fills that share ×${SEED_DENSITY} of the species' band; each inhibitor w×p removes that share of its seeds.</p>
+      <p class="life-note dim small">B3/S23; a born cell takes the majority colour of its three parents (all different: the higher board belief wins).
+        Evidence arrives in event time: each slice plants what every support term gained (×${SEED_DENSITY} of the band per unit of w×p; a signal shared by two hypotheses plants on the border between them), inhibitors remove their new cut from the species' live cells, then Conway runs.
+        Newly planted cells are immune to death for one generation. <b class="life-key">Patterned cells are evidence</b> (one pattern per signal or participant); <b class="life-key plain">plain cells were born</b> by Conway.</p>
     </div>`;
   const q = (s) => root.querySelector(s);
   els = {
     life: q(".life"), stage: q(".life-stage"), wrap: q(".life-wrap"), grid: q(".life-grid"), glow: q(".life-glow"),
-    tip: q(".tip"), side: q(".life-side"), read: q(".life-read"), gen: q(".life-gen b"), status: q(".life-status"),
-    nudge: q(".life-nudge"), play: q(".life-play"),
+    tip: q(".tip"), side: q(".life-side"), read: q(".life-read"), gen: q(".life-gen b"), when: q(".life-when"),
+    status: q(".life-status"), nudge: q(".life-nudge"), play: q(".life-play"), next: q('[data-act="next"]'),
+    scrub: q(".life-scrub"), slice: q(".life-slice"), k: q(".life-k input"),
   };
   els.g = els.grid.getContext("2d");
   els.gg = els.glow.getContext("2d");
@@ -83,11 +118,19 @@ export function mount(el, context) {
     if (!b) return;
     if (b.dataset.speed) { speed = Number(b.dataset.speed); if (playing) startTimer(); renderBar(); return; }
     const act = b.dataset.act;
+    if (!sim && act !== "reseed") return;
     if (act === "play") setPlaying(!playing);
-    if (act === "step") { setPlaying(false); step(); }
-    if (act === "reset") { setPlaying(false); restart(); }
-    if (act === "reseed") { seed(ctx.state); setPlaying(sim.seeded > 0); }
+    if (act === "step") { setPlaying(false); tick(); }
+    if (act === "next" && sim.slice < lastSlice()) { applySlice(sim.slice + 1); renderAll(); }
+    if (act === "reset") { setPlaying(false); rebuild(0); }
+    if (act === "reseed") load(ctx.state);
   });
+  els.k.addEventListener("change", () => {
+    gensPerSlice = Math.max(1, Math.min(20, Math.round(Number(els.k.value)) || 6));
+    els.k.value = gensPerSlice;
+  });
+  // scrubbing replays the run from the first slice, so every slice is reproducible
+  els.scrub.addEventListener("input", () => { if (sim) rebuild(Number(els.scrub.value)); });
   els.grid.addEventListener("mousemove", onHover);
   els.grid.addEventListener("mouseleave", () => { hover = null; els.tip.hidden = true; draw(); });
   els.grid.addEventListener("click", (e) => {
@@ -122,12 +165,15 @@ export function mount(el, context) {
 
 export function update(state) {
   if (!root || !state) return;
+  const fp = fingerprint(state);
   if (!sim || sim.scenario !== state.scenario.id) {
     // a fresh mount or another pack: nothing to disturb, seed straight away
-    seed(state);
-    setPlaying(sim.seeded > 0);
+    if (loadingFp !== fp) load(state);
+    renderBar();
+    return;
   }
-  els.nudge.hidden = fingerprint(state) === sim.fp;
+  els.nudge.hidden = fp === sim.fp;
+  if (fp !== sim.fp) timelineFor(state); // fetch now so reseed is instant
   renderSide();
   renderRead();
 }
@@ -136,6 +182,7 @@ export function unmount() {
   stopTimer();
   if (observer) observer.disconnect();
   if (onKey) document.removeEventListener("keydown", onKey);
+  loadSeq++; // drop any timeline still in flight
   observer = null;
   onKey = null;
   root = null;
@@ -143,11 +190,12 @@ export function unmount() {
   sim = null;
 }
 
-// ------------------------------------------------------------------ seeding
+// ------------------------------------------------------------------ the timeline
 
-// The board, reduced to what seeding reads: every hypothesis belief and term.
+// Everything the timeline depends on: sources, engine, feedback, and every
+// hypothesis belief and term (judgements and merges move those).
 function fingerprint(state) {
-  const parts = [state.scenario.id];
+  const parts = [state.scenario.id, state.engine, state.feedback, state.sources.filter((s) => s.connected).map((s) => s.id).join(",")];
   for (const n of hypotheses(state)) {
     const b = (n.detail && n.detail.breakdown) || {};
     parts.push(`${n.id}:${n.p.toFixed(4)}:${(b.support || []).map((t) => t.term.toFixed(4))}:${(b.inhibit || []).map((t) => (t.w * t.p).toFixed(4))}`);
@@ -156,6 +204,48 @@ function fingerprint(state) {
 }
 
 const hypotheses = (state) => state.nodes.filter((n) => n.band === "hypothesis");
+
+function timelineFor(state) {
+  const fp = fingerprint(state);
+  if (!prefetch || prefetch.fp !== fp) prefetch = { fp, promise: fetchTimeline(state) };
+  return prefetch.promise;
+}
+
+async function fetchTimeline(state) {
+  try {
+    const res = await fetch(`/api/timeline?scenario=${encodeURIComponent(state.scenario.id)}`);
+    if (!res.ok) throw new Error(res.statusText);
+    const tl = await res.json();
+    if (tl && Array.isArray(tl.slices) && tl.slices.length) return tl;
+  } catch (e) { /* no timeline from the server: the live board as one slice */ }
+  return singleSlice(state);
+}
+
+// The live board in the timeline's shape, for a server without /api/timeline.
+function singleSlice(state) {
+  const hyps = {};
+  for (const n of hypotheses(state)) {
+    const b = (n.detail && n.detail.breakdown) || {};
+    hyps[n.id] = {
+      p: n.p, status: n.status, present: n.present,
+      support: (b.support || []).filter((t) => t.term > 0.001).map((t) => ({ from: t.from, w: t.w, p: t.p, term: t.term })),
+      inhibit: (b.inhibit || []).filter((t) => t.w * t.p > 0.001).map((t) => ({ from: t.from, w: t.w, p: t.p, cut: t.w * t.p })),
+    };
+  }
+  return { slices: [{ index: 0, t: null, at: null, events_seen: 0, arrived: [], hypotheses: hyps }], event_count: 0 };
+}
+
+async function load(state) {
+  const seq = ++loadSeq;
+  loadingFp = fingerprint(state);
+  const tl = await timelineFor(state);
+  if (seq !== loadSeq || !root) return;
+  loadingFp = null;
+  seed(state, tl);
+  setPlaying(sim.anyEvidence);
+}
+
+// ------------------------------------------------------------------ seeding
 
 // FNV-1a over the fingerprint seeds a mulberry32 stream: same board, same run.
 function hash(str) {
@@ -182,98 +272,240 @@ function shuffle(list, rand) {
   return list;
 }
 
-function seed(state) {
-  const fp = fingerprint(state);
-  const rand = prng(hash(fp));
-  const hyps = hypotheses(state);
-  const grid = new Uint8Array(COLS * ROWS);
-  const nodes = new Map(state.nodes.map((n) => [n.id, n]));
-  // one evidence entry per term, named by the board's code for its source node
-  const evidence = (from, v) => {
-    const n = nodes.get(from);
-    return { id: from, code: n ? n.code : from, label: n ? n.label : from, band: n && n.band, v, planted: 0, kept: 0, removed: 0 };
+// Bands left to right so hypotheses sharing the most support sit side by
+// side: start from the heaviest pair, then keep attaching the hypothesis that
+// shares most with either end. Ties and unrelated hypotheses keep pack order.
+function bandOrder(ids, last) {
+  const sup = ids.map((id) => new Map(((last.hypotheses[id] || {}).support || []).map((t) => [t.from, t.term])));
+  const weight = (a, b) => {
+    let w = 0;
+    for (const [from, term] of sup[a]) if (sup[b].has(from)) w += term + sup[b].get(from);
+    return w;
   };
-  const species = hyps.map((n, i) => {
-    const x0 = Math.round((i * COLS) / hyps.length);
-    const x1 = Math.round(((i + 1) * COLS) / hyps.length);
-    const b = (n.detail && n.detail.breakdown) || {};
-    const support = (b.support || []).map((t) => evidence(t.from, t.term));
-    const inhibit = (b.inhibit || []).map((t) => evidence(t.from, t.w * t.p));
+  const n = ids.length;
+  let best = null;
+  for (let a = 0; a < n; a++) for (let b = a + 1; b < n; b++) {
+    const w = weight(a, b);
+    if (w > 0 && (!best || w > best.w)) best = { a, b, w };
+  }
+  if (!best) return ids.map((_, i) => i);
+  const chain = [best.a, best.b];
+  const left = new Set(ids.map((_, i) => i).filter((i) => i !== best.a && i !== best.b));
+  while (left.size) {
+    let pick = null;
+    for (const r of left) {
+      for (const end of ["L", "R"]) {
+        const w = weight(r, end === "L" ? chain[0] : chain[chain.length - 1]);
+        if (!pick || w > pick.w) pick = { r, end, w };
+      }
+    }
+    if (pick.w <= 0) pick = { r: Math.min(...left), end: "R" };
+    if (pick.end === "L") chain.unshift(pick.r); else chain.push(pick.r);
+    left.delete(pick.r);
+  }
+  return chain;
+}
 
-    // home band cells in a seeded random order; support terms take the next
-    // share of them, inhibitors drop a share of what was taken
-    const cells = [];
-    for (let r = 0; r < ROWS; r++) for (let c = x0; c < x1; c++) cells.push(r * COLS + c);
-    shuffle(cells, rand);
-    const cap = Math.floor(cells.length * MAX_FILL);
-    // over the cap, every term shrinks by the same factor (leftover cells go
-    // to the biggest terms), so each keeps its share however many there are
-    const want = support.map((t) => Math.round(t.v * SEED_DENSITY * cells.length));
-    const wanted = want.reduce((a, n) => a + n, 0);
+// A new board (or pack): lay out the species and replay from the first slice.
+function seed(state, tl) {
+  const info = new Map();
+  let k = 0;
+  for (const n of state.nodes) {
+    info.set(n.id, { id: n.id, code: n.code, label: n.label, band: n.band, pattern: n.band === "hypothesis" ? -1 : k++ % PATTERNS.length });
+  }
+  const slices = tl.slices;
+  const last = slices[slices.length - 1];
+  const hyps = hypotheses(state);
+  const ids = hyps.map((n) => n.id);
+  const order = bandOrder(ids, last);
+
+  // sources that ever back more than one hypothesis plant on the shared border
+  const backers = new Map();
+  for (const sl of slices) {
+    ids.forEach((id, i) => {
+      for (const t of (sl.hypotheses[id] || {}).support || []) {
+        if (!backers.has(t.from)) backers.set(t.from, new Set());
+        backers.get(t.from).add(i);
+      }
+    });
+  }
+
+  const species = hyps.map((n, i) => {
+    const pos = order.indexOf(i);
+    const x0 = Math.round((pos * COLS) / hyps.length);
+    const x1 = Math.round(((pos + 1) * COLS) / hyps.length);
+    const cells = (x1 - x0) * ROWS;
+    // today's allocation on the final board is every term's target
+    const want = (term) => Math.round(term * SEED_DENSITY * cells);
+    const finalSup = ((last.hypotheses[n.id] || {}).support || []).map((t) => ({ from: t.from, term: t.term, want: want(t.term) }));
+    const cap = Math.floor(cells * MAX_FILL);
+    const wanted = finalSup.reduce((a, t) => a + t.want, 0);
     const f = wanted > cap ? cap / wanted : 1;
-    support.forEach((t, k) => { t.planted = Math.floor(want[k] * f); });
-    let spare = Math.min(cap, wanted) - support.reduce((a, t) => a + t.planted, 0);
-    for (const t of [...support].sort((a, b) => b.v - a.v)) if (spare > 0) { t.planted++; spare--; }
-    let seeds = [];
-    for (const t of support) {
-      const start = seeds.length;
-      for (let j = 0; j < t.planted; j++) seeds.push({ at: cells[start + j], term: t });
-    }
-    const planted = seeds.length;
-    for (const t of inhibit) {
-      t.removed = Math.round(t.v * seeds.length);
-      seeds = shuffle(seeds, rand).slice(t.removed);
-    }
-    for (const sd of seeds) { grid[sd.at] = i + 1; sd.term.kept++; }
-    const bySize = (a, b) => b.v - a.v;
+    finalSup.forEach((t) => { t.alloc = Math.floor(t.want * f); });
+    let spare = Math.min(cap, wanted) - finalSup.reduce((a, t) => a + t.alloc, 0);
+    for (const t of [...finalSup].sort((a, b) => b.term - a.term)) if (spare > 0) { t.alloc++; spare--; }
     return {
-      id: n.id, code: n.code, label: n.label, p: n.p, offboard: !!n.offboard, x0, x1, color: PALETTE[i % PALETTE.length],
-      supportSum: support.reduce((a, t) => a + t.v, 0), planted, seeded: seeds.length, capped: planted === cap && cap > 0,
-      support: support.sort(bySize), inhibit: inhibit.sort(bySize),
+      id: n.id, code: n.code, label: n.label, color: PALETTE[i % PALETTE.length], pos, x0, x1, cells, f, cap,
+      final: new Map(finalSup.map((t) => [t.from, t])), want,
     };
   });
-  // ties at birth go to the higher board belief, then pack order
-  const rank = species.map((s, i) => i).sort((a, b) => species[b].p - species[a].p || a - b);
-  const rankOf = new Uint8Array(species.length + 1);
-  rank.forEach((s, k) => { rankOf[s + 1] = k; });
+  // which edge of its band each shared term plants on: the side facing its partners
+  for (const [i, s] of species.entries()) {
+    s.sides = new Map();
+    for (const [from, set] of backers) {
+      if (!set.has(i) || set.size < 2) continue;
+      const sides = new Set([...set].filter((j) => j !== i).map((j) => (species[j].pos < s.pos ? "L" : "R")));
+      s.sides.set(from, sides.size === 2 ? "both" : [...sides][0]);
+    }
+  }
+  const anyEvidence = slices.some((sl) => species.some((s) => ((sl.hypotheses[s.id] || {}).support || []).some((t) => s.want(t.term) > 0)));
 
   sim = {
-    scenario: state.scenario.id, fp, species, rankOf, seedGrid: grid.slice(), grid, born: new Uint8Array(COLS * ROWS),
-    gen: 0, seeded: species.reduce((a, s) => a + s.seeded, 0),
-    connected: state.sources.some((s) => s.connected), counts: [], settled: null, seen: new Map(),
+    scenario: state.scenario.id, fp: fingerprint(state), slices, eventCount: tl.event_count || 0, info, species, anyEvidence,
+    connected: state.sources.some((s) => s.connected), byPos: [...species].sort((a, b) => a.pos - b.pos),
+    sources: [...info.values()].filter((n) => n.band !== "hypothesis"),
+    lastDate: (slices.filter((sl) => sl.at).pop() || {}).at?.slice(0, 10),
   };
-  for (const s of species) s.styles = styles(s.color, s.offboard);
+  sim.sourceIndex = new Map(sim.sources.map((n, j) => [n.id, j + 1]));
+  for (const s of species) s.styles = styles(s.color, false);
   els.nudge.hidden = true;
-  count();
-  renderSide();
+  els.scrub.max = String(lastSlice());
+  rebuild(0);
   fit();
+}
+
+const lastSlice = () => sim.slices.length - 1;
+
+// Replay from the first slice up to slice `to`: a fresh PRNG from the
+// fingerprint, the same cell orders, K generations between slices.
+function rebuild(to) {
+  const rand = prng(hash(sim.fp));
+  sim.rand = rand;
+  const n = COLS * ROWS;
+  Object.assign(sim, {
+    grid: new Uint8Array(n), mark: new Uint16Array(n), when: new Uint16Array(n), bornAt: new Uint32Array(n),
+    immune: new Uint8Array(n), gen: 0, slice: -1, sinceSlice: 0, settled: null, seen: new Map(),
+  });
+  for (const s of sim.species) {
+    // interior: the band in random order; edges: nearest the border first, jittered
+    const cells = [];
+    for (let r = 0; r < ROWS; r++) for (let c = s.x0; c < s.x1; c++) cells.push(r * COLS + c);
+    const edge = (side) => cells
+      .map((at) => ({ at, key: (side === "L" ? at % COLS - s.x0 : s.x1 - 1 - (at % COLS)) + rand() * BORDER_SPREAD }))
+      .sort((a, b) => a.key - b.key).map((e) => e.at);
+    const L = edge("L"), R = edge("R");
+    s.orders = { interior: shuffle([...cells], rand), L, R, both: L.flatMap((at, j) => [at, R[j]]) };
+    s.planted = new Map();
+    s.removed = new Map();
+    s.cutBefore = new Map();
+  }
+  applySlice(0);
+  for (let j = 1; j <= to && j <= lastSlice(); j++) {
+    for (let g = 0; g < gensPerSlice; g++) generation();
+    applySlice(j);
+  }
+  renderSide();
   renderAll();
 }
 
-// Back to generation 0 of this run (same seed, not the current board).
-function restart() {
-  if (!sim) return;
-  sim.grid = sim.seedGrid.slice();
-  sim.born.fill(0);
-  sim.gen = 0;
+// One slice of evidence: every support term plants its growth since the last
+// slice, then every inhibitor removes its new cut from the species' live cells.
+function applySlice(j) {
+  const sl = sim.slices[j];
+  sim.slice = j;
+  sim.sinceSlice = 0;
   sim.settled = null;
   sim.seen = new Map();
+  const view = (t, v) => ({ ...(sim.info.get(t.from) || { id: t.from, code: t.from, label: t.from }), id: t.from, v });
+  sim.species.forEach((s, i) => {
+    const h = sl.hypotheses[s.id] || { p: 0, support: [], inhibit: [] };
+    s.p = h.p;
+    s.present = h.present !== false;
+    s.support = (h.support || []).map((t) => view(t, t.term));
+    s.inhibit = (h.inhibit || []).map((t) => view(t, t.cut));
+    for (const t of h.support || []) {
+      const have = s.planted.get(t.from) || 0;
+      const need = Math.max(0, target(s, t.from, t.term) - have);
+      if (need) s.planted.set(t.from, have + plant(i, t.from, need, j));
+    }
+  });
+  sim.species.forEach((s, i) => {
+    const h = sl.hypotheses[s.id] || {};
+    const now = new Map((h.inhibit || []).map((t) => [t.from, t.cut]));
+    for (const [from, cut] of now) {
+      const delta = cut - (s.cutBefore.get(from) || 0);
+      if (delta > 0) s.removed.set(from, (s.removed.get(from) || 0) + cull(i, delta));
+    }
+    s.cutBefore = now;
+  });
+  for (const s of sim.species) {
+    s.offboard = !s.present;
+    s.styles = styles(s.color, s.offboard);
+    s.support.forEach((t) => { t.planted = s.planted.get(t.id) || 0; });
+    s.inhibit.forEach((t) => { t.removed = s.removed.get(t.id) || 0; });
+    const bySize = (a, b) => b.v - a.v;
+    s.support.sort(bySize);
+    s.inhibit.sort(bySize);
+  }
+  // ties at birth go to the higher board belief at this slice, then pack order
+  const rank = sim.species.map((s, i) => i).sort((a, b) => sim.species[b].p - sim.species[a].p || a - b);
+  sim.rankOf = new Uint8Array(sim.species.length + 1);
+  rank.forEach((s, k) => { sim.rankOf[s + 1] = k; });
+  sim.sideDirty = true;
   count();
-  renderAll();
+}
+
+// The term's target: today's final allocation once the term reaches its
+// final size, otherwise its own share shrunk by the band's final cap factor.
+function target(s, from, term) {
+  const want = s.want(term);
+  const fin = s.final.get(from);
+  return fin && want >= fin.want ? fin.alloc : Math.floor(want * s.f);
+}
+
+function plant(i, from, n, j) {
+  const s = sim.species[i];
+  const side = s.sides.get(from);
+  const order = side ? s.orders[side] : s.orders.interior;
+  const mark = sim.sourceIndex.get(from) || 0;
+  let placed = 0;
+  for (const at of order) {
+    if (placed === n) break;
+    if (sim.grid[at]) continue;
+    sim.grid[at] = i + 1;
+    sim.mark[at] = mark;
+    sim.when[at] = j;
+    sim.bornAt[at] = sim.gen;
+    sim.immune[at] = 1;
+    placed++;
+  }
+  return placed;
+}
+
+function cull(i, share) {
+  const live = [];
+  for (let at = 0; at < sim.grid.length; at++) if (sim.grid[at] === i + 1) live.push(at);
+  const k = Math.round(share * live.length);
+  for (const at of shuffle(live, sim.rand).slice(0, k)) {
+    sim.grid[at] = 0;
+    sim.mark[at] = 0;
+    sim.immune[at] = 0;
+  }
+  return k;
 }
 
 // ------------------------------------------------------------------ the automaton
 
-function step() {
-  if (!sim || sim.settled) return;
+function generation() {
   const { grid, rankOf } = sim;
-  const next = new Uint8Array(COLS * ROWS);
-  const born = new Uint8Array(COLS * ROWS);
+  const n = COLS * ROWS;
+  const next = new Uint8Array(n), mark = new Uint16Array(n), when = new Uint16Array(n), bornAt = new Uint32Array(n);
   const nb = [0, 0, 0];
+  sim.gen++;
   for (let r = 0; r < ROWS; r++) {
     for (let c = 0; c < COLS; c++) {
       // bounded grid: outside the edge is dead
-      let n = 0;
+      let k = 0;
       for (let dr = -1; dr <= 1; dr++) {
         const rr = r + dr;
         if (rr < 0 || rr >= ROWS) continue;
@@ -281,32 +513,43 @@ function step() {
           const cc = c + dc;
           if ((dr === 0 && dc === 0) || cc < 0 || cc >= COLS) continue;
           const s = grid[rr * COLS + cc];
-          if (s) { if (n < 3) nb[n] = s; n++; }
+          if (s) { if (k < 3) nb[k] = s; k++; }
         }
       }
       const i = r * COLS + c;
       const s = grid[i];
-      if (s && (n === 2 || n === 3)) next[i] = s;
-      else if (!s && n === 3) {
+      // survivors (and freshly planted evidence, immune this once) keep their marks
+      if (s && (k === 2 || k === 3 || sim.immune[i])) {
+        next[i] = s; mark[i] = sim.mark[i]; when[i] = sim.when[i]; bornAt[i] = sim.bornAt[i];
+      } else if (!s && k === 3) {
         // Immigration: majority of the three parents; all different → best rank
         const [a, b, d] = nb;
         next[i] = a === b || a === d ? a : b === d ? b : [a, b, d].sort((x, y) => rankOf[x] - rankOf[y])[0];
-        born[i] = 1;
+        bornAt[i] = sim.gen;
       }
     }
   }
-  sim.grid = next;
-  sim.born = born;
-  sim.gen++;
-  count();
+  Object.assign(sim, { grid: next, mark, when, bornAt, immune: new Uint8Array(n) });
+}
 
-  // a run that repeats itself (still life, oscillator, or extinction) is settled
-  const h = hashGrid(next);
-  if (sim.total === 0) sim.settled = { kind: "extinct", gen: sim.gen };
-  else if (sim.seen.has(h)) sim.settled = { kind: "settled", gen: sim.gen, period: sim.gen - sim.seen.get(h) };
-  sim.seen.set(h, sim.gen);
-  if (sim.seen.size > CYCLE_WINDOW) sim.seen.delete(sim.seen.keys().next().value);
-  if (sim.settled) setPlaying(false);
+// One tick of play: a generation; after K of them the next slice lands. Once
+// the last slice is in, a run that repeats itself (or dies out) is settled.
+function tick() {
+  if (!sim || sim.settled) return;
+  generation();
+  sim.sinceSlice++;
+  if (sim.slice < lastSlice()) {
+    if (sim.sinceSlice >= gensPerSlice) applySlice(sim.slice + 1);
+    else count();
+  } else {
+    count();
+    const h = hashGrid(sim.grid);
+    if (sim.total === 0) sim.settled = { kind: "extinct", gen: sim.gen };
+    else if (sim.seen.has(h)) sim.settled = { kind: "settled", gen: sim.gen, period: sim.gen - sim.seen.get(h) };
+    sim.seen.set(h, sim.gen);
+    if (sim.seen.size > CYCLE_WINDOW) sim.seen.delete(sim.seen.keys().next().value);
+    if (sim.settled) setPlaying(false);
+  }
   renderAll();
 }
 
@@ -326,14 +569,14 @@ function count() {
 // ------------------------------------------------------------------ timer
 
 function setPlaying(on) {
-  playing = !!on && !!sim && sim.seeded > 0 && !sim.settled;
+  playing = !!on && !!sim && sim.anyEvidence && !sim.settled;
   if (playing) startTimer(); else stopTimer();
   renderBar();
 }
 
 function startTimer() {
   stopTimer();
-  timer = setInterval(step, 1000 / SPEEDS[speed].gps);
+  timer = setInterval(tick, 1000 / SPEEDS[speed].gps);
 }
 
 function stopTimer() {
@@ -352,12 +595,30 @@ function styles(color, offboard) {
   const base = mix(color, COLORS.grey, offboard ? 0.35 : 0); // explained-away species fade toward grey
   return {
     live: css(base),
-    hi: css(mix(base, [255, 255, 255], 0.35)),
-    born: css(mix(base, [255, 255, 255], 0.55)),
+    bright: css(mix(base, [255, 255, 255], 0.5)),
+    plain: css(mix(base, COLORS.bg, 0.3)),
+    hole: css(mix(base, COLORS.bg, 0.8)),
     dead: css(mix(COLORS.dark, color, 0.07)),
     label: css(offboard ? mix(base, COLORS.bg, 0.3) : base),
     glow: css(base, 0.55),
   };
+}
+
+// A source's pattern as a tiny image, for the evidence rows.
+function swatch(pattern, color) {
+  const key = `${pattern}|${color}`;
+  if (!swatches.has(key)) {
+    const st = styles(color, false);
+    const c = document.createElement("canvas");
+    c.width = 3; c.height = 3;
+    const g = c.getContext("2d");
+    [...PATTERNS[pattern].px].forEach((ch, k) => {
+      g.fillStyle = ch === "1" ? st.bright : ch === "." ? st.hole : st.live;
+      g.fillRect(k % 3, Math.floor(k / 3), 1, 1);
+    });
+    swatches.set(key, c.toDataURL());
+  }
+  return swatches.get(key);
 }
 
 // Fill the stage. As on the board, the canvas is drawn at a whole number of
@@ -373,6 +634,7 @@ function fit() {
   const scale = Math.max(1, Math.min(availW / W, availH / H));
   const cssW = Math.floor(W * scale);
   const cssH = Math.floor(H * scale);
+  cellPx = 3 * scale;
   const k = Math.max(1, Math.ceil(scale * (window.devicePixelRatio || 1)));
   if (els.grid.width !== W * k) {
     for (const c of [els.grid, els.glow]) { c.width = W * k; c.height = H * k; }
@@ -395,6 +657,7 @@ function draw() {
   g.fillRect(0, 0, W, H);
   gg.clearRect(0, 0, W, H);
   const selected = ctx.selected;
+  const fine = cellPx >= FINE_PX;
 
   // band codes along the top, underlined for the selected species
   for (const s of sim.species) {
@@ -403,7 +666,7 @@ function draw() {
     if (s.id === selected) { g.fillStyle = s.styles.live; g.fillRect(bx, LABEL_H - 1, bw, 1); }
   }
 
-  // cells: live in species colour (newborns brighter), dead tinted by band
+  // cells: evidence in its source's pattern, born cells plain, dead tinted by band
   const owner = new Uint8Array(COLS);
   sim.species.forEach((s, i) => { for (let c = s.x0; c < s.x1; c++) owner[c] = i; });
   for (let r = 0; r < ROWS; r++) {
@@ -418,10 +681,20 @@ function draw() {
         continue;
       }
       const st = sim.species[s - 1].styles;
-      g.fillStyle = sim.born[i] ? st.born : st.live;
-      g.fillRect(x, y, 3, 3);
-      g.fillStyle = st.hi;
-      g.fillRect(x, y, 1, 1);
+      const m = sim.mark[i];
+      if (!m) {
+        g.fillStyle = st.plain;
+        g.fillRect(x, y, 3, 3);
+      } else if (!fine) {
+        g.fillStyle = st.bright; // too small for patterns: evidence is the bright tone
+        g.fillRect(x, y, 3, 3);
+      } else {
+        const px = PATTERNS[sim.sources[m - 1].pattern].px;
+        for (let k = 0; k < 9; k++) {
+          g.fillStyle = px[k] === "1" ? st.bright : px[k] === "." ? st.hole : st.live;
+          g.fillRect(x + (k % 3), y + Math.floor(k / 3), 1, 1);
+        }
+      }
       gg.fillStyle = st.glow;
       gg.fillRect(x, y, 3, 3);
     }
@@ -429,7 +702,7 @@ function draw() {
 
   // band seams, and a dotted frame around the selected species' home band
   g.fillStyle = "rgba(255,255,255,0.10)";
-  for (const s of sim.species.slice(1)) for (let y = LABEL_H; y < H; y += 2) g.fillRect(s.x0 * CELL - 1, y, 1, 1);
+  for (const s of sim.species) if (s.x0 > 0) for (let y = LABEL_H; y < H; y += 2) g.fillRect(s.x0 * CELL - 1, y, 1, 1);
   const sel = sim.species.find((s) => s.id === selected);
   if (sel) {
     g.fillStyle = "rgba(232,241,255,0.7)";
@@ -465,6 +738,14 @@ function speciesAt(e) {
   return s ? sim.species[s - 1] : sim.species.find((sp) => c >= sp.x0 && c < sp.x1);
 }
 
+// "02:00:00" on the incident's day, the full date otherwise; slice 0 is reference data.
+function sliceTime(j, full) {
+  const at = sim.slices[j] && sim.slices[j].at;
+  if (!at) return "reference data";
+  const d = at.slice(0, 10), t = at.slice(11, 19);
+  return full || d !== sim.lastDate ? `${d} ${t}` : t;
+}
+
 function onHover(e) {
   if (!sim) return;
   const at = cellAt(e);
@@ -472,15 +753,20 @@ function onHover(e) {
   hover = at.r >= 0 ? at : null;
   els.grid.style.cursor = s ? "pointer" : "default";
   if (!s) { els.tip.hidden = true; draw(); return; }
-  const live = at.r >= 0 && sim.grid[at.r * COLS + at.c];
+  const idx = at.r >= 0 ? at.r * COLS + at.c : -1;
+  const live = idx >= 0 && sim.grid[idx];
   const i = sim.species.indexOf(s);
   const share = sim.total ? Math.round((sim.counts[i] / sim.total) * 100) : 0;
-  els.tip.innerHTML = `<b>${s.code}</b> ${escapeHtml(s.label)}<br><span>${live ? "live cell" : "home band"} · ${sim.counts[i]} cells, ${share}% of territory</span>`
-    + `<br><span>seeded ${s.seeded} (support ${s.supportSum.toFixed(2)} → ${s.planted}, inhibitors −${s.planted - s.seeded})</span>`;
+  let origin = "home band";
+  if (live) {
+    const src = sim.mark[idx] ? sim.sources[sim.mark[idx] - 1] : null;
+    origin = src ? `planted by <b>${escapeHtml(src.code)}</b> ${escapeHtml(src.label)} · ${sliceTime(sim.when[idx])}` : `born gen ${sim.bornAt[idx]}`;
+  }
+  els.tip.innerHTML = `<b>${s.code}</b> ${escapeHtml(s.label)} · ${origin}<br><span>${sim.counts[i]} cells, ${share}% of territory</span>`;
   const wr = els.wrap.getBoundingClientRect();
   const left = e.clientX - wr.left + 14;
   els.tip.hidden = false;
-  els.tip.style.left = `${Math.min(left, wr.width - els.tip.offsetWidth - 4)}px`;
+  els.tip.style.left = `${Math.max(0, Math.min(left, wr.width - els.tip.offsetWidth - 4))}px`;
   els.tip.style.top = `${e.clientY - wr.top + 12}px`;
   draw();
 }
@@ -490,7 +776,7 @@ function onHover(e) {
 function renderAll() {
   draw();
   renderBar();
-  updateSide();
+  if (sim && sim.sideDirty) renderSide(); else updateSide();
   renderRead();
 }
 
@@ -498,12 +784,19 @@ function renderBar() {
   if (!els) return;
   els.play.textContent = playing ? "pause" : "play";
   els.play.classList.toggle("on", playing);
-  els.play.disabled = !sim || !sim.seeded || !!sim.settled;
+  els.play.disabled = !sim || !sim.anyEvidence || !!sim.settled;
   root.querySelectorAll("[data-speed]").forEach((b) => b.classList.toggle("on", Number(b.dataset.speed) === speed));
-  if (!sim) return;
+  if (!sim) { els.status.textContent = "loading the timeline…"; return; }
+  const last = lastSlice();
+  els.next.disabled = sim.slice >= last;
+  els.scrub.disabled = last === 0;
+  els.scrub.value = String(sim.slice);
   els.gen.textContent = String(sim.gen).padStart(4, "0");
+  const sl = sim.slices[sim.slice];
+  els.when.textContent = `· ${sliceTime(sim.slice, true)}${sim.eventCount ? ` · ${sl.events_seen}/${sim.eventCount} events` : ""}`;
+  els.slice.textContent = `slice ${sim.slice}/${last}`;
   let status = `${sim.total} live`;
-  if (!sim.seeded) status = "nothing seeded";
+  if (!sim.anyEvidence) status = "nothing seeded";
   else if (sim.settled && sim.settled.kind === "extinct") status = `extinct at gen ${sim.settled.gen}`;
   else if (sim.settled) status = `${sim.total} live · settled at gen ${sim.settled.gen}${sim.settled.period > 1 ? `, period ${sim.settled.period}` : ", still"}`;
   else if (playing) status += ` · ${SPEEDS[speed].gps} gen/s`;
@@ -529,33 +822,37 @@ function ref(id, code, color) {
 const evRef = (t) => ref(t.id, t.code, ctx.sprites.COLORS[t.band] || ctx.sprites.COLORS.grey);
 const spRef = (s) => ref(s.id, s.code, s.color);
 
-// Evidence rows: support terms (+w×p, seeds they kept) then inhibitors
-// (−w×p in red, seeds they removed), each sorted by size, tiny terms omitted.
+// Evidence rows at the current slice: support terms (+w×p, their pattern,
+// cells planted so far) then inhibitors (−w×p in red, cells removed so far).
 function evidenceHtml(s) {
-  const row = (t, kind) => `<div class="life-ev-row ${kind}">${evRef(t)}<span class="lbl" title="${escapeHtml(t.label)}">${escapeHtml(t.label)}</span>`
+  const pat = (t) => (t.pattern >= 0 ? `<img class="life-pat" src="${swatch(t.pattern, s.color)}" alt="" title="${PATTERNS[t.pattern].name}: cells planted by ${escapeHtml(t.code)}">` : "<span></span>");
+  const row = (t, kind) => `<div class="life-ev-row ${kind}">${kind === "sup" ? pat(t) : "<span></span>"}${evRef(t)}<span class="lbl" title="${escapeHtml(t.label)}">${escapeHtml(t.label)}</span>`
     + `<span class="v">${kind === "sup" ? "+" : "−"}${t.v.toFixed(2)}</span>`
-    + `<span class="n" title="${kind === "sup" ? "seeds this term planted that survived the inhibitors" : "seeds this inhibitor removed"}">${kind === "sup" ? t.kept : t.removed ? `−${t.removed}` : "0"}</span></div>`;
+    + `<span class="n" title="${kind === "sup" ? "cells this term has planted" : "live cells this inhibitor has removed"}">${kind === "sup" ? t.planted : t.removed ? `−${t.removed}` : "0"}</span></div>`;
   const sup = s.support.filter((t) => t.v >= 0.01);
   const inh = s.inhibit.filter((t) => t.v >= 0.01);
   if (!sup.length && !inh.length) return `<p class="dim small life-ev-none">No evidence yet: every term is below 0.01.</p>`;
   return sup.map((t) => row(t, "sup")).join("") + inh.map((t) => row(t, "inh")).join("");
 }
 
-// "230 seeds · S4 97 · S6 71 · P7 33": the survivors of each support term.
+// "230 seeds · S4 77 · S6 65": cells each support term has planted so far.
 function accounting(s) {
-  const parts = s.support.filter((t) => t.kept > 0).sort((a, b) => b.kept - a.kept).map((t) => `${escapeHtml(t.code)} ${t.kept}`);
-  const cut = s.planted - s.seeded;
-  const head = `${s.seeded} seeds` + (cut ? ` <span class="cut" title="removed by inhibitors">−${cut}</span>` : "") + (s.capped ? ` <span class="dim" title="band fill capped at ${MAX_FILL * 100}%">cap</span>` : "");
+  const planted = [...s.planted.values()].reduce((a, n) => a + n, 0);
+  const removed = [...s.removed.values()].reduce((a, n) => a + n, 0);
+  const parts = s.support.filter((t) => t.planted > 0).sort((a, b) => b.planted - a.planted).map((t) => `${escapeHtml(t.code)} ${t.planted}`);
+  const head = `${planted} seed${planted === 1 ? "" : "s"}` + (removed ? ` <span class="cut" title="live cells removed by inhibitors">−${removed}</span>` : "")
+    + (s.f < 1 ? ` <span class="dim" title="band fill capped at ${MAX_FILL * 100}%">cap</span>` : "");
   return [head, ...parts].join(" · ");
 }
 
 function renderSide() {
   if (!els || !sim) return;
+  sim.sideDirty = false;
   if (!sim.species.length) { els.side.innerHTML = `<p class="dim">This pack has no hypotheses.</p>`; return; }
   const stale = !els.nudge.hidden;
-  const narrow = root.clientWidth < 720;
-  els.side.innerHTML = `<h3>Species <span class="dim">life territory · board belief${stale ? " at seed" : ""}</span></h3>`
-    + sim.species.map((s) => {
+  const narrow = els.life.classList.contains("life-stack");
+  const html = `<h3>Species <span class="dim">life territory · board belief at this slice${stale ? " (earlier board)" : ""}</span></h3>`
+    + sim.byPos.map((s) => {
       // evidence starts open beside the grid, closed when stacked, always open for the explained away
       const open = evidenceOpen.has(s.id) ? evidenceOpen.get(s.id) : !narrow || s.offboard;
       return `<div class="life-sp${s.offboard ? " off" : ""}" data-id="${escapeHtml(s.id)}" style="--c:${s.color}">
@@ -567,6 +864,8 @@ function renderSide() {
         <details class="life-ev"${open ? " open" : ""}><summary>${accounting(s)}</summary>${evidenceHtml(s)}</details>
       </div>`;
     }).join("");
+  // rebuild only when something shown changed, so clicks land on live nodes
+  if (html !== els.side.dataset.html) { els.side.innerHTML = html; els.side.dataset.html = html; }
   markSelected();
   updateSide();
 }
@@ -598,19 +897,21 @@ function renderRead() {
   const sp = sim.species;
   let text;
   if (!sp.length) text = "Nothing to grow: this pack defines no hypotheses.";
-  else if (!sim.seeded) {
+  else if (!sim.anyEvidence) {
     text = sim.connected
       ? "No hypothesis has a support term above zero yet, so nothing seeds. Connect more sources (keys 1–9), then reseed."
       : "No sources connected: no evidence, so nothing seeds. Connect sources with keys 1–9, then reseed.";
   } else if (!sim.total) {
-    text = `Every species died out by generation ${sim.gen}. Sparse seeds do not survive B3/S23: thin support does not persist.`;
+    text = sim.slice < lastSlice()
+      ? `Nothing alive yet at ${sliceTime(sim.slice)}: evidence so far is too thin to plant.`
+      : `Every species died out by generation ${sim.gen}. Sparse seeds do not survive B3/S23: thin support does not persist.`;
   } else {
     const { board, life } = leaders();
     const L = sp[life], B = sp[board];
     const share = num(Math.round((sim.counts[life] / sim.total) * 100));
     text = life === board
-      ? `Life agrees with the board: ${spRef(L)} ${escapeHtml(L.label)} leads both, ${share}% of territory against ${Math.round(L.p * 100)}% belief.`
-      : `Life and the board disagree: ${spRef(L)} ${escapeHtml(L.label)} holds the most territory (${share}%), while the board leads with ${spRef(B)} ${escapeHtml(B.label)} (${Math.round(B.p * 100)}%). Same evidence, a different aggregation rule.`;
+      ? `Life agrees with the board: ${spRef(L)} ${escapeHtml(L.label)} leads both, ${share}% of territory against ${num(Math.round(L.p * 100))}% belief.`
+      : `Life and the board disagree: ${spRef(L)} ${escapeHtml(L.label)} holds the most territory (${share}%), while the board leads with ${spRef(B)} ${escapeHtml(B.label)} (${num(Math.round(B.p * 100))}%). Same evidence, a different aggregation rule.`;
     text += ` ${evidenceLine(L, life === board ? null : B, life)}`;
   }
   if (!els.nudge.hidden) text += ` <span class="dim">This run is from an earlier board.</span>`;
@@ -632,9 +933,10 @@ function evidenceLine(L, B, life) {
   const top = (list) => list.filter((t) => t.v >= 0.01).slice(0, 3).map(evRef).join(", ");
   const backed = [L, B].filter((s) => s && top(s.support)).map((s, k) => `${spRef(s)} ${k ? "by" : "is backed by"} ${top(s.support)}`);
   let line = backed.length ? `${backed.join("; ")}.` : "";
+  const sum = (m) => [...m.values()].reduce((a, n) => a + n, 0);
   const cut = sim.species
-    .filter((s, i) => i !== life && top(s.inhibit) && (s.offboard || (s.planted && s.planted - s.seeded >= s.planted / 2)))
-    .sort((a, b) => b.offboard - a.offboard || (b.planted - b.seeded) - (a.planted - a.seeded))
+    .filter((s, i) => i !== life && top(s.inhibit) && (s.offboard || (sum(s.planted) && sum(s.removed) >= sum(s.planted) / 2)))
+    .sort((a, b) => b.offboard - a.offboard || sum(b.removed) - sum(a.removed))
     .slice(0, 2);
   if (cut.length) line += ` ${cut.map((s, k) => `${spRef(s)} ${k ? "by" : "was cut by"} ${top(s.inhibit)}`).join("; ")}.`;
   return line;
