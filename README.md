@@ -97,6 +97,39 @@ concept that just fired. Every action lands in the **Log** tab, the audit trail.
 
 Both reach the same final board whatever order you connect sources in.
 
+## Modes: Board, Life, Topology
+
+The strip above the center area switches between three views of the same
+session; the side panel, source rack and header stay put, and selecting a
+piece in any view selects it everywhere. `?mode=life` or `?mode=topology`
+in the URL opens one directly.
+
+- **Board** is the checkers view described above.
+- **Life** is Conway's Game of Life with each hypothesis as a species. It
+  follows the evidence in time: the board is re-inferred at every event
+  timestamp (`GET /api/timeline`), and each slice plants cells for what each
+  hypothesis's support terms gained (signals and participants, `w × p`),
+  while inhibitors remove their cut; then Conway runs for a few generations
+  before the next slice. Evidence cells carry a pixel pattern per signal or
+  participant (hover for which one, and when); plain cells were born by
+  Conway. Hypotheses that share evidence sit in adjacent bands and shared
+  terms seed on the border between them. Territory share is shown beside
+  the board's belief with a one-line verdict, and each species lists the
+  evidence that planted or cut it. Generation 0 is data; later generations
+  are what Conway makes of it, so read the lapse as how evidence landed and
+  compounded, not as a second inference engine.
+- **Topology** is a NetView-style map: a root submap of sources colored by
+  the worst status of their participants, drill-down to participants with
+  typed device icons and links from shared records, and a **Hypotheses**
+  submap with green support and red inhibition edges where explained-away
+  hypotheses stay visible with what killed them. An event browser lists
+  every timestamped record (and an Undated section for the rest) with
+  severity, source, participants and ack; the replay scrubber steps through
+  the timeline slices, so statuses at any moment come from real inference
+  on the records that had arrived by then.
+
+See `docs/modes.md` for the mode interface and data shapes.
+
 ## How it works
 
 ```
