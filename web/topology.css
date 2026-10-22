@@ -30,6 +30,12 @@
   font: 15px/1.05 var(--pixel); letter-spacing: 0.5px; color: var(--text); background: rgba(7, 9, 12, 0.72); }
 .topo-label b { color: var(--participant); font-weight: 400; }
 .topo-label i { font-style: normal; color: #9a8866; }
+.topo-label span { color: var(--dim); }
+.topo-label i.gold { color: var(--gold); }
+.topo-label.side-left { max-width: 132px; }
+.topo-label.side-right { max-width: 230px; }
+.topo-label b.b-signal { color: var(--signal); }
+.topo-label b.b-hypothesis { color: var(--hypothesis); }
 .topo-label.faint { color: var(--dim); }
 .topo-label.faint b { color: var(--grey); }
 .topo-banner { position: absolute; left: 8px; top: 6px; z-index: 3; pointer-events: none; font: 15px/1 var(--pixel); letter-spacing: 1px; color: var(--dim); }

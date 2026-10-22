@@ -1,11 +1,13 @@
 // Topology mode: a pixel-art homage to IBM Tivoli NetView.
 // A root submap of sources (each colored by the worst status among the
 // participants it fed), drill-down submaps of participant "devices" joined by
-// shared records, an event browser tied to the map, and incident replay.
+// shared records, a Hypotheses submap that shows which signals and
+// participants back or inhibit each explanation, an event browser tied to the
+// map, and incident replay.
 // The map is drawn at native resolution (1 unit = 1 pixel) and upscaled by a
 // whole number with image-rendering: pixelated; labels are HTML on top so
 // they stay in the pixel font at any scale.
-import { COLORS, mix, linePoints } from "./sprites.js";
+import { COLORS, mix, linePoints, drawPin } from "./sprites.js";
 import { escapeHtml as h } from "./board.js";
 
 // NetView status colors, tuned to sit on the dark palette. Unmanaged (tan) is
@@ -19,6 +21,9 @@ const STATUS = {
   critical: { rank: 3, color: "#ff4d4d", label: "critical" },
 };
 const statusFor = (p) => (p >= 0.66 ? "critical" : p >= 0.33 ? "marginal" : "normal");
+
+// Built-in submaps besides one per source.
+const SUBMAPS = new Set(["root", "all", "@hyp"]);
 
 const STEP_MS = 650; // replay: pause per event
 const FLASH_MS = 900;
@@ -57,6 +62,15 @@ const GLYPHS = {
   generic: [
     "............", "..########..", ".#.......##.", "##########.#", "#........#.#", "#.######.#.#",
     "#........#.#", "#.######.#.#", "#........#.#", "#........##.", "##########..", "............",
+  ],
+  // explanations and evidence: a radio beacon and a waveform
+  beacon: [
+    "..#......#..", ".#...##...#.", "#...#..#...#", "#...#..#...#", ".#...##...#.", "..#..##..#..",
+    ".....##.....", "....####....", "....#..#....", "...#....#...", "...######...", "..#......#..",
+  ],
+  pulse: [
+    "............", "............", "............", "..##........", ".#..#.......", "#....#.....#",
+    "#....#.....#", "......#...#.", ".......###..", "............", "............", "............",
   ],
   // submap icons: a source (a small network) and the fused session (a cloud)
   network: [
@@ -128,7 +142,9 @@ export function mount(el, ctx) {
     map: "root",              // "root" | "all" | a source id
     pos: new Map(),           // participant id -> world {x, y}, stable per scenario
     srcPos: new Map(),        // source id -> world {x, y} on the root submap
+    hypPos: new Map(),        // node id -> world {x, y, side} on the Hypotheses submap
     need: { w: 240, h: 150 }, // native size the layouts want, for choosing the scale
+    hypNeed: { w: 370, h: 150 },
     items: [], edges: [], events: null, span: null,
     cam: { x: 0, y: 0, tx: 0, ty: 0 }, panned: false, drag: null,
     scale: 3, W: 0, H: 0, k: 1,
@@ -159,7 +175,7 @@ export function update(state) {
     C.panned = false;
     layout(state);
   }
-  if (C.map !== "root" && C.map !== "all" && !state.sources.some((s) => s.id === C.map)) C.map = "root";
+  if (!SUBMAPS.has(C.map) && !state.sources.some((s) => s.id === C.map)) C.map = "root";
   readEvents(state);
   // a replay position outside the new span (events changed) snaps back to live
   if (C.t != null && (!C.span || C.t > C.span.max)) C.t = null;
@@ -190,7 +206,54 @@ function layout(state) {
   const rp = Math.max(44, parts.length * 11), rs = Math.max(60, srcs.length * 14);
   ring(parts, C.pos, rp, Math.round(rp * 0.58));
   ring(srcs, C.srcPos, rs, Math.round(rs * 0.58));
-  C.need = { w: 2 * Math.max(rp, rs) + 16 + 84, h: Math.round(1.16 * Math.max(rp, rs)) + 16 + 26 };
+  C.need = { w: 2 * Math.max(rp, rs) + 160, h: Math.round(1.16 * Math.max(rp, rs)) + 16 + 26 };
+  hypLayout(state);
+}
+
+// The Hypotheses submap: three columns, participants far left, signals in the
+// middle (they carry most edges, so they sit nearest), hypotheses on the
+// right. Left columns are ordered by the mean row of the hypotheses they feed
+// to cut crossings. Breakdowns list every model edge even before any source
+// connects, so this is computed once per scenario.
+const ROW = 20;
+const COL_X = { participant: -190, signal: -70, hypothesis: 60 };
+
+function hypLayout(state) {
+  const nodes = new Map(state.nodes.map((n) => [n.id, n]));
+  const order = new Map(state.nodes.map((n, i) => [n.id, i]));
+  const hyps = state.nodes.filter((n) => n.band === "hypothesis");
+  const feeds = new Map(); // left node id -> rows of the hypotheses it feeds
+  hyps.forEach((hy, j) => {
+    for (const t of termsOf(hy)) {
+      const n = nodes.get(t.from);
+      if (!n || n.band === "hypothesis") continue;
+      if (!feeds.has(n.id)) feeds.set(n.id, []);
+      feeds.get(n.id).push(j);
+    }
+  });
+  const bary = (id) => feeds.get(id).reduce((a, b) => a + b, 0) / feeds.get(id).length;
+  const column = (band) => [...feeds.keys()].filter((id) => nodes.get(id).band === band)
+    .sort((a, b) => bary(a) - bary(b) || order.get(a) - order.get(b));
+  const parts = column("participant"), sigs = column("signal");
+  const tall = Math.max(parts.length, sigs.length, hyps.length, 1);
+  C.hypPos.clear();
+  const place = (ids, band, step) => ids.forEach((id, i) => C.hypPos.set(id, {
+    x: COL_X[band], y: Math.round((i - (ids.length - 1) / 2) * step), side: band === "hypothesis" ? "right" : "left",
+  }));
+  place(parts, "participant", ROW);
+  place(sigs, "signal", ROW);
+  // hypotheses fan out over the height of the tallest column
+  place(hyps.map((x) => x.id), "hypothesis", Math.min(44, Math.max(ROW, ((tall - 1) * ROW) / Math.max(1, hyps.length - 1))));
+  C.hypNeed = { w: 450, h: (tall - 1) * ROW + 16 + 22 };
+}
+
+// Every term of a hypothesis's belief derivation, tagged support or inhibit,
+// with its mass: the term (w × p) for support, w × p for an inhibitor.
+function termsOf(hy) {
+  const b = hy.detail && hy.detail.breakdown;
+  if (!b) return [];
+  return [...(b.support || []).map((t) => ({ ...t, kind: "support", mass: t.term ?? t.w * t.p })),
+          ...(b.inhibit || []).map((t) => ({ ...t, kind: "inhibit", mass: t.w * t.p }))];
 }
 
 function ring(ids, out, rx, ry) {
@@ -248,6 +311,8 @@ function worst(list) {
 
 const sourcesOf = (n) => (n.detail && n.detail.sources) || [];
 const thickFor = (w) => (w >= 4 ? 3 : w >= 2 ? 2 : 1);
+const thickForMass = (m) => (m >= 0.4 ? 3 : m >= 0.15 ? 2 : 1);
+const leaderOf = (s) => s.nodes.filter((n) => n.band === "hypothesis").reduce((a, b) => (!a || b.p > a.p ? b : a), null);
 
 // Rebuild what the current submap shows: icons, links and their labels.
 function derive() {
@@ -258,20 +323,29 @@ function derive() {
   if (C.map === "root") {
     const anyOn = s.sources.some((x) => x.connected);
     const all = worst(parts.map((n) => info.get(n.id)));
-    items.push({ id: "@all", kind: "all", x: 0, y: 0, glyph: "cloud", status: anyOn ? (all ? all.status : "unknown") : "unmanaged",
+    items.push({ id: "@all", kind: "all", submap: true, x: 0, y: 0, glyph: "cloud", status: anyOn ? (all ? all.status : "unknown") : "unmanaged",
                  dim: anyOn && all ? all.dim : false, count: parts.filter((n) => n.present).length });
     s.sources.forEach((src, i) => {
       const members = parts.filter((n) => n.present && sourcesOf(n).includes(src.id));
       const agg = worst(members.map((n) => info.get(n.id)));
       const p = C.srcPos.get(src.id);
-      const it = { id: `@src:${src.id}`, kind: "source", src, key: i + 1, x: p.x, y: p.y, glyph: "network",
+      const it = { id: `@src:${src.id}`, kind: "source", submap: true, src, key: i + 1, x: p.x, y: p.y, glyph: "network",
                    status: !src.connected ? "unmanaged" : agg ? agg.status : "unknown",
                    dim: src.connected && agg ? agg.dim : false, count: members.length };
       items.push(it);
       // spokes: each source feeds the fused session; thickness by participants fed
-      edges.push({ a: items[0], b: it, thick: src.connected ? thickFor(members.length) : 1, dashed: !src.connected,
+      edges.push({ a: items[0], b: it, thick: src.connected ? thickFor(members.length) : 1, dashed: !src.connected, alpha: src.connected ? 0.75 : 0.35,
                    color: rgb(src.connected ? STATUS[it.status].color : STATUS.unmanaged.color), ids: [] });
     });
+    // the Hypotheses beacon, top right of the ring, labelled beside it: the
+    // leader's code and belief
+    const lead = leaderOf(s);
+    const rs = Math.max(30, ...[...C.srcPos.values()].map((p) => p.x));
+    const top = Math.min(0, ...[...C.srcPos.values()].map((p) => p.y));
+    items.push({ id: "@hyp", kind: "hyproot", submap: true, x: rs + 40, y: top, side: "right", glyph: "beacon", lead,
+                 status: lead ? statusFor(lead.p) : "unknown", bar: lead ? lead.p : 0, crowned: !!(lead && lead.crowned) });
+  } else if (C.map === "@hyp") {
+    hypItems(s, items, edges);
   } else {
     const members = C.map === "all" ? parts : parts.filter((n) => sourcesOf(n).includes(C.map));
     const byId = new Map();
@@ -296,6 +370,43 @@ function derive() {
   if (!C.panned) frameCamera();
 }
 
+// Hypotheses submap: always live (beliefs have no timestamps). Off-board
+// hypotheses stay drawn, dimmed, with the red edges that explained them away.
+function hypItems(s, items, edges) {
+  const nodes = new Map(s.nodes.map((n) => [n.id, n]));
+  const hyps = s.nodes.filter((n) => n.band === "hypothesis");
+  if (hyps.some((hy) => !C.hypPos.has(hy.id) || termsOf(hy).some((t) => nodes.has(t.from) && !C.hypPos.has(t.from)))) hypLayout(s);
+  const byId = new Map();
+  for (const [id, p] of C.hypPos) {
+    const n = nodes.get(id);
+    if (!n) continue;
+    let it;
+    if (n.band === "hypothesis") {
+      const off = !n.present || !!n.offboard;
+      it = { status: statusFor(n.p), dim: off, off, glyph: "beacon", crowned: !!n.crowned, kept: !!n.kept };
+    } else if (n.band === "signal") {
+      // dormant: its sources are not connected; quiet: connected, matched nothing
+      it = n.status === "dormant" ? { status: "unmanaged", ghost: true } : { status: statusFor(n.p), dim: false };
+      it.glyph = "pulse";
+    } else {
+      it = { ...nodeStatus(n, null), glyph: glyphFor(n.detail && n.detail.type) };
+    }
+    Object.assign(it, { id, kind: n.band, node: n, x: p.x, y: p.y, side: p.side });
+    items.push(it);
+    byId.set(id, it);
+  }
+  for (const hy of hyps) {
+    const b = byId.get(hy.id);
+    for (const t of termsOf(hy)) {
+      const a = byId.get(t.from);
+      if (!a || !b || t.mass < 0.01) continue;
+      const inhibit = t.kind === "inhibit";
+      edges.push({ a, b, thick: thickForMass(t.mass), color: rgb(inhibit ? STATUS.critical.color : STATUS.normal.color),
+                   dashed: inhibit, alpha: b.off && !inhibit ? 0.3 : 0.8, ids: [a.id, b.id] });
+    }
+  }
+}
+
 // ------------------------------------------------------------------ navigation
 
 function go(map) {
@@ -304,13 +415,16 @@ function go(map) {
   C.hover = null;
   C.tip.hidden = true;
   derive();
+  fit();
   renderCrumbs();
   renderEvents();
 }
 
 function frameCamera() {
   if (!C.items.length) { C.cam.tx = 0; C.cam.ty = 0; return; }
-  const xs = C.items.map((i) => i.x), ys = C.items.map((i) => i.y);
+  // side labels widen the box to the left or right of their icons
+  const xs = C.items.flatMap((i) => (i.side === "left" ? [i.x - 76, i.x] : i.side === "right" ? [i.x, i.x + 110] : [i.x]));
+  const ys = C.items.map((i) => i.y);
   C.cam.tx = (Math.min(...xs) + Math.max(...xs)) / 2;
   C.cam.ty = (Math.min(...ys) + Math.max(...ys)) / 2 + 4; // labels hang below the icons
 }
@@ -321,7 +435,8 @@ function centerOn(ids) {
   ids = ids.filter((id) => C.pos.has(id));
   if (!ids.length) return;
   if (!ids.some((id) => C.items.some((it) => it.id === id))) go("all");
-  const pts = ids.map((id) => C.pos.get(id));
+  const pts = C.items.filter((it) => ids.includes(it.id));
+  if (!pts.length) return;
   C.cam.tx = pts.reduce((a, p) => a + p.x, 0) / pts.length;
   C.cam.ty = pts.reduce((a, p) => a + p.y, 0) / pts.length;
   C.panned = true;
@@ -343,7 +458,8 @@ function fit() {
   if (!cssW || !cssH) return;
   // half steps are still whole device pixels on a HiDPI screen
   const dpr = window.devicePixelRatio || 1, q = dpr >= 2 ? 2 : 1;
-  const scale = Math.max(2, Math.min(4, Math.floor(q * Math.min(cssW / C.need.w, cssH / C.need.h)) / q));
+  const need = C.map === "@hyp" ? C.hypNeed : C.need;
+  const scale = Math.max(2, Math.min(4, Math.floor(q * Math.min(cssW / need.w, cssH / need.h)) / q));
   const W = Math.max(1, Math.floor(cssW / scale)), H = Math.max(1, Math.floor(cssH / scale));
   const k = Math.max(1, Math.ceil(scale * dpr));
   if (W !== C.W || H !== C.H || k !== C.k || scale !== C.scale) {
@@ -386,14 +502,14 @@ function draw(now) {
   const ox = ((sx(0) % 8) + 8) % 8, oy = ((sy(0) % 8) + 8) % 8;
   for (let x = ox; x < W; x += 8) for (let y = oy; y < H; y += 8) g.fillRect(x, y, 1, 1);
 
-  const focus = C.hover && C.hover.kind === "participant" ? C.hover.id : C.ctx.selected;
+  const focus = C.hover && !C.hover.submap ? C.hover.id : C.ctx.selected;
   for (const e of C.edges) drawLink(g, e, focus);
   for (const it of C.items) drawItem(g, it, now);
 }
 
 function drawLink(g, e, focus) {
   const touches = focus && e.ids.includes(focus);
-  let alpha = e.dashed ? 0.35 : 0.75;
+  let alpha = e.alpha ?? 0.75;
   if (focus && e.ids.length) alpha = touches ? 1 : 0.25;
   g.fillStyle = css(e.color, alpha);
   const pts = linePoints(sx(e.a.x), sy(e.a.y), sx(e.b.x), sy(e.b.y));
@@ -420,7 +536,7 @@ function drawItem(g, it, now) {
     }
     glyph(g, x + 2, y + 2, GLYPHS[it.glyph], css(base, 0.35));
   } else {
-    if (it.kind !== "participant") plate(g, x + 2, y - 2, mix(face, BLACK, 0.45)); // submaps look stacked
+    if (it.submap) plate(g, x + 2, y - 2, mix(face, BLACK, 0.45)); // submaps look stacked
     plate(g, x, y, face);
     glyph(g, x + 2, y + 2, GLYPHS[it.glyph], css(mix(face, BLACK, 0.74)));
   }
@@ -428,8 +544,25 @@ function drawItem(g, it, now) {
     g.fillStyle = it.src.color; // which source this is, under the plate
     g.fillRect(x + 2, y + 17, 12, 1);
   }
+  if (it.bar != null) {
+    // the leader's belief, as a bar under the beacon
+    g.fillStyle = "#05070a";
+    g.fillRect(x, y + 17, 16, 3);
+    g.fillStyle = COLORS.hypothesis;
+    g.fillRect(x + 1, y + 18, Math.round(14 * it.bar), 1);
+  }
+  if (it.off) {
+    // off the board: a dotted frame around the dimmed plate
+    g.fillStyle = css(rgb(STATUS.unmanaged.color), 0.8);
+    for (let i = 0; i < 20; i += 2) {
+      g.fillRect(x - 2 + i, y - 2, 1, 1); g.fillRect(x - 2 + i, y + 17, 1, 1);
+      g.fillRect(x - 2, y - 2 + i, 1, 1); g.fillRect(x + 17, y - 2 + i, 1, 1);
+    }
+  }
+  if (it.crowned) crown(g, x, y);
+  if (it.kept) drawPin(g, x, y);
   // critical and unacked: a blinking red ring
-  if (it.status === "critical" && !it.dim && !it.ghost && Math.floor(now / 420) % 2 === 0) {
+  if (it.status === "critical" && !it.dim && !it.ghost && !it.off && Math.floor(now / 420) % 2 === 0) {
     g.fillStyle = css(base, 0.55);
     g.fillRect(x - 2, y - 2, 20, 1); g.fillRect(x - 2, y + 17, 20, 1);
     g.fillRect(x - 2, y - 2, 1, 20); g.fillRect(x + 17, y - 2, 1, 20);
@@ -459,6 +592,17 @@ function glyph(g, x, y, rows, color) {
   });
 }
 
+// A small gold crown above the plate: the user crowned this hypothesis.
+function crown(g, x, y) {
+  g.fillStyle = "#05070a";
+  g.fillRect(x + 4, y - 6, 9, 5);
+  g.fillStyle = COLORS.gold;
+  for (const [dx, dy] of [[5, -5], [8, -5], [11, -5], [5, -4], [6, -4], [8, -4], [10, -4], [11, -4],
+                          [5, -3], [6, -3], [7, -3], [8, -3], [9, -3], [10, -3], [11, -3]]) {
+    g.fillRect(x + dx, y + dy, 1, 1);
+  }
+}
+
 // Corner brackets just outside a 16x16 icon.
 function brackets(g, x, y, color) {
   g.fillStyle = color;
@@ -482,15 +626,25 @@ function hit(e) {
 
 function labelHtml(it) {
   if (it.kind === "all") return `<b>ALL</b> participants`;
+  if (it.kind === "hyproot") {
+    return `<b class="b-hypothesis">Hypotheses</b>`
+      + (it.lead ? ` ${h(it.lead.code)} ${Math.round(it.lead.p * 100)}%${it.crowned ? " <i class=\"gold\">crowned</i>" : ""}` : "");
+  }
+  if (it.kind === "hypothesis" || it.kind === "signal") {
+    const n = it.node;
+    const tag = it.off ? ` <i>off board</i>` : it.ghost ? ` <i>not connected</i>` : "";
+    const mark = (it.crowned ? " <i class=\"gold\">crowned</i>" : "") + (it.kept ? " <i>kept</i>" : "");
+    return `<b class="b-${n.band}">${h(n.code)}</b> ${h(n.label)} <span>${Math.round(n.p * 100)}%</span>${mark}${tag}`;
+  }
   if (it.kind === "source") return `<b style="color:${it.src.color}">${it.key}</b> ${h(it.src.name)}`;
   const n = it.node;
   const tag = it.ghost ? ` <i>not named yet</i>` : it.off ? ` <i>off board</i>` : "";
-  return `<b>${h(n.code)}</b> ${h(n.label)}${tag}`;
+  return `<b class="b-participant">${h(n.code)}</b> ${h(n.label)}${tag}`;
 }
 
 function renderLabels() {
   C.labels.innerHTML = C.items.map((it) =>
-    `<div class="topo-label${it.ghost || it.status === "unmanaged" ? " faint" : ""}">${labelHtml(it)}</div>`).join("");
+    `<div class="topo-label${it.ghost || it.status === "unmanaged" || it.off ? " faint" : ""}${it.side ? ` side-${it.side}` : ""}">${labelHtml(it)}</div>`).join("");
   C.labelKey = "";
 }
 
@@ -502,7 +656,10 @@ function placeLabels() {
   C.items.forEach((it, i) => {
     const el = els[i];
     if (!el) return;
-    el.style.transform = `translate(${sx(it.x) * C.scale}px, ${(sy(it.y) + 11) * C.scale}px) translateX(-50%)`;
+    const x = sx(it.x) * C.scale, y = sy(it.y) * C.scale, gap = 11 * C.scale;
+    el.style.transform = it.side === "left" ? `translate(${x - gap}px, ${y}px) translate(-100%, -50%)`
+      : it.side === "right" ? `translate(${x + gap}px, ${y}px) translateY(-50%)`
+      : `translate(${x}px, ${y + gap}px) translateX(-50%)`;
   });
 }
 
@@ -511,17 +668,20 @@ function renderMapText() {
   const live = C.t == null;
   C.banner.innerHTML = live
     ? `<b class="live">LIVE</b> status from beliefs`
-    : `<b class="replay">REPLAY</b> ${clock(C.t)} · ${C.events.filter((e) => e.t <= C.t).length}/${C.events.length} events`;
+    : `<b class="replay">REPLAY</b> ${clock(C.t)} · ${C.events.filter((e) => e.t <= C.t).length}/${C.events.length} events`
+      + (C.map === "@hyp" ? ` · <span class="warn">this map stays live: beliefs have no timestamps</span>` : "");
 
   let note = "";
   const keys = `1–${s.sources.length}`;
   if (C.map === "root" && !s.sources.some((x) => x.connected)) {
     note = `No sources connected. Press ${keys} or use the rack below: each source icon turns from tan (unmanaged) to the worst status among the participants it names.`;
-  } else if (C.map !== "root" && C.map !== "all") {
+  } else if (!SUBMAPS.has(C.map)) {
     const src = s.sources.find((x) => x.id === C.map);
     const i = s.sources.indexOf(src) + 1;
     if (!src.connected) note = `${h(src.name)} is not connected. Press ${i} to connect it.`;
     else if (!C.items.length) note = `${h(src.name)} has not named any participant yet.`;
+  } else if (C.map === "@hyp" && !s.sources.some((x) => x.connected)) {
+    note = `No sources connected: every signal is dormant and each hypothesis sits at its prior. Connect a source (${keys}) to see what backs each one.`;
   } else if (C.map === "all" && !C.items.some((it) => !it.ghost)) {
     note = `No participant has been named yet. Connect a source (${keys}).`;
   }
@@ -529,6 +689,7 @@ function renderMapText() {
   C.note.innerHTML = note;
 
   if (C.map === "root") C.foot.textContent = "click a submap to open it · spokes: participants each source names";
+  else if (C.map === "@hyp") C.foot.textContent = "green: supports · red dashed: inhibits · thickness = w × p · click a piece to inspect it";
   else if (!Array.isArray(s.links)) C.foot.textContent = "links: waiting for server data";
   else C.foot.textContent = `${C.edges.length} link${C.edges.length === 1 ? "" : "s"} · thickness = shared records · drag to pan`;
 }
@@ -538,7 +699,8 @@ function renderCrumbs() {
   let html = `<button data-go="root" class="${C.map === "root" ? "on" : ""}">Root</button>`;
   if (C.map !== "root") {
     const src = s.sources.find((x) => x.id === C.map);
-    const name = C.map === "all" ? "All participants" : `<i style="--c:${src.color}"></i>${h(src.name)}`;
+    const name = C.map === "all" ? "All participants" : C.map === "@hyp" ? "Hypotheses"
+      : `<i style="--c:${src.color}"></i>${h(src.name)}`;
     html += `<span>›</span><button data-go="${h(C.map)}" class="on">${name}</button>`;
   }
   C.crumbs.innerHTML = html;
@@ -549,6 +711,16 @@ function showTip(e, it) {
   let body;
   const st = STATUS[it.status].label + (it.dim ? " · acked" : "");
   if (it.kind === "all") body = `<b>ALL</b> participants<br><span>${st} · ${it.count} on the board</span>`;
+  else if (it.kind === "hyproot") {
+    body = `<b>Hypotheses</b><br><span>${it.lead ? `leader ${h(it.lead.code)} ${h(it.lead.label)} · ${Math.round(it.lead.p * 100)}% belief` : "no hypotheses"} · always live</span>`;
+  } else if (it.kind === "hypothesis" || it.kind === "signal") {
+    const n = it.node;
+    const where = it.off ? `off board: ${h((n.offboard && n.offboard.reason) || "explained away")}`
+      : it.ghost ? "dormant: its sources are not connected"
+      : `${st} · ${Math.round(n.p * 100)}% ${n.band === "signal" ? "activation" : "belief"}`;
+    const marks = (it.crowned ? " · crowned" : "") + (it.kept ? " · kept on the board by you" : "");
+    body = `<b>${h(n.code)}</b> ${h(n.label)}<br><span>${n.band} · ${where}${marks}</span>`;
+  }
   else if (it.kind === "source") {
     body = `<b>${h(it.src.name)}</b><br><span>${it.src.connected ? `${st} · names ${it.count} participant${it.count === 1 ? "" : "s"}` : "not connected · unmanaged"}</span>`;
   } else {
@@ -757,6 +929,7 @@ function wire() {
     const it = hit(e);
     if (!it) return;
     if (it.kind === "all") go("all");
+    else if (it.kind === "hyproot") go("@hyp");
     else if (it.kind === "source") go(it.src.id);
     else C.ctx.select(it.id);
   });
