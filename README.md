@@ -24,6 +24,34 @@ Then open http://127.0.0.1:8777.
 The scenario dropdown switches packs live, and `?scenario=<id>` in the URL
 picks one.
 
+### Rust server
+
+A second engine in Rust (`rust/`) serves the same frontend with the same API.
+It runs beside the Python server and does not replace it. It needs
+[Rust](https://rustup.rs) to build, and nothing to run:
+
+```bash
+./run-rust.sh                      # http://127.0.0.1:8778
+./run-rust.sh --scenario fraud-ring
+./run-rust.sh --check              # same output as ./run.sh --check
+```
+
+Both servers read the same `scenarios/`, `.env` and `.cache/jev/`, so an answer
+Jev gave one engine is a cache hit for the other. To run them side by side, start
+`./run.sh` in one terminal and `./run-rust.sh` in another, and open both ports.
+Each keeps its own sessions in memory.
+
+To compare the two engines on a pack (`tools/py_dump.py` writes the Python side,
+offline):
+
+```bash
+python3 tools/py_dump.py . /tmp/elessar-dump
+cargo run --release --manifest-path rust/Cargo.toml -p elessar-cli -- diff fraud-ring --python-dump /tmp/elessar-dump
+```
+
+It prints the differing paths, or `identical`. `docs/engine-spec.md` is the
+contract and its §13 lists what may differ.
+
 ### Optional: models (Jev and the agent)
 
 Copy `.env.example` to `.env` (git-ignored) and add an OpenRouter key:

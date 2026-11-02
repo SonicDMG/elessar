@@ -1334,40 +1334,61 @@ impl Session {
     /// Record the results of the requests made for one source: answers per
     /// signal, the stats and the audit line. Results are by record index.
     pub fn apply_jev_results(&mut self, source: &str, results: &[(u32, JevResult)]) -> Vec<Insight> {
-        let signals: Vec<String> = self.pack.signals.iter().filter(|s| s.jev.is_some() && s.source.as_deref() == Some(source)).map(|s| s.id.clone()).collect();
         self.transact(|s, _| {
-            let (mut calls, mut cached, mut errors, mut cost) = (0u64, 0u64, 0u64, 0.0);
-            let mut latencies = Vec::new();
-            for (index, res) in results {
-                if res.error.is_some() {
-                    errors += 1;
-                } else if res.cached {
-                    cached += 1;
-                } else {
-                    calls += 1;
-                    cost += res.cost.unwrap_or(0.0);
-                    latencies.push(res.ms.unwrap_or(0));
-                }
-                for sig in &signals {
-                    let answer = res.answers.as_ref().and_then(|a| a.get(sig.replace('-', "_")));
-                    if answer.is_none() && res.error.is_none() {
-                        continue;
-                    }
-                    s.jev.insert(
-                        format!("{sig}|{source}|{index}"),
-                        JevAnswer { noul: answer.and_then(|a| a.get("noul")).and_then(Value::as_f64), model: res.model.clone(), ms: res.ms, cached: res.cached, error: res.error.clone() },
-                    );
-                }
-            }
-            s.jev_calls += calls;
-            s.jev_cached += cached;
-            s.jev_errors += errors;
-            s.jev_cost += cost;
-            let avg = if latencies.is_empty() { String::new() } else { format!(", avg {} ms", latencies.iter().sum::<u64>() / latencies.len() as u64) };
-            s.log_entry("jev", format!("{source}: {} records, {calls} calls, {cached} cached, {errors} errors, ${cost:.5}{avg}", results.len()));
+            s.record_jev(source, results);
             Ok(())
         })
         .unwrap_or_default()
+    }
+
+    /// Connect a source and record Jev's answers about it as one action: one
+    /// recompute, one insight diff, and the audit in Python's order (connect,
+    /// skipped, jev, insights). Empty `results` mean nothing was asked and log
+    /// nothing; a payload that fails to parse ignores them.
+    pub fn connect_with_jev(&mut self, source: &str, raw: String, latency_ms: u64, results: &[(u32, JevResult)]) -> Vec<Insight> {
+        self.transact(|s, _| {
+            s.attach(source, raw, latency_ms);
+            if !results.is_empty() && s.connected.contains_key(source) && !s.errors.contains_key(source) {
+                s.record_jev(source, results);
+            }
+            Ok(())
+        })
+        .unwrap_or_default()
+    }
+
+    /// Record the results of the requests made for one source: answers per
+    /// signal, the stats and the audit line. Results are by record index.
+    fn record_jev(&mut self, source: &str, results: &[(u32, JevResult)]) {
+        let signals: Vec<String> = self.pack.signals.iter().filter(|s| s.jev.is_some() && s.source.as_deref() == Some(source)).map(|s| s.id.clone()).collect();
+        let (mut calls, mut cached, mut errors, mut cost) = (0u64, 0u64, 0u64, 0.0);
+        let mut latencies = Vec::new();
+        for (index, res) in results {
+            if res.error.is_some() {
+                errors += 1;
+            } else if res.cached {
+                cached += 1;
+            } else {
+                calls += 1;
+                cost += res.cost.unwrap_or(0.0);
+                latencies.push(res.ms.unwrap_or(0));
+            }
+            for sig in &signals {
+                let answer = res.answers.as_ref().and_then(|a| a.get(sig.replace('-', "_")));
+                if answer.is_none() && res.error.is_none() {
+                    continue;
+                }
+                self.jev.insert(
+                    format!("{sig}|{source}|{index}"),
+                    JevAnswer { noul: answer.and_then(|a| a.get("noul")).and_then(Value::as_f64), model: res.model.clone(), ms: res.ms, cached: res.cached, error: res.error.clone() },
+                );
+            }
+        }
+        self.jev_calls += calls;
+        self.jev_cached += cached;
+        self.jev_errors += errors;
+        self.jev_cost += cost;
+        let avg = if latencies.is_empty() { String::new() } else { format!(", avg {} ms", latencies.iter().sum::<u64>() / latencies.len() as u64) };
+        self.log_entry("jev", format!("{source}: {} records, {calls} calls, {cached} cached, {errors} errors, ${cost:.5}{avg}", results.len()));
     }
 }
 
