@@ -1,0 +1,13 @@
+{
+  "merges": {"default": "commit", "reject": []},
+  "proposals_seen": [["Marcus Vale", "Marcus Vayle"]],
+  "final": {
+    "crownable": "misconfig",
+    "captured": ["planned", "dependency", "unsanctioned"],
+    "firing": ["upstream-timeouts", "off-hours", "approved-change", "prod-to-staging", "fx-healthy", "config-advisory", "person-advisory", "authorized-implementer"],
+    "resolved": ["vale", "reyes", "kwan", "svc-ledger", "svc-fx", "fx-staging", "ch-4471"],
+    "undated": 0,
+    "skipped": {}
+  },
+  "order_independent": "all"
+}

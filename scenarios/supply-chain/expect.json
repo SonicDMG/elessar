@@ -1,0 +1,13 @@
+{
+  "merges": {"default": "commit", "reject": []},
+  "proposals_seen": [["KESTREL COMPONENTS LIMITED", "Kestrel Components Ltd."], ["ALDER & FINCH PLASTICS", "Alder & Finch Plastics Co."]],
+  "final": {
+    "crownable": "documents",
+    "captured": ["shortfall", "congestion"],
+    "firing": ["container-hold", "doc-reason", "port-normal", "stock-critical", "supplier-on-time"],
+    "resolved": ["kestrel", "container", "cnsha", "board"],
+    "undated": 3,
+    "skipped": {}
+  },
+  "order_independent": "all"
+}

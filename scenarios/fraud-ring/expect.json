@@ -1,0 +1,13 @@
+{
+  "merges": {"default": "commit", "reject": [["Nova Goods", "Nova Goods Co"]]},
+  "proposals_seen": [["Brightline Electronics", "Brightline Electronics"], ["Nova Goods", "Nova Goods Co"]],
+  "final": {
+    "crownable": "ring",
+    "captured": ["takeover", "promo-abuse", "false-positives", "not-received"],
+    "firing": ["fraud-chargebacks", "unauthorized-tickets", "shared-device", "promo-concentration", "flagged-bin-approved", "new-account-orders", "rules-deploy", "shared-payout", "decline-spike"],
+    "resolved": ["ring-seller", "honest-seller", "ring-device", "promo", "card-bin", "ring-buyer", "victim", "risk-model"],
+    "undated": 20,
+    "skipped": {"orders": 1, "payments": 1, "chargebacks": 1}
+  },
+  "order_independent": 60
+}
