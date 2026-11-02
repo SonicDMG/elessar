@@ -1,0 +1,1074 @@
+{
+ "clusters": {
+  "inventory#0:Part:3": {
+   "conflicts": [],
+   "fragments": [
+    "inventory#0:Part:3"
+   ],
+   "props": {
+    "cover_days": [
+     {
+      "provenance": [
+       {
+        "field": "cover_days",
+        "fragment": "inventory#0:Part:3",
+        "pointer": "rows[0]",
+        "source": "inventory"
+       }
+      ],
+      "value": 3.1
+     }
+    ],
+    "description": [
+     {
+      "provenance": [
+       {
+        "field": "description",
+        "fragment": "inventory#0:Part:3",
+        "pointer": "rows[0]",
+        "source": "inventory"
+       }
+      ],
+      "value": "Control board rev 4"
+     }
+    ],
+    "inbound_po": [
+     {
+      "provenance": [
+       {
+        "field": "inbound_po",
+        "fragment": "inventory#0:Part:3",
+        "pointer": "rows[0]",
+        "source": "inventory"
+       }
+      ],
+      "value": "PO-7781"
+     }
+    ],
+    "on_hand": [
+     {
+      "provenance": [
+       {
+        "field": "on_hand",
+        "fragment": "inventory#0:Part:3",
+        "pointer": "rows[0]",
+        "source": "inventory"
+       }
+      ],
+      "value": 620
+     }
+    ],
+    "part_no": [
+     {
+      "provenance": [
+       {
+        "field": "part_no",
+        "fragment": "inventory#0:Part:3",
+        "pointer": "rows[0]",
+        "source": "inventory"
+       }
+      ],
+      "value": "BRD-CTL-4"
+     }
+    ],
+    "safety_stock": [
+     {
+      "provenance": [
+       {
+        "field": "safety_stock",
+        "fragment": "inventory#0:Part:3",
+        "pointer": "rows[0]",
+        "source": "inventory"
+       }
+      ],
+      "value": 1500
+     }
+    ]
+   },
+   "sources": [
+    "inventory"
+   ],
+   "title": "Control board rev 4",
+   "type": "Part"
+  },
+  "inventory#1:Part:3": {
+   "conflicts": [],
+   "fragments": [
+    "inventory#1:Part:3"
+   ],
+   "props": {
+    "cover_days": [
+     {
+      "provenance": [
+       {
+        "field": "cover_days",
+        "fragment": "inventory#1:Part:3",
+        "pointer": "rows[1]",
+        "source": "inventory"
+       }
+      ],
+      "value": 21.0
+     }
+    ],
+    "description": [
+     {
+      "provenance": [
+       {
+        "field": "description",
+        "fragment": "inventory#1:Part:3",
+        "pointer": "rows[1]",
+        "source": "inventory"
+       }
+      ],
+      "value": "Housing 220mm"
+     }
+    ],
+    "inbound_po": [
+     {
+      "provenance": [
+       {
+        "field": "inbound_po",
+        "fragment": "inventory#1:Part:3",
+        "pointer": "rows[1]",
+        "source": "inventory"
+       }
+      ],
+      "value": "PO-7790"
+     }
+    ],
+    "on_hand": [
+     {
+      "provenance": [
+       {
+        "field": "on_hand",
+        "fragment": "inventory#1:Part:3",
+        "pointer": "rows[1]",
+        "source": "inventory"
+       }
+      ],
+      "value": 8400
+     }
+    ],
+    "part_no": [
+     {
+      "provenance": [
+       {
+        "field": "part_no",
+        "fragment": "inventory#1:Part:3",
+        "pointer": "rows[1]",
+        "source": "inventory"
+       }
+      ],
+      "value": "HSG-220"
+     }
+    ],
+    "safety_stock": [
+     {
+      "provenance": [
+       {
+        "field": "safety_stock",
+        "fragment": "inventory#1:Part:3",
+        "pointer": "rows[1]",
+        "source": "inventory"
+       }
+      ],
+      "value": 3000
+     }
+    ]
+   },
+   "sources": [
+    "inventory"
+   ],
+   "title": "Housing 220mm",
+   "type": "Part"
+  },
+  "inventory#2:Part:3": {
+   "conflicts": [],
+   "fragments": [
+    "inventory#2:Part:3"
+   ],
+   "props": {
+    "cover_days": [
+     {
+      "provenance": [
+       {
+        "field": "cover_days",
+        "fragment": "inventory#2:Part:3",
+        "pointer": "rows[2]",
+        "source": "inventory"
+       }
+      ],
+      "value": 40.5
+     }
+    ],
+    "description": [
+     {
+      "provenance": [
+       {
+        "field": "description",
+        "fragment": "inventory#2:Part:3",
+        "pointer": "rows[2]",
+        "source": "inventory"
+       }
+      ],
+      "value": "M4 fastener kit"
+     }
+    ],
+    "on_hand": [
+     {
+      "provenance": [
+       {
+        "field": "on_hand",
+        "fragment": "inventory#2:Part:3",
+        "pointer": "rows[2]",
+        "source": "inventory"
+       }
+      ],
+      "value": 51000
+     }
+    ],
+    "part_no": [
+     {
+      "provenance": [
+       {
+        "field": "part_no",
+        "fragment": "inventory#2:Part:3",
+        "pointer": "rows[2]",
+        "source": "inventory"
+       }
+      ],
+      "value": "FST-M4"
+     }
+    ],
+    "safety_stock": [
+     {
+      "provenance": [
+       {
+        "field": "safety_stock",
+        "fragment": "inventory#2:Part:3",
+        "pointer": "rows[2]",
+        "source": "inventory"
+       }
+      ],
+      "value": 20000
+     }
+    ]
+   },
+   "sources": [
+    "inventory"
+   ],
+   "title": "M4 fastener kit",
+   "type": "Part"
+  },
+  "port#0:Port:4": {
+   "conflicts": [],
+   "fragments": [
+    "shipments#2:Port:2",
+    "shipments#3:Port:2",
+    "port#0:Port:4"
+   ],
+   "props": {
+    "berth_wait_hrs": [
+     {
+      "provenance": [
+       {
+        "field": "congestion.@berth_wait_hrs",
+        "fragment": "port#0:Port:4",
+        "pointer": "/bulletin/port[1]",
+        "source": "port"
+       }
+      ],
+      "value": "9"
+     }
+    ],
+    "code": [
+     {
+      "provenance": [
+       {
+        "field": "location",
+        "fragment": "shipments#2:Port:2",
+        "pointer": "line 3",
+        "source": "shipments"
+       },
+       {
+        "field": "location",
+        "fragment": "shipments#3:Port:2",
+        "pointer": "line 4",
+        "source": "shipments"
+       },
+       {
+        "field": "@code",
+        "fragment": "port#0:Port:4",
+        "pointer": "/bulletin/port[1]",
+        "source": "port"
+       }
+      ],
+      "value": "CNSHA"
+     }
+    ],
+    "congestion_index": [
+     {
+      "provenance": [
+       {
+        "field": "congestion.@index",
+        "fragment": "port#0:Port:4",
+        "pointer": "/bulletin/port[1]",
+        "source": "port"
+       }
+      ],
+      "value": "1.04"
+     }
+    ],
+    "customs_backlog_hrs": [
+     {
+      "provenance": [
+       {
+        "field": "customs.@backlog_hrs",
+        "fragment": "port#0:Port:4",
+        "pointer": "/bulletin/port[1]",
+        "source": "port"
+       }
+      ],
+      "value": "6"
+     }
+    ],
+    "name": [
+     {
+      "provenance": [
+       {
+        "field": "@name",
+        "fragment": "port#0:Port:4",
+        "pointer": "/bulletin/port[1]",
+        "source": "port"
+       }
+      ],
+      "value": "Port of Shanghai"
+     }
+    ]
+   },
+   "sources": [
+    "shipments",
+    "port"
+   ],
+   "title": "Port of Shanghai",
+   "type": "Port"
+  },
+  "port#1:Port:4": {
+   "conflicts": [],
+   "fragments": [
+    "shipments#4:Port:2",
+    "port#1:Port:4"
+   ],
+   "props": {
+    "berth_wait_hrs": [
+     {
+      "provenance": [
+       {
+        "field": "congestion.@berth_wait_hrs",
+        "fragment": "port#1:Port:4",
+        "pointer": "/bulletin/port[2]",
+        "source": "port"
+       }
+      ],
+      "value": "31"
+     }
+    ],
+    "code": [
+     {
+      "provenance": [
+       {
+        "field": "location",
+        "fragment": "shipments#4:Port:2",
+        "pointer": "line 5",
+        "source": "shipments"
+       },
+       {
+        "field": "@code",
+        "fragment": "port#1:Port:4",
+        "pointer": "/bulletin/port[2]",
+        "source": "port"
+       }
+      ],
+      "value": "KRPUS"
+     }
+    ],
+    "congestion_index": [
+     {
+      "provenance": [
+       {
+        "field": "congestion.@index",
+        "fragment": "port#1:Port:4",
+        "pointer": "/bulletin/port[2]",
+        "source": "port"
+       }
+      ],
+      "value": "1.31"
+     }
+    ],
+    "customs_backlog_hrs": [
+     {
+      "provenance": [
+       {
+        "field": "customs.@backlog_hrs",
+        "fragment": "port#1:Port:4",
+        "pointer": "/bulletin/port[2]",
+        "source": "port"
+       }
+      ],
+      "value": "4"
+     }
+    ],
+    "name": [
+     {
+      "provenance": [
+       {
+        "field": "@name",
+        "fragment": "port#1:Port:4",
+        "pointer": "/bulletin/port[2]",
+        "source": "port"
+       }
+      ],
+      "value": "Port of Busan"
+     }
+    ]
+   },
+   "sources": [
+    "shipments",
+    "port"
+   ],
+   "title": "Port of Busan",
+   "type": "Port"
+  },
+  "shipments#0:Container:1": {
+   "conflicts": [],
+   "fragments": [
+    "shipments#0:Container:1",
+    "shipments#2:Container:1",
+    "shipments#3:Container:1"
+   ],
+   "props": {
+    "event": [
+     {
+      "provenance": [
+       {
+        "field": "event",
+        "fragment": "shipments#0:Container:1",
+        "pointer": "line 1",
+        "source": "shipments"
+       }
+      ],
+      "value": "DISPATCHED"
+     },
+     {
+      "provenance": [
+       {
+        "field": "event",
+        "fragment": "shipments#2:Container:1",
+        "pointer": "line 3",
+        "source": "shipments"
+       }
+      ],
+      "value": "GATE_IN"
+     },
+     {
+      "provenance": [
+       {
+        "field": "event",
+        "fragment": "shipments#3:Container:1",
+        "pointer": "line 4",
+        "source": "shipments"
+       }
+      ],
+      "value": "HOLD"
+     }
+    ],
+    "hold_note": [
+     {
+      "provenance": [
+       {
+        "field": "note",
+        "fragment": "shipments#3:Container:1",
+        "pointer": "line 4",
+        "source": "shipments"
+       }
+      ],
+      "value": "commercial invoice HS code does not match packing list"
+     }
+    ],
+    "id": [
+     {
+      "provenance": [
+       {
+        "field": "container",
+        "fragment": "shipments#0:Container:1",
+        "pointer": "line 1",
+        "source": "shipments"
+       },
+       {
+        "field": "container",
+        "fragment": "shipments#2:Container:1",
+        "pointer": "line 3",
+        "source": "shipments"
+       },
+       {
+        "field": "container",
+        "fragment": "shipments#3:Container:1",
+        "pointer": "line 4",
+        "source": "shipments"
+       }
+      ],
+      "value": "MSCU7781234"
+     }
+    ],
+    "location": [
+     {
+      "provenance": [
+       {
+        "field": "location",
+        "fragment": "shipments#0:Container:1",
+        "pointer": "line 1",
+        "source": "shipments"
+       }
+      ],
+      "value": "Ningbo DC"
+     },
+     {
+      "provenance": [
+       {
+        "field": "location",
+        "fragment": "shipments#2:Container:1",
+        "pointer": "line 3",
+        "source": "shipments"
+       },
+       {
+        "field": "location",
+        "fragment": "shipments#3:Container:1",
+        "pointer": "line 4",
+        "source": "shipments"
+       }
+      ],
+      "value": "CNSHA"
+     }
+    ],
+    "po": [
+     {
+      "provenance": [
+       {
+        "field": "po",
+        "fragment": "shipments#0:Container:1",
+        "pointer": "line 1",
+        "source": "shipments"
+       },
+       {
+        "field": "po",
+        "fragment": "shipments#2:Container:1",
+        "pointer": "line 3",
+        "source": "shipments"
+       },
+       {
+        "field": "po",
+        "fragment": "shipments#3:Container:1",
+        "pointer": "line 4",
+        "source": "shipments"
+       }
+      ],
+      "value": "PO-7781"
+     }
+    ]
+   },
+   "sources": [
+    "shipments"
+   ],
+   "title": "MSCU7781234",
+   "type": "Container"
+  },
+  "shipments#0:Supplier:0": {
+   "conflicts": [],
+   "fragments": [
+    "shipments#0:Supplier:0",
+    "shipments#2:Supplier:0",
+    "shipments#3:Supplier:0"
+   ],
+   "props": {
+    "alias": [
+     {
+      "provenance": [
+       {
+        "field": "supplier",
+        "fragment": "shipments#0:Supplier:0",
+        "pointer": "line 1",
+        "source": "shipments"
+       },
+       {
+        "field": "supplier",
+        "fragment": "shipments#2:Supplier:0",
+        "pointer": "line 3",
+        "source": "shipments"
+       },
+       {
+        "field": "supplier",
+        "fragment": "shipments#3:Supplier:0",
+        "pointer": "line 4",
+        "source": "shipments"
+       }
+      ],
+      "value": "KESTREL COMPONENTS LIMITED"
+     }
+    ]
+   },
+   "sources": [
+    "shipments"
+   ],
+   "title": null,
+   "type": "Supplier"
+  },
+  "shipments#1:Container:1": {
+   "conflicts": [],
+   "fragments": [
+    "shipments#1:Container:1",
+    "shipments#4:Container:1"
+   ],
+   "props": {
+    "event": [
+     {
+      "provenance": [
+       {
+        "field": "event",
+        "fragment": "shipments#1:Container:1",
+        "pointer": "line 2",
+        "source": "shipments"
+       }
+      ],
+      "value": "DISPATCHED"
+     },
+     {
+      "provenance": [
+       {
+        "field": "event",
+        "fragment": "shipments#4:Container:1",
+        "pointer": "line 5",
+        "source": "shipments"
+       }
+      ],
+      "value": "LOADED"
+     }
+    ],
+    "id": [
+     {
+      "provenance": [
+       {
+        "field": "container",
+        "fragment": "shipments#1:Container:1",
+        "pointer": "line 2",
+        "source": "shipments"
+       },
+       {
+        "field": "container",
+        "fragment": "shipments#4:Container:1",
+        "pointer": "line 5",
+        "source": "shipments"
+       }
+      ],
+      "value": "TGHU5512020"
+     }
+    ],
+    "location": [
+     {
+      "provenance": [
+       {
+        "field": "location",
+        "fragment": "shipments#1:Container:1",
+        "pointer": "line 2",
+        "source": "shipments"
+       }
+      ],
+      "value": "Busan DC"
+     },
+     {
+      "provenance": [
+       {
+        "field": "location",
+        "fragment": "shipments#4:Container:1",
+        "pointer": "line 5",
+        "source": "shipments"
+       }
+      ],
+      "value": "KRPUS"
+     }
+    ],
+    "po": [
+     {
+      "provenance": [
+       {
+        "field": "po",
+        "fragment": "shipments#1:Container:1",
+        "pointer": "line 2",
+        "source": "shipments"
+       },
+       {
+        "field": "po",
+        "fragment": "shipments#4:Container:1",
+        "pointer": "line 5",
+        "source": "shipments"
+       }
+      ],
+      "value": "PO-7790"
+     }
+    ]
+   },
+   "sources": [
+    "shipments"
+   ],
+   "title": "TGHU5512020",
+   "type": "Container"
+  },
+  "shipments#1:Supplier:0": {
+   "conflicts": [],
+   "fragments": [
+    "shipments#1:Supplier:0",
+    "shipments#4:Supplier:0"
+   ],
+   "props": {
+    "alias": [
+     {
+      "provenance": [
+       {
+        "field": "supplier",
+        "fragment": "shipments#1:Supplier:0",
+        "pointer": "line 2",
+        "source": "shipments"
+       },
+       {
+        "field": "supplier",
+        "fragment": "shipments#4:Supplier:0",
+        "pointer": "line 5",
+        "source": "shipments"
+       }
+      ],
+      "value": "ALDER & FINCH PLASTICS"
+     }
+    ]
+   },
+   "sources": [
+    "shipments"
+   ],
+   "title": null,
+   "type": "Supplier"
+  },
+  "suppliers#0:Supplier:5": {
+   "conflicts": [],
+   "fragments": [
+    "suppliers#0:Supplier:5"
+   ],
+   "props": {
+    "contact": [
+     {
+      "provenance": [
+       {
+        "field": "CONTACT",
+        "fragment": "suppliers#0:Supplier:5",
+        "pointer": "line 2",
+        "source": "suppliers"
+       }
+      ],
+      "value": "ops@kestrel.example"
+     }
+    ],
+    "country": [
+     {
+      "provenance": [
+       {
+        "field": "COUNTRY",
+        "fragment": "suppliers#0:Supplier:5",
+        "pointer": "line 2",
+        "source": "suppliers"
+       }
+      ],
+      "value": "CN"
+     }
+    ],
+    "id": [
+     {
+      "provenance": [
+       {
+        "field": "SUP_ID",
+        "fragment": "suppliers#0:Supplier:5",
+        "pointer": "line 2",
+        "source": "suppliers"
+       }
+      ],
+      "value": "S-118"
+     }
+    ],
+    "legal_name": [
+     {
+      "provenance": [
+       {
+        "field": "LEGAL_NAME",
+        "fragment": "suppliers#0:Supplier:5",
+        "pointer": "line 2",
+        "source": "suppliers"
+       }
+      ],
+      "value": "Kestrel Components Ltd."
+     }
+    ],
+    "on_time_rate": [
+     {
+      "provenance": [
+       {
+        "field": "ON_TIME_RATE",
+        "fragment": "suppliers#0:Supplier:5",
+        "pointer": "line 2",
+        "source": "suppliers"
+       }
+      ],
+      "value": "0.96"
+     }
+    ],
+    "tier": [
+     {
+      "provenance": [
+       {
+        "field": "TIER",
+        "fragment": "suppliers#0:Supplier:5",
+        "pointer": "line 2",
+        "source": "suppliers"
+       }
+      ],
+      "value": "1"
+     }
+    ]
+   },
+   "sources": [
+    "suppliers"
+   ],
+   "title": "Kestrel Components Ltd.",
+   "type": "Supplier"
+  },
+  "suppliers#1:Supplier:5": {
+   "conflicts": [],
+   "fragments": [
+    "suppliers#1:Supplier:5"
+   ],
+   "props": {
+    "contact": [
+     {
+      "provenance": [
+       {
+        "field": "CONTACT",
+        "fragment": "suppliers#1:Supplier:5",
+        "pointer": "line 3",
+        "source": "suppliers"
+       }
+      ],
+      "value": "orders@alderfinch.example"
+     }
+    ],
+    "country": [
+     {
+      "provenance": [
+       {
+        "field": "COUNTRY",
+        "fragment": "suppliers#1:Supplier:5",
+        "pointer": "line 3",
+        "source": "suppliers"
+       }
+      ],
+      "value": "KR"
+     }
+    ],
+    "id": [
+     {
+      "provenance": [
+       {
+        "field": "SUP_ID",
+        "fragment": "suppliers#1:Supplier:5",
+        "pointer": "line 3",
+        "source": "suppliers"
+       }
+      ],
+      "value": "S-131"
+     }
+    ],
+    "legal_name": [
+     {
+      "provenance": [
+       {
+        "field": "LEGAL_NAME",
+        "fragment": "suppliers#1:Supplier:5",
+        "pointer": "line 3",
+        "source": "suppliers"
+       }
+      ],
+      "value": "Alder & Finch Plastics Co."
+     }
+    ],
+    "on_time_rate": [
+     {
+      "provenance": [
+       {
+        "field": "ON_TIME_RATE",
+        "fragment": "suppliers#1:Supplier:5",
+        "pointer": "line 3",
+        "source": "suppliers"
+       }
+      ],
+      "value": "0.81"
+     }
+    ],
+    "tier": [
+     {
+      "provenance": [
+       {
+        "field": "TIER",
+        "fragment": "suppliers#1:Supplier:5",
+        "pointer": "line 3",
+        "source": "suppliers"
+       }
+      ],
+      "value": "2"
+     }
+    ]
+   },
+   "sources": [
+    "suppliers"
+   ],
+   "title": "Alder & Finch Plastics Co.",
+   "type": "Supplier"
+  },
+  "suppliers#2:Supplier:5": {
+   "conflicts": [],
+   "fragments": [
+    "suppliers#2:Supplier:5"
+   ],
+   "props": {
+    "contact": [
+     {
+      "provenance": [
+       {
+        "field": "CONTACT",
+        "fragment": "suppliers#2:Supplier:5",
+        "pointer": "line 4",
+        "source": "suppliers"
+       }
+      ],
+      "value": "sales@brightwater.example"
+     }
+    ],
+    "country": [
+     {
+      "provenance": [
+       {
+        "field": "COUNTRY",
+        "fragment": "suppliers#2:Supplier:5",
+        "pointer": "line 4",
+        "source": "suppliers"
+       }
+      ],
+      "value": "VN"
+     }
+    ],
+    "id": [
+     {
+      "provenance": [
+       {
+        "field": "SUP_ID",
+        "fragment": "suppliers#2:Supplier:5",
+        "pointer": "line 4",
+        "source": "suppliers"
+       }
+      ],
+      "value": "S-140"
+     }
+    ],
+    "legal_name": [
+     {
+      "provenance": [
+       {
+        "field": "LEGAL_NAME",
+        "fragment": "suppliers#2:Supplier:5",
+        "pointer": "line 4",
+        "source": "suppliers"
+       }
+      ],
+      "value": "Brightwater Metals"
+     }
+    ],
+    "on_time_rate": [
+     {
+      "provenance": [
+       {
+        "field": "ON_TIME_RATE",
+        "fragment": "suppliers#2:Supplier:5",
+        "pointer": "line 4",
+        "source": "suppliers"
+       }
+      ],
+      "value": "0.88"
+     }
+    ],
+    "tier": [
+     {
+      "provenance": [
+       {
+        "field": "TIER",
+        "fragment": "suppliers#2:Supplier:5",
+        "pointer": "line 4",
+        "source": "suppliers"
+       }
+      ],
+      "value": "2"
+     }
+    ]
+   },
+   "sources": [
+    "suppliers"
+   ],
+   "title": "Brightwater Metals",
+   "type": "Supplier"
+  }
+ },
+ "proposals": [
+  {
+   "a": {
+    "cluster": "shipments#0:Supplier:0",
+    "fragment": "shipments#0:Supplier:0",
+    "property": "alias",
+    "source": "shipments",
+    "value": "KESTREL COMPONENTS LIMITED"
+   },
+   "b": {
+    "cluster": "suppliers#0:Supplier:5",
+    "fragment": "suppliers#0:Supplier:5",
+    "property": "legal_name",
+    "source": "suppliers",
+    "value": "Kestrel Components Ltd."
+   },
+   "conflict": [],
+   "id": "shipments#0:Supplier:0|suppliers#0:Supplier:5",
+   "score": 0.917,
+   "type": "Supplier"
+  },
+  {
+   "a": {
+    "cluster": "shipments#1:Supplier:0",
+    "fragment": "shipments#1:Supplier:0",
+    "property": "alias",
+    "source": "shipments",
+    "value": "ALDER & FINCH PLASTICS"
+   },
+   "b": {
+    "cluster": "suppliers#1:Supplier:5",
+    "fragment": "suppliers#1:Supplier:5",
+    "property": "legal_name",
+    "source": "suppliers",
+    "value": "Alder & Finch Plastics Co."
+   },
+   "conflict": [],
+   "id": "shipments#1:Supplier:0|suppliers#1:Supplier:5",
+   "score": 0.93,
+   "type": "Supplier"
+  }
+ ]
+}

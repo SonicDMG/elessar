@@ -1,0 +1,304 @@
+{
+ "records": [
+  {
+   "data": {
+    "basis": "velocity",
+    "confidence": 0.66,
+    "indicator": "bin",
+    "seen_at": "2026-10-07T14:53:24Z",
+    "value": "414724"
+   },
+   "excerpt": "{\"indicator\": \"bin\", \"value\": \"414724\", \"confidence\": 0.66, \"basis\": \"velocity\", \"seen_at\": \"2026-10-07T14:53:24Z\"}",
+   "index": 0,
+   "pointer": "line 1"
+  },
+  {
+   "data": {
+    "basis": "reputation",
+    "confidence": 0.32,
+    "indicator": "email",
+    "seen_at": "2026-10-06T21:38:51Z",
+    "value": "user940@throwaway.example"
+   },
+   "excerpt": "{\"indicator\": \"email\", \"value\": \"user940@throwaway.example\", \"confidence\": 0.32, \"basis\": \"reputation\", \"seen_at\": \"2026-10-06T21:38:51Z\"}",
+   "index": 1,
+   "pointer": "line 2"
+  },
+  {
+   "data": {
+    "basis": "card-testing ring",
+    "confidence": 0.8,
+    "indicator": "bin",
+    "seen_at": "2026-10-11T02:38:42Z",
+    "value": "601199"
+   },
+   "excerpt": "{\"indicator\": \"bin\", \"value\": \"601199\", \"confidence\": 0.8, \"basis\": \"card-testing ring\", \"seen_at\": \"2026-10-11T02:38:42Z\"}",
+   "index": 2,
+   "pointer": "line 3"
+  },
+  {
+   "data": {
+    "basis": "velocity",
+    "confidence": 0.67,
+    "indicator": "email",
+    "seen_at": "2026-10-10T00:35:59Z",
+    "value": "fp-c9e9f4"
+   },
+   "excerpt": "{\"indicator\": \"email\", \"value\": \"fp-c9e9f4\", \"confidence\": 0.67, \"basis\": \"velocity\", \"seen_at\": \"2026-10-10T00:35:59Z\"}",
+   "index": 3,
+   "pointer": "line 4"
+  },
+  {
+   "data": {
+    "basis": "card-testing ring",
+    "confidence": 0.87,
+    "indicator": "bin",
+    "seen_at": "2026-10-08T17:50:26Z",
+    "value": "455612"
+   },
+   "excerpt": "{\"indicator\": \"bin\", \"value\": \"455612\", \"confidence\": 0.87, \"basis\": \"card-testing ring\", \"seen_at\": \"2026-10-08T17:50:26Z\"}",
+   "index": 4,
+   "pointer": "line 5"
+  },
+  {
+   "data": {
+    "basis": "disposable domain",
+    "confidence": 0.5,
+    "indicator": "email",
+    "seen_at": "2026-10-08T14:17:09Z",
+    "value": "wesusman749@mailbox.example"
+   },
+   "excerpt": "{\"indicator\": \"email\", \"value\": \"wesusman749@mailbox.example\", \"confidence\": 0.5, \"basis\": \"disposable domain\", \"seen_at\": \"2026-10-08T14:17:09Z\"}",
+   "index": 5,
+   "pointer": "line 6"
+  },
+  {
+   "data": {
+    "basis": "disposable domain",
+    "confidence": 0.53,
+    "indicator": "email",
+    "seen_at": "2026-10-09T10:24:16Z",
+    "value": "hirosingh415@mailbox.example"
+   },
+   "excerpt": "{\"indicator\": \"email\", \"value\": \"hirosingh415@mailbox.example\", \"confidence\": 0.53, \"basis\": \"disposable domain\", \"seen_at\": \"2026-10-09T10:24:16Z\"}",
+   "index": 6,
+   "pointer": "line 7"
+  },
+  {
+   "data": {
+    "basis": "reputation",
+    "confidence": 0.66,
+    "indicator": "device",
+    "seen_at": "2026-10-07T22:14:15Z",
+    "value": "553655"
+   },
+   "excerpt": "{\"indicator\": \"device\", \"value\": \"553655\", \"confidence\": 0.66, \"basis\": \"reputation\", \"seen_at\": \"2026-10-07T22:14:15Z\"}",
+   "index": 7,
+   "pointer": "line 8"
+  },
+  {
+   "data": {
+    "basis": "reputation",
+    "confidence": 0.66,
+    "indicator": "email",
+    "seen_at": "2026-10-09T16:19:24Z",
+    "value": "fp-3fc0a7"
+   },
+   "excerpt": "{\"indicator\": \"email\", \"value\": \"fp-3fc0a7\", \"confidence\": 0.66, \"basis\": \"reputation\", \"seen_at\": \"2026-10-09T16:19:24Z\"}",
+   "index": 8,
+   "pointer": "line 9"
+  },
+  {
+   "data": {
+    "basis": "card-testing ring",
+    "confidence": 0.8,
+    "indicator": "bin",
+    "seen_at": "2026-10-11T08:01:28Z",
+    "value": "522094"
+   },
+   "excerpt": "{\"indicator\": \"bin\", \"value\": \"522094\", \"confidence\": 0.8, \"basis\": \"card-testing ring\", \"seen_at\": \"2026-10-11T08:01:28Z\"}",
+   "index": 9,
+   "pointer": "line 10"
+  },
+  {
+   "data": {
+    "basis": "disposable domain",
+    "confidence": 0.6,
+    "indicator": "email",
+    "seen_at": "2026-10-10T15:09:35Z",
+    "value": "rosavarga301@mailbox.example"
+   },
+   "excerpt": "{\"indicator\": \"email\", \"value\": \"rosavarga301@mailbox.example\", \"confidence\": 0.6, \"basis\": \"disposable domain\", \"seen_at\": \"2026-10-10T15:09:35Z\"}",
+   "index": 10,
+   "pointer": "line 11"
+  },
+  {
+   "data": {
+    "basis": "disposable domain",
+    "confidence": 0.78,
+    "indicator": "email",
+    "seen_at": "2026-10-08T07:53:27Z",
+    "value": "zoeyilmaz749@mailbox.example"
+   },
+   "excerpt": "{\"indicator\": \"email\", \"value\": \"zoeyilmaz749@mailbox.example\", \"confidence\": 0.78, \"basis\": \"disposable domain\", \"seen_at\": \"2026-10-08T07:53:27Z\"}",
+   "index": 11,
+   "pointer": "line 12"
+  },
+  {
+   "data": {
+    "basis": "disposable domain",
+    "confidence": 0.57,
+    "indicator": "email",
+    "seen_at": "2026-10-11T23:03:17Z",
+    "value": "jonastanaka863@mailbox.example"
+   },
+   "excerpt": "{\"indicator\": \"email\", \"value\": \"jonastanaka863@mailbox.example\", \"confidence\": 0.57, \"basis\": \"disposable domain\", \"seen_at\": \"2026-10-11T23:03:17Z\"}",
+   "index": 12,
+   "pointer": "line 13"
+  },
+  {
+   "data": {
+    "basis": "shared across marketplaces",
+    "confidence": 0.86,
+    "indicator": "device",
+    "value": "fp-21bb04"
+   },
+   "excerpt": "{\"indicator\": \"device\", \"value\": \"fp-21bb04\", \"confidence\": 0.86, \"basis\": \"shared across marketplaces\"}",
+   "index": 13,
+   "pointer": "line 14"
+  },
+  {
+   "data": {
+    "basis": "shared across marketplaces",
+    "confidence": 0.84,
+    "indicator": "device",
+    "seen_at": "2026-10-10T12:59:59Z",
+    "value": "fp-7c1e9a"
+   },
+   "excerpt": "{\"indicator\": \"device\", \"value\": \"fp-7c1e9a\", \"confidence\": 0.84, \"basis\": \"shared across marketplaces\", \"seen_at\": \"2026-10-10T12:59:59Z\"}",
+   "index": 14,
+   "pointer": "line 15"
+  },
+  {
+   "data": {
+    "basis": "reputation",
+    "confidence": 0.46,
+    "indicator": "device",
+    "seen_at": "2026-10-10T17:59:35Z",
+    "value": "592563"
+   },
+   "excerpt": "{\"indicator\": \"device\", \"value\": \"592563\", \"confidence\": 0.46, \"basis\": \"reputation\", \"seen_at\": \"2026-10-10T17:59:35Z\"}",
+   "index": 15,
+   "pointer": "line 16"
+  },
+  {
+   "data": {
+    "basis": "disposable domain",
+    "confidence": 0.52,
+    "indicator": "email",
+    "seen_at": "2026-10-10T09:53:51Z",
+    "value": "jonasusman149@mailbox.example"
+   },
+   "excerpt": "{\"indicator\": \"email\", \"value\": \"jonasusman149@mailbox.example\", \"confidence\": 0.52, \"basis\": \"disposable domain\", \"seen_at\": \"2026-10-10T09:53:51Z\"}",
+   "index": 16,
+   "pointer": "line 17"
+  },
+  {
+   "data": {
+    "basis": "triangulation pattern",
+    "confidence": 0.71,
+    "country": "US",
+    "indicator": "merchant",
+    "seen_at": "2026-10-11T14:00:00Z",
+    "value": "Brightline Electronics"
+   },
+   "excerpt": "{\"indicator\": \"merchant\", \"value\": \"Brightline Electronics\", \"confidence\": 0.71, \"basis\": \"triangulation pattern\", \"country\": \"US\", \"seen_at\": \"2026-10-11T14:00:00Z\"}",
+   "index": 17,
+   "pointer": "line 18"
+  },
+  {
+   "data": {
+    "basis": "velocity",
+    "confidence": 0.4,
+    "indicator": "email",
+    "seen_at": "2026-10-10T04:10:17Z",
+    "value": "fp-de12b2"
+   },
+   "excerpt": "{\"indicator\": \"email\", \"value\": \"fp-de12b2\", \"confidence\": 0.4, \"basis\": \"velocity\", \"seen_at\": \"2026-10-10T04:10:17Z\"}",
+   "index": 18,
+   "pointer": "line 19"
+  },
+  {
+   "data": {
+    "basis": "chargeback ratio",
+    "confidence": 0.55,
+    "country": "PH",
+    "indicator": "merchant",
+    "seen_at": "2026-10-10T11:00:00Z",
+    "value": "Nova Goods Co"
+   },
+   "excerpt": "{\"indicator\": \"merchant\", \"value\": \"Nova Goods Co\", \"confidence\": 0.55, \"basis\": \"chargeback ratio\", \"country\": \"PH\", \"seen_at\": \"2026-10-10T11:00:00Z\"}",
+   "index": 19,
+   "pointer": "line 20"
+  },
+  {
+   "data": {
+    "basis": "disposable domain",
+    "confidence": 0.65,
+    "indicator": "email",
+    "value": "benbrooks644@mailbox.example"
+   },
+   "excerpt": "{\"indicator\": \"email\", \"value\": \"benbrooks644@mailbox.example\", \"confidence\": 0.65, \"basis\": \"disposable domain\"}",
+   "index": 20,
+   "pointer": "line 21"
+  },
+  {
+   "data": {
+    "basis": "reputation",
+    "confidence": 0.44,
+    "indicator": "bin",
+    "seen_at": "2026-10-10T23:17:04Z",
+    "value": "495167"
+   },
+   "excerpt": "{\"indicator\": \"bin\", \"value\": \"495167\", \"confidence\": 0.44, \"basis\": \"reputation\", \"seen_at\": \"2026-10-10T23:17:04Z\"}",
+   "index": 21,
+   "pointer": "line 22"
+  },
+  {
+   "data": {
+    "basis": "velocity",
+    "confidence": 0.62,
+    "indicator": "email",
+    "seen_at": "2026-10-06T12:35:22Z",
+    "value": "user232@throwaway.example"
+   },
+   "excerpt": "{\"indicator\": \"email\", \"value\": \"user232@throwaway.example\", \"confidence\": 0.62, \"basis\": \"velocity\", \"seen_at\": \"2026-10-06T12:35:22Z\"}",
+   "index": 22,
+   "pointer": "line 23"
+  },
+  {
+   "data": {
+    "basis": "velocity",
+    "confidence": 0.68,
+    "indicator": "device",
+    "seen_at": "2026-10-07T07:53:02Z",
+    "value": "547922"
+   },
+   "excerpt": "{\"indicator\": \"device\", \"value\": \"547922\", \"confidence\": 0.68, \"basis\": \"velocity\", \"seen_at\": \"2026-10-07T07:53:02Z\"}",
+   "index": 23,
+   "pointer": "line 24"
+  },
+  {
+   "data": {
+    "basis": "disposable domain",
+    "confidence": 0.51,
+    "indicator": "email",
+    "value": "xiagarcia263@mailbox.example"
+   },
+   "excerpt": "{\"indicator\": \"email\", \"value\": \"xiagarcia263@mailbox.example\", \"confidence\": 0.51, \"basis\": \"disposable domain\"}",
+   "index": 24,
+   "pointer": "line 25"
+  }
+ ],
+ "skipped": []
+}

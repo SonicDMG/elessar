@@ -7,3 +7,13 @@ license.workspace = true
 [dependencies]
 serde.workspace = true
 serde_json.workspace = true
+indexmap.workspace = true
+regex.workspace = true
+csv.workspace = true
+quick-xml.workspace = true
+chrono.workspace = true
+sha2.workspace = true
+thiserror.workspace = true
+
+[dev-dependencies]
+proptest = "1"

@@ -1,0 +1,778 @@
+{
+ "records": [
+  {
+   "data": {
+    "amount": 355.1,
+    "cb_id": "CB-415",
+    "filed_at": "00/00/0000",
+    "order_id": "O-50420",
+    "reason_code": "10.4",
+    "seller_id": "S-101"
+   },
+   "excerpt": "[\"CB-415\", \"O-50420\", \"10.4\", \"00/00/0000\", 355.1, \"S-101\"]",
+   "index": 0,
+   "pointer": "rows[0]"
+  },
+  {
+   "data": {
+    "amount": 230.76,
+    "cb_id": "CB-442",
+    "filed_at": "00/00/0000",
+    "order_id": "O-50414",
+    "reason_code": "10.4",
+    "seller_id": "S-101"
+   },
+   "excerpt": "[\"CB-442\", \"O-50414\", \"10.4\", \"00/00/0000\", 230.76, \"S-101\"]",
+   "index": 1,
+   "pointer": "rows[1]"
+  },
+  {
+   "data": {
+    "amount": 189.14,
+    "cb_id": "CB-450",
+    "filed_at": "00/00/0000",
+    "order_id": "O-50250",
+    "reason_code": "13.1",
+    "seller_id": "S-121"
+   },
+   "excerpt": "[\"CB-450\", \"O-50250\", \"13.1\", \"00/00/0000\", 189.14, \"S-121\"]",
+   "index": 2,
+   "pointer": "rows[2]"
+  },
+  {
+   "data": {
+    "amount": 119.76,
+    "cb_id": "CB-460",
+    "filed_at": "00/00/0000",
+    "order_id": "O-50095",
+    "reason_code": "13.3",
+    "seller_id": "S-122"
+   },
+   "excerpt": "[\"CB-460\", \"O-50095\", \"13.3\", \"00/00/0000\", 119.76, \"S-122\"]",
+   "index": 3,
+   "pointer": "rows[3]"
+  },
+  {
+   "data": {
+    "amount": 283.72,
+    "cb_id": "CB-405",
+    "filed_at": "08/10/2026",
+    "order_id": "O-50052",
+    "reason_code": "10.4",
+    "seller_id": "S-101"
+   },
+   "excerpt": "[\"CB-405\", \"O-50052\", \"10.4\", \"08/10/2026\", 283.72, \"S-101\"]",
+   "index": 4,
+   "pointer": "rows[4]"
+  },
+  {
+   "data": {
+    "amount": 86.54,
+    "cb_id": "CB-429",
+    "filed_at": "10/10/2026",
+    "order_id": "O-50145",
+    "reason_code": "10.4",
+    "seller_id": "S-101"
+   },
+   "excerpt": "[\"CB-429\", \"O-50145\", \"10.4\", \"10/10/2026\", 86.54, \"S-101\"]",
+   "index": 5,
+   "pointer": "rows[5]"
+  },
+  {
+   "data": {
+    "amount": 345.88,
+    "cb_id": "CB-432",
+    "filed_at": "10/10/2026",
+    "order_id": "O-50418",
+    "reason_code": "10.4",
+    "seller_id": "S-101"
+   },
+   "excerpt": "[\"CB-432\", \"O-50418\", \"10.4\", \"10/10/2026\", 345.88, \"S-101\"]",
+   "index": 6,
+   "pointer": "rows[6]"
+  },
+  {
+   "data": {
+    "amount": 254.06,
+    "cb_id": "CB-446",
+    "filed_at": "10/10/2026",
+    "order_id": "O-50312",
+    "reason_code": "13.1",
+    "seller_id": "S-117"
+   },
+   "excerpt": "[\"CB-446\", \"O-50312\", \"13.1\", \"10/10/2026\", 254.06, \"S-117\"]",
+   "index": 7,
+   "pointer": "rows[7]"
+  },
+  {
+   "data": {
+    "amount": 309.54,
+    "cb_id": "CB-449",
+    "filed_at": "10/10/2026",
+    "order_id": "O-50054",
+    "reason_code": "13.1",
+    "seller_id": "S-123"
+   },
+   "excerpt": "[\"CB-449\", \"O-50054\", \"13.1\", \"10/10/2026\", 309.54, \"S-123\"]",
+   "index": 8,
+   "pointer": "rows[8]"
+  },
+  {
+   "data": {
+    "amount": 79.42,
+    "cb_id": "CB-456",
+    "filed_at": "10/10/2026",
+    "order_id": "O-50160",
+    "reason_code": "13.3",
+    "seller_id": "S-109"
+   },
+   "excerpt": "[\"CB-456\", \"O-50160\", \"13.3\", \"10/10/2026\", 79.42, \"S-109\"]",
+   "index": 9,
+   "pointer": "rows[9]"
+  },
+  {
+   "data": {
+    "amount": 291.29,
+    "cb_id": "CB-406",
+    "filed_at": "11/10/2026",
+    "order_id": "O-50388",
+    "reason_code": "10.4",
+    "seller_id": "S-102"
+   },
+   "excerpt": "[\"CB-406\", \"O-50388\", \"10.4\", \"11/10/2026\", 291.29, \"S-102\"]",
+   "index": 10,
+   "pointer": "rows[10]"
+  },
+  {
+   "data": {
+    "amount": 271.83,
+    "cb_id": "CB-410",
+    "filed_at": "11/10/2026",
+    "order_id": "O-50390",
+    "reason_code": "10.4",
+    "seller_id": "S-101"
+   },
+   "excerpt": "[\"CB-410\", \"O-50390\", \"10.4\", \"11/10/2026\", 271.83, \"S-101\"]",
+   "index": 11,
+   "pointer": "rows[11]"
+  },
+  {
+   "data": {
+    "amount": 307.04,
+    "cb_id": "CB-411",
+    "filed_at": "11/10/2026",
+    "order_id": "O-50356",
+    "reason_code": "10.4",
+    "seller_id": "S-101"
+   },
+   "excerpt": "[\"CB-411\", \"O-50356\", \"10.4\", \"11/10/2026\", 307.04, \"S-101\"]",
+   "index": 12,
+   "pointer": "rows[12]"
+  },
+  {
+   "data": {
+    "amount": 365.86,
+    "cb_id": "CB-414",
+    "filed_at": "11/10/2026",
+    "order_id": "O-50386",
+    "reason_code": "10.4",
+    "seller_id": "S-102"
+   },
+   "excerpt": "[\"CB-414\", \"O-50386\", \"10.4\", \"11/10/2026\", 365.86, \"S-102\"]",
+   "index": 13,
+   "pointer": "rows[13]"
+  },
+  {
+   "data": {
+    "amount": 280.3,
+    "cb_id": "CB-420",
+    "filed_at": "11/10/2026",
+    "order_id": "O-50380",
+    "reason_code": "10.4",
+    "seller_id": "S-101"
+   },
+   "excerpt": "[\"CB-420\", \"O-50380\", \"10.4\", \"11/10/2026\", 280.3, \"S-101\"]",
+   "index": 14,
+   "pointer": "rows[14]"
+  },
+  {
+   "data": {
+    "amount": 323.78,
+    "cb_id": "CB-421",
+    "filed_at": "11/10/2026",
+    "order_id": "O-50393",
+    "reason_code": "10.4",
+    "seller_id": "S-101"
+   },
+   "excerpt": "[\"CB-421\", \"O-50393\", \"10.4\", \"11/10/2026\", 323.78, \"S-101\"]",
+   "index": 15,
+   "pointer": "rows[15]"
+  },
+  {
+   "data": {
+    "amount": 199.59,
+    "cb_id": "CB-422",
+    "filed_at": "11/10/2026",
+    "order_id": "O-50268",
+    "reason_code": "10.4",
+    "seller_id": "S-102"
+   },
+   "excerpt": "[\"CB-422\", \"O-50268\", \"10.4\", \"11/10/2026\", 199.59, \"S-102\"]",
+   "index": 16,
+   "pointer": "rows[16]"
+  },
+  {
+   "data": {
+    "amount": 257.02,
+    "cb_id": "CB-444",
+    "filed_at": "11/10/2026",
+    "order_id": "O-50352",
+    "reason_code": "10.4",
+    "seller_id": "S-102"
+   },
+   "excerpt": "[\"CB-444\", \"O-50352\", \"10.4\", \"11/10/2026\", 257.02, \"S-102\"]",
+   "index": 17,
+   "pointer": "rows[17]"
+  },
+  {
+   "data": {
+    "amount": 46.54,
+    "cb_id": "CB-448",
+    "filed_at": "11/10/2026",
+    "order_id": "O-50337",
+    "reason_code": "13.1",
+    "seller_id": "S-128"
+   },
+   "excerpt": "[\"CB-448\", \"O-50337\", \"13.1\", \"11/10/2026\", 46.54, \"S-128\"]",
+   "index": 18,
+   "pointer": "rows[18]"
+  },
+  {
+   "data": {
+    "amount": 209.99,
+    "cb_id": "CB-401",
+    "filed_at": "12/10/2026",
+    "order_id": "O-50365",
+    "reason_code": "10.4",
+    "seller_id": "S-101"
+   },
+   "excerpt": "[\"CB-401\", \"O-50365\", \"10.4\", \"12/10/2026\", 209.99, \"S-101\"]",
+   "index": 19,
+   "pointer": "rows[19]"
+  },
+  {
+   "data": {
+    "amount": 261.23,
+    "cb_id": "CB-413",
+    "filed_at": "12/10/2026",
+    "order_id": "O-50389",
+    "reason_code": "10.4",
+    "seller_id": "S-101"
+   },
+   "excerpt": "[\"CB-413\", \"O-50389\", \"10.4\", \"12/10/2026\", 261.23, \"S-101\"]",
+   "index": 20,
+   "pointer": "rows[20]"
+  },
+  {
+   "data": {
+    "amount": 351.43,
+    "cb_id": "CB-417",
+    "filed_at": "12/10/2026",
+    "order_id": "O-50416",
+    "reason_code": "10.4",
+    "seller_id": "S-101"
+   },
+   "excerpt": "[\"CB-417\", \"O-50416\", \"10.4\", \"12/10/2026\", 351.43, \"S-101\"]",
+   "index": 21,
+   "pointer": "rows[21]"
+  },
+  {
+   "data": {
+    "amount": 12.35,
+    "cb_id": "CB-418",
+    "filed_at": "12/10/2026",
+    "order_id": "O-50323",
+    "reason_code": "10.4",
+    "seller_id": "S-102"
+   },
+   "excerpt": "[\"CB-418\", \"O-50323\", \"10.4\", \"12/10/2026\", 12.35, \"S-102\"]",
+   "index": 22,
+   "pointer": "rows[22]"
+  },
+  {
+   "data": {
+    "amount": 346.19,
+    "cb_id": "CB-419",
+    "filed_at": "12/10/2026",
+    "order_id": "O-50405",
+    "reason_code": "10.4",
+    "seller_id": "S-101"
+   },
+   "excerpt": "[\"CB-419\", \"O-50405\", \"10.4\", \"12/10/2026\", 346.19, \"S-101\"]",
+   "index": 23,
+   "pointer": "rows[23]"
+  },
+  {
+   "data": {
+    "amount": 168.17,
+    "cb_id": "CB-423",
+    "filed_at": "12/10/2026",
+    "order_id": "O-50285",
+    "reason_code": "10.4",
+    "seller_id": "S-102"
+   },
+   "excerpt": "[\"CB-423\", \"O-50285\", \"10.4\", \"12/10/2026\", 168.17, \"S-102\"]",
+   "index": 24,
+   "pointer": "rows[24]"
+  },
+  {
+   "data": {
+    "amount": 412.06,
+    "cb_id": "CB-425",
+    "filed_at": "12/10/2026",
+    "order_id": "O-50351",
+    "reason_code": "10.4",
+    "seller_id": "S-101"
+   },
+   "excerpt": "[\"CB-425\", \"O-50351\", \"10.4\", \"12/10/2026\", 412.06, \"S-101\"]",
+   "index": 25,
+   "pointer": "rows[25]"
+  },
+  {
+   "data": {
+    "amount": 317.88,
+    "cb_id": "CB-428",
+    "filed_at": "12/10/2026",
+    "order_id": "O-50406",
+    "reason_code": "10.4",
+    "seller_id": "S-101"
+   },
+   "excerpt": "[\"CB-428\", \"O-50406\", \"10.4\", \"12/10/2026\", 317.88, \"S-101\"]",
+   "index": 26,
+   "pointer": "rows[26]"
+  },
+  {
+   "data": {
+    "amount": 292.85,
+    "cb_id": "CB-430",
+    "filed_at": "12/10/2026",
+    "order_id": "O-50355",
+    "reason_code": "10.4",
+    "seller_id": "S-101"
+   },
+   "excerpt": "[\"CB-430\", \"O-50355\", \"10.4\", \"12/10/2026\", 292.85, \"S-101\"]",
+   "index": 27,
+   "pointer": "rows[27]"
+  },
+  {
+   "data": {
+    "amount": 334.03,
+    "cb_id": "CB-433",
+    "filed_at": "12/10/2026",
+    "order_id": "O-50376",
+    "reason_code": "10.4",
+    "seller_id": "S-101"
+   },
+   "excerpt": "[\"CB-433\", \"O-50376\", \"10.4\", \"12/10/2026\", 334.03, \"S-101\"]",
+   "index": 28,
+   "pointer": "rows[28]"
+  },
+  {
+   "data": {
+    "amount": 220.55,
+    "cb_id": "CB-434",
+    "filed_at": "12/10/2026",
+    "order_id": "O-50392",
+    "reason_code": "10.4",
+    "seller_id": "S-101"
+   },
+   "excerpt": "[\"CB-434\", \"O-50392\", \"10.4\", \"12/10/2026\", 220.55, \"S-101\"]",
+   "index": 29,
+   "pointer": "rows[29]"
+  },
+  {
+   "data": {
+    "amount": 340.27,
+    "cb_id": "CB-436",
+    "filed_at": "12/10/2026",
+    "order_id": "O-50363",
+    "reason_code": "10.4",
+    "seller_id": "S-101"
+   },
+   "excerpt": "[\"CB-436\", \"O-50363\", \"10.4\", \"12/10/2026\", 340.27, \"S-101\"]",
+   "index": 30,
+   "pointer": "rows[30]"
+  },
+  {
+   "data": {
+    "amount": 345.75,
+    "cb_id": "CB-438",
+    "filed_at": "12/10/2026",
+    "order_id": "O-50417",
+    "reason_code": "10.4",
+    "seller_id": "S-101"
+   },
+   "excerpt": "[\"CB-438\", \"O-50417\", \"10.4\", \"12/10/2026\", 345.75, \"S-101\"]",
+   "index": 31,
+   "pointer": "rows[31]"
+  },
+  {
+   "data": {
+    "amount": 253.64,
+    "cb_id": "CB-443",
+    "filed_at": "12/10/2026",
+    "order_id": "O-50327",
+    "reason_code": "10.4",
+    "seller_id": "S-102"
+   },
+   "excerpt": "[\"CB-443\", \"O-50327\", \"10.4\", \"12/10/2026\", 253.64, \"S-102\"]",
+   "index": 32,
+   "pointer": "rows[32]"
+  },
+  {
+   "data": {
+    "amount": 264.61,
+    "cb_id": "CB-403",
+    "filed_at": "13/10/2026",
+    "order_id": "O-50402",
+    "reason_code": "10.4",
+    "seller_id": "S-101"
+   },
+   "excerpt": "[\"CB-403\", \"O-50402\", \"10.4\", \"13/10/2026\", 264.61, \"S-101\"]",
+   "index": 33,
+   "pointer": "rows[33]"
+  },
+  {
+   "data": {
+    "amount": 340.83,
+    "cb_id": "CB-426",
+    "filed_at": "13/10/2026",
+    "order_id": "O-50407",
+    "reason_code": "10.4",
+    "seller_id": "S-102"
+   },
+   "excerpt": "[\"CB-426\", \"O-50407\", \"10.4\", \"13/10/2026\", 340.83, \"S-102\"]",
+   "index": 34,
+   "pointer": "rows[34]"
+  },
+  {
+   "data": {
+    "amount": 212.06,
+    "cb_id": "CB-431",
+    "filed_at": "13/10/2026",
+    "order_id": "O-50362",
+    "reason_code": "10.4",
+    "seller_id": "S-101"
+   },
+   "excerpt": "[\"CB-431\", \"O-50362\", \"10.4\", \"13/10/2026\", 212.06, \"S-101\"]",
+   "index": 35,
+   "pointer": "rows[35]"
+  },
+  {
+   "data": {
+    "amount": 354.69,
+    "cb_id": "CB-441",
+    "filed_at": "13/10/2026",
+    "order_id": "O-50387",
+    "reason_code": "10.4",
+    "seller_id": "S-101"
+   },
+   "excerpt": "[\"CB-441\", \"O-50387\", \"10.4\", \"13/10/2026\", 354.69, \"S-101\"]",
+   "index": 36,
+   "pointer": "rows[36]"
+  },
+  {
+   "data": {
+    "amount": 99.55,
+    "cb_id": "CB-451",
+    "filed_at": "13/10/2026",
+    "order_id": "O-50347",
+    "reason_code": "13.1",
+    "seller_id": "S-123"
+   },
+   "excerpt": "[\"CB-451\", \"O-50347\", \"13.1\", \"13/10/2026\", 99.55, \"S-123\"]",
+   "index": 37,
+   "pointer": "rows[37]"
+  },
+  {
+   "data": {
+    "amount": 33.3,
+    "cb_id": "CB-452",
+    "filed_at": "13/10/2026",
+    "order_id": "O-50182",
+    "reason_code": "13.1",
+    "seller_id": "S-119"
+   },
+   "excerpt": "[\"CB-452\", \"O-50182\", \"13.1\", \"13/10/2026\", 33.3, \"S-119\"]",
+   "index": 38,
+   "pointer": "rows[38]"
+  },
+  {
+   "data": {
+    "amount": 170.55,
+    "cb_id": "CB-454",
+    "filed_at": "13/10/2026",
+    "order_id": "O-50067",
+    "reason_code": "13.3",
+    "seller_id": "S-110"
+   },
+   "excerpt": "[\"CB-454\", \"O-50067\", \"13.3\", \"13/10/2026\", 170.55, \"S-110\"]",
+   "index": 39,
+   "pointer": "rows[39]"
+  },
+  {
+   "data": {
+    "amount": 297.51,
+    "cb_id": "CB-459",
+    "filed_at": "13/10/2026",
+    "order_id": "O-50078",
+    "reason_code": "13.3",
+    "seller_id": "S-122"
+   },
+   "excerpt": "[\"CB-459\", \"O-50078\", \"13.3\", \"13/10/2026\", 297.51, \"S-122\"]",
+   "index": 40,
+   "pointer": "rows[40]"
+  },
+  {
+   "data": {
+    "amount": 390.12,
+    "cb_id": "CB-402",
+    "filed_at": "14/10/2026",
+    "order_id": "O-50366",
+    "reason_code": "10.4",
+    "seller_id": "S-102"
+   },
+   "excerpt": "[\"CB-402\", \"O-50366\", \"10.4\", \"14/10/2026\", 390.12, \"S-102\"]",
+   "index": 41,
+   "pointer": "rows[41]"
+  },
+  {
+   "data": {
+    "amount": 378.57,
+    "cb_id": "CB-404",
+    "filed_at": "14/10/2026",
+    "order_id": "O-50371",
+    "reason_code": "10.4",
+    "seller_id": "S-101"
+   },
+   "excerpt": "[\"CB-404\", \"O-50371\", \"10.4\", \"14/10/2026\", 378.57, \"S-101\"]",
+   "index": 42,
+   "pointer": "rows[42]"
+  },
+  {
+   "data": {
+    "amount": 213.55,
+    "cb_id": "CB-409",
+    "filed_at": "14/10/2026",
+    "order_id": "O-50119",
+    "reason_code": "10.4",
+    "seller_id": "S-102"
+   },
+   "excerpt": "[\"CB-409\", \"O-50119\", \"10.4\", \"14/10/2026\", 213.55, \"S-102\"]",
+   "index": 43,
+   "pointer": "rows[44]"
+  },
+  {
+   "data": {
+    "amount": 230.1,
+    "cb_id": "CB-412",
+    "filed_at": "14/10/2026",
+    "order_id": "O-50401",
+    "reason_code": "10.4",
+    "seller_id": "S-102"
+   },
+   "excerpt": "[\"CB-412\", \"O-50401\", \"10.4\", \"14/10/2026\", 230.1, \"S-102\"]",
+   "index": 44,
+   "pointer": "rows[45]"
+  },
+  {
+   "data": {
+    "amount": 343.09,
+    "cb_id": "CB-416",
+    "filed_at": "14/10/2026",
+    "order_id": "O-50364",
+    "reason_code": "10.4",
+    "seller_id": "S-101"
+   },
+   "excerpt": "[\"CB-416\", \"O-50364\", \"10.4\", \"14/10/2026\", 343.09, \"S-101\"]",
+   "index": 45,
+   "pointer": "rows[46]"
+  },
+  {
+   "data": {
+    "amount": 318.3,
+    "cb_id": "CB-424",
+    "filed_at": "14/10/2026",
+    "order_id": "O-50404",
+    "reason_code": "10.4",
+    "seller_id": "S-101"
+   },
+   "excerpt": "[\"CB-424\", \"O-50404\", \"10.4\", \"14/10/2026\", 318.3, \"S-101\"]",
+   "index": 46,
+   "pointer": "rows[47]"
+  },
+  {
+   "data": {
+    "amount": 381.41,
+    "cb_id": "CB-435",
+    "filed_at": "14/10/2026",
+    "order_id": "O-50360",
+    "reason_code": "10.4",
+    "seller_id": "S-101"
+   },
+   "excerpt": "[\"CB-435\", \"O-50360\", \"10.4\", \"14/10/2026\", 381.41, \"S-101\"]",
+   "index": 47,
+   "pointer": "rows[48]"
+  },
+  {
+   "data": {
+    "amount": 408.94,
+    "cb_id": "CB-437",
+    "filed_at": "14/10/2026",
+    "order_id": "O-50369",
+    "reason_code": "10.4",
+    "seller_id": "S-101"
+   },
+   "excerpt": "[\"CB-437\", \"O-50369\", \"10.4\", \"14/10/2026\", 408.94, \"S-101\"]",
+   "index": 48,
+   "pointer": "rows[49]"
+  },
+  {
+   "data": {
+    "amount": 51.94,
+    "cb_id": "CB-457",
+    "filed_at": "14/10/2026",
+    "order_id": "O-50089",
+    "reason_code": "13.3",
+    "seller_id": "S-129"
+   },
+   "excerpt": "[\"CB-457\", \"O-50089\", \"13.3\", \"14/10/2026\", 51.94, \"S-129\"]",
+   "index": 49,
+   "pointer": "rows[50]"
+  },
+  {
+   "data": {
+    "amount": 181.83,
+    "cb_id": "CB-407",
+    "filed_at": "15/10/2026",
+    "order_id": "O-50400",
+    "reason_code": "10.4",
+    "seller_id": "S-101"
+   },
+   "excerpt": "[\"CB-407\", \"O-50400\", \"10.4\", \"15/10/2026\", 181.83, \"S-101\"]",
+   "index": 50,
+   "pointer": "rows[51]"
+  },
+  {
+   "data": {
+    "amount": 409.55,
+    "cb_id": "CB-427",
+    "filed_at": "15/10/2026",
+    "order_id": "O-50397",
+    "reason_code": "10.4",
+    "seller_id": "S-101"
+   },
+   "excerpt": "[\"CB-427\", \"O-50397\", \"10.4\", \"15/10/2026\", 409.55, \"S-101\"]",
+   "index": 51,
+   "pointer": "rows[52]"
+  },
+  {
+   "data": {
+    "amount": 413.74,
+    "cb_id": "CB-439",
+    "filed_at": "15/10/2026",
+    "order_id": "O-50373",
+    "reason_code": "10.4",
+    "seller_id": "S-101"
+   },
+   "excerpt": "[\"CB-439\", \"O-50373\", \"10.4\", \"15/10/2026\", 413.74, \"S-101\"]",
+   "index": 52,
+   "pointer": "rows[53]"
+  },
+  {
+   "data": {
+    "amount": 200.55,
+    "cb_id": "CB-440",
+    "filed_at": "15/10/2026",
+    "order_id": "O-50399",
+    "reason_code": "10.4",
+    "seller_id": "S-102"
+   },
+   "excerpt": "[\"CB-440\", \"O-50399\", \"10.4\", \"15/10/2026\", 200.55, \"S-102\"]",
+   "index": 53,
+   "pointer": "rows[54]"
+  },
+  {
+   "data": {
+    "amount": 126.99,
+    "cb_id": "CB-445",
+    "filed_at": "15/10/2026",
+    "order_id": "O-50184",
+    "reason_code": "13.1",
+    "seller_id": "S-123"
+   },
+   "excerpt": "[\"CB-445\", \"O-50184\", \"13.1\", \"15/10/2026\", 126.99, \"S-123\"]",
+   "index": 54,
+   "pointer": "rows[55]"
+  },
+  {
+   "data": {
+    "amount": 83.16,
+    "cb_id": "CB-447",
+    "filed_at": "15/10/2026",
+    "order_id": "O-50077",
+    "reason_code": "13.1",
+    "seller_id": "S-111"
+   },
+   "excerpt": "[\"CB-447\", \"O-50077\", \"13.1\", \"15/10/2026\", 83.16, \"S-111\"]",
+   "index": 55,
+   "pointer": "rows[56]"
+  },
+  {
+   "data": {
+    "amount": 97.11,
+    "cb_id": "CB-453",
+    "filed_at": "16/10/2026",
+    "order_id": "O-50058",
+    "reason_code": "13.1",
+    "seller_id": "S-121"
+   },
+   "excerpt": "[\"CB-453\", \"O-50058\", \"13.1\", \"16/10/2026\", 97.11, \"S-121\"]",
+   "index": 56,
+   "pointer": "rows[57]"
+  },
+  {
+   "data": {
+    "amount": 245.96,
+    "cb_id": "CB-458",
+    "filed_at": "16/10/2026",
+    "order_id": "O-50171",
+    "reason_code": "13.3",
+    "seller_id": "S-116"
+   },
+   "excerpt": "[\"CB-458\", \"O-50171\", \"13.3\", \"16/10/2026\", 245.96, \"S-116\"]",
+   "index": 57,
+   "pointer": "rows[58]"
+  },
+  {
+   "data": {
+    "amount": 260.5,
+    "cb_id": "CB-455",
+    "filed_at": "18/10/2026",
+    "order_id": "O-50343",
+    "reason_code": "13.3",
+    "seller_id": "S-109"
+   },
+   "excerpt": "[\"CB-455\", \"O-50343\", \"13.3\", \"18/10/2026\", 260.5, \"S-109\"]",
+   "index": 58,
+   "pointer": "rows[59]"
+  }
+ ],
+ "skipped": [
+  {
+   "excerpt": "[\"CB-408\", \"O-50379\", \"10.4\", \"14/10/2026\", 243.75]",
+   "pointer": "rows[43]",
+   "reason": "5 values for 6 fields"
+  }
+ ]
+}

@@ -1,0 +1,425 @@
+{
+ "records": [
+  {
+   "data": {
+    "COUNTRY": "US",
+    "LEGAL_NAME": "Nova Goods",
+    "ONBOARDED": "16/05/2025",
+    "PAYOUT_ACCOUNT": "PA-ca264e",
+    "RATING": "4.8",
+    "SELLER_ID": "S-100",
+    "STATUS": "active"
+   },
+   "excerpt": "S-100,\"Nova Goods\",US,16/05/2025,PA-ca264e,4.8,active",
+   "index": 0,
+   "pointer": "line 2"
+  },
+  {
+   "data": {
+    "COUNTRY": "US",
+    "LEGAL_NAME": "Brightline Electronics Ltd",
+    "ONBOARDED": "26/08/2026",
+    "PAYOUT_ACCOUNT": "PA-3031d0",
+    "RATING": "4.1",
+    "SELLER_ID": "S-101",
+    "STATUS": "active"
+   },
+   "excerpt": "S-101,\"Brightline Electronics Ltd\",US,26/08/2026,PA-3031d0,4.1,active",
+   "index": 1,
+   "pointer": "line 3"
+  },
+  {
+   "data": {
+    "COUNTRY": "US",
+    "LEGAL_NAME": "Northwing Gadgets",
+    "ONBOARDED": "13/09/2026",
+    "PAYOUT_ACCOUNT": "PA-3031d0",
+    "RATING": "3.6",
+    "SELLER_ID": "S-102",
+    "STATUS": "active"
+   },
+   "excerpt": "S-102,\"Northwing Gadgets\",US,13/09/2026,PA-3031d0,3.6,active",
+   "index": 2,
+   "pointer": "line 4"
+  },
+  {
+   "data": {
+    "COUNTRY": "AU",
+    "LEGAL_NAME": "Cobalt Supply Co",
+    "ONBOARDED": "15/11/2023",
+    "PAYOUT_ACCOUNT": "PA-23c417",
+    "RATING": "3.9",
+    "SELLER_ID": "S-103",
+    "STATUS": "active"
+   },
+   "excerpt": "S-103,\"Cobalt Supply Co\",AU,15/11/2023,PA-23c417,3.9,active",
+   "index": 3,
+   "pointer": "line 5"
+  },
+  {
+   "data": {
+    "COUNTRY": "FR",
+    "LEGAL_NAME": "Harbor Outfitters",
+    "ONBOARDED": "02/11/2023",
+    "PAYOUT_ACCOUNT": "PA-1e43bb",
+    "RATING": "4.7",
+    "SELLER_ID": "S-104",
+    "STATUS": "active"
+   },
+   "excerpt": "S-104,\"Harbor Outfitters\",FR,02/11/2023,PA-1e43bb,4.7,active",
+   "index": 4,
+   "pointer": "line 6"
+  },
+  {
+   "data": {
+    "COUNTRY": "US",
+    "LEGAL_NAME": "Juniper Trading",
+    "ONBOARDED": "18/12/2024",
+    "PAYOUT_ACCOUNT": "PA-1fac61",
+    "RATING": "4.4",
+    "SELLER_ID": "S-105",
+    "STATUS": "active"
+   },
+   "excerpt": "S-105,\"Juniper Trading\",US,18/12/2024,PA-1fac61,4.4,active",
+   "index": 5,
+   "pointer": "line 7"
+  },
+  {
+   "data": {
+    "COUNTRY": "AU",
+    "LEGAL_NAME": "Kestrel Home",
+    "ONBOARDED": "09/12/2025",
+    "PAYOUT_ACCOUNT": "PA-7131a3",
+    "RATING": "3.7",
+    "SELLER_ID": "S-106",
+    "STATUS": "active"
+   },
+   "excerpt": "S-106,\"Kestrel Home\",AU,09/12/2025,PA-7131a3,3.7,active",
+   "index": 6,
+   "pointer": "line 8"
+  },
+  {
+   "data": {
+    "COUNTRY": "US",
+    "LEGAL_NAME": "Lumen Audio",
+    "ONBOARDED": "04/08/2024",
+    "PAYOUT_ACCOUNT": "PA-d69964",
+    "RATING": "3.8",
+    "SELLER_ID": "S-107",
+    "STATUS": "active"
+   },
+   "excerpt": "S-107,\"Lumen Audio\",US,04/08/2024,PA-d69964,3.8,active",
+   "index": 7,
+   "pointer": "line 9"
+  },
+  {
+   "data": {
+    "COUNTRY": "US",
+    "LEGAL_NAME": "Meridian Parts",
+    "ONBOARDED": "06/01/2023",
+    "PAYOUT_ACCOUNT": "PA-9df154",
+    "RATING": "4.3",
+    "SELLER_ID": "S-108",
+    "STATUS": "active"
+   },
+   "excerpt": "S-108,\"Meridian Parts\",US,06/01/2023,PA-9df154,4.3,active",
+   "index": 8,
+   "pointer": "line 10"
+  },
+  {
+   "data": {
+    "COUNTRY": "-",
+    "LEGAL_NAME": "Orchard Direct",
+    "ONBOARDED": "21/08/2025",
+    "PAYOUT_ACCOUNT": "PA-6030a1",
+    "RATING": "4.1",
+    "SELLER_ID": "S-109",
+    "STATUS": "active"
+   },
+   "excerpt": "S-109,\"Orchard Direct\",-,21/08/2025,PA-6030a1,4.1,active",
+   "index": 9,
+   "pointer": "line 11"
+  },
+  {
+   "data": {
+    "COUNTRY": "FR",
+    "LEGAL_NAME": "Pioneer Goods",
+    "ONBOARDED": "12/11/2025",
+    "PAYOUT_ACCOUNT": "PA-1e840b",
+    "RATING": "4.4",
+    "SELLER_ID": "S-110",
+    "STATUS": "active"
+   },
+   "excerpt": "S-110,\"Pioneer Goods\",FR,12/11/2025,PA-1e840b,4.4,active",
+   "index": 10,
+   "pointer": "line 12"
+  },
+  {
+   "data": {
+    "COUNTRY": "NL",
+    "LEGAL_NAME": "Quarry Electronics Ltd",
+    "ONBOARDED": "28/03/2023",
+    "PAYOUT_ACCOUNT": "PA-daed60",
+    "RATING": "4.6",
+    "SELLER_ID": "S-111",
+    "STATUS": "active"
+   },
+   "excerpt": "S-111,\"Quarry Electronics Ltd\",NL,28/03/2023,PA-daed60,4.6,active",
+   "index": 11,
+   "pointer": "line 13"
+  },
+  {
+   "data": {
+    "COUNTRY": "NL",
+    "LEGAL_NAME": "Redwood Gadgets",
+    "ONBOARDED": "07/12/2022",
+    "PAYOUT_ACCOUNT": "PA-e807c8",
+    "RATING": "4.1",
+    "SELLER_ID": "S-112",
+    "STATUS": "active"
+   },
+   "excerpt": "S-112,\"Redwood Gadgets\",NL,07/12/2022,PA-e807c8,4.1,active",
+   "index": 12,
+   "pointer": "line 14"
+  },
+  {
+   "data": {
+    "COUNTRY": "GB",
+    "LEGAL_NAME": "Summit Supply Co",
+    "ONBOARDED": "17/03/2025",
+    "PAYOUT_ACCOUNT": "PA-7cfa37",
+    "RATING": "3.7",
+    "SELLER_ID": "S-113",
+    "STATUS": "active"
+   },
+   "excerpt": "S-113,\"Summit Supply Co\",GB,17/03/2025,PA-7cfa37,3.7,active",
+   "index": 13,
+   "pointer": "line 15"
+  },
+  {
+   "data": {
+    "COUNTRY": "DE",
+    "LEGAL_NAME": "Tidewater Outfitters",
+    "ONBOARDED": "10/04/2023",
+    "PAYOUT_ACCOUNT": "PA-fd7fe4",
+    "RATING": "unknown",
+    "SELLER_ID": "S-114",
+    "STATUS": "active"
+   },
+   "excerpt": "S-114,\"Tidewater Outfitters\",DE,10/04/2023,PA-fd7fe4,unknown,active",
+   "index": 14,
+   "pointer": "line 16"
+  },
+  {
+   "data": {
+    "COUNTRY": "NL",
+    "LEGAL_NAME": "Umber Trading",
+    "ONBOARDED": "08/08/2024",
+    "PAYOUT_ACCOUNT": "PA-257a95",
+    "RATING": "3.8",
+    "SELLER_ID": "S-115",
+    "STATUS": "active"
+   },
+   "excerpt": "S-115,\"Umber Trading\",NL,08/08/2024,PA-257a95,3.8,active",
+   "index": 15,
+   "pointer": "line 17"
+  },
+  {
+   "data": {
+    "COUNTRY": "AU",
+    "LEGAL_NAME": "Vantage Home",
+    "ONBOARDED": "17/04/2025",
+    "PAYOUT_ACCOUNT": "PA-af21f0",
+    "RATING": "3.8",
+    "SELLER_ID": "S-116",
+    "STATUS": "active"
+   },
+   "excerpt": "S-116,\"Vantage Home\",AU,17/04/2025,PA-af21f0,3.8,active",
+   "index": 16,
+   "pointer": "line 18"
+  },
+  {
+   "data": {
+    "COUNTRY": "NL",
+    "LEGAL_NAME": "Willow Audio",
+    "ONBOARDED": "08/11/2023",
+    "PAYOUT_ACCOUNT": "PA-1412f9",
+    "RATING": "4.9",
+    "SELLER_ID": "S-117",
+    "STATUS": "active"
+   },
+   "excerpt": "S-117,\"Willow Audio\",NL,08/11/2023,PA-1412f9,4.9,active",
+   "index": 17,
+   "pointer": "line 19"
+  },
+  {
+   "data": {
+    "COUNTRY": "US",
+    "LEGAL_NAME": "Yonder Parts",
+    "ONBOARDED": "02/02/2023",
+    "PAYOUT_ACCOUNT": "PA-a0a383",
+    "RATING": "4.0",
+    "SELLER_ID": "S-118",
+    "STATUS": "active"
+   },
+   "excerpt": "S-118,\"Yonder Parts\",US,02/02/2023,PA-a0a383,4.0,active",
+   "index": 18,
+   "pointer": "line 20"
+  },
+  {
+   "data": {
+    "COUNTRY": "CA",
+    "LEGAL_NAME": "Zenith Direct",
+    "ONBOARDED": "19/11/2022",
+    "PAYOUT_ACCOUNT": "PA-fe4c28",
+    "RATING": "4.4",
+    "SELLER_ID": "S-119",
+    "STATUS": "active"
+   },
+   "excerpt": "S-119,\"Zenith Direct\",CA,19/11/2022,PA-fe4c28,4.4,active",
+   "index": 19,
+   "pointer": "line 21"
+  },
+  {
+   "data": {
+    "COUNTRY": "NL",
+    "LEGAL_NAME": "Amber Goods",
+    "ONBOARDED": "31/10/2025",
+    "PAYOUT_ACCOUNT": "PA-2febd0",
+    "RATING": "4.8",
+    "SELLER_ID": "S-120",
+    "STATUS": "active"
+   },
+   "excerpt": "S-120,\"Amber Goods\",NL,31/10/2025,PA-2febd0,4.8,active",
+   "index": 20,
+   "pointer": "line 22"
+  },
+  {
+   "data": {
+    "COUNTRY": "NL",
+    "LEGAL_NAME": "Beacon Electronics Ltd",
+    "ONBOARDED": "07/11/2025",
+    "PAYOUT_ACCOUNT": "PA-1f1010",
+    "RATING": "4.6",
+    "SELLER_ID": "S-121",
+    "STATUS": "active"
+   },
+   "excerpt": "S-121,\"Beacon Electronics Ltd\",NL,07/11/2025,PA-1f1010,4.6,active",
+   "index": 21,
+   "pointer": "line 23"
+  },
+  {
+   "data": {
+    "COUNTRY": "DE",
+    "LEGAL_NAME": "Cinder Gadgets",
+    "ONBOARDED": "23/12/2022",
+    "PAYOUT_ACCOUNT": "PA-e42b06",
+    "RATING": "4.0",
+    "SELLER_ID": "S-122",
+    "STATUS": "active"
+   },
+   "excerpt": "S-122,\"Cinder Gadgets\",DE,23/12/2022,PA-e42b06,4.0,active",
+   "index": 22,
+   "pointer": "line 24"
+  },
+  {
+   "data": {
+    "COUNTRY": "AU",
+    "LEGAL_NAME": "Drift Supply Co",
+    "ONBOARDED": "09/04/2024",
+    "PAYOUT_ACCOUNT": "PA-0b8d5e",
+    "RATING": "4.8",
+    "SELLER_ID": "S-123",
+    "STATUS": "active"
+   },
+   "excerpt": "S-123,\"Drift Supply Co\",AU,09/04/2024,PA-0b8d5e,4.8,active",
+   "index": 23,
+   "pointer": "line 25"
+  },
+  {
+   "data": {
+    "COUNTRY": "CA",
+    "LEGAL_NAME": "Ember Outfitters",
+    "ONBOARDED": "10/04/2025",
+    "PAYOUT_ACCOUNT": "PA-3bf3fa",
+    "RATING": "4.2",
+    "SELLER_ID": "S-124",
+    "STATUS": "active"
+   },
+   "excerpt": "S-124,\"Ember Outfitters\",CA,10/04/2025,PA-3bf3fa,4.2,active",
+   "index": 24,
+   "pointer": "line 26"
+  },
+  {
+   "data": {
+    "COUNTRY": "GB",
+    "LEGAL_NAME": "Falcon Trading",
+    "ONBOARDED": "09/08/2024",
+    "PAYOUT_ACCOUNT": "PA-4238e1",
+    "RATING": "4.6",
+    "SELLER_ID": "S-125",
+    "STATUS": "active"
+   },
+   "excerpt": "S-125,\"Falcon Trading\",GB,09/08/2024,PA-4238e1,4.6,active",
+   "index": 25,
+   "pointer": "line 27"
+  },
+  {
+   "data": {
+    "COUNTRY": "AU",
+    "LEGAL_NAME": "Granite Home",
+    "ONBOARDED": "10/01/2024",
+    "PAYOUT_ACCOUNT": "PA-fe3620",
+    "RATING": "3.7",
+    "SELLER_ID": "S-126",
+    "STATUS": "active"
+   },
+   "excerpt": "S-126,\"Granite Home\",AU,10/01/2024,PA-fe3620,3.7,active",
+   "index": 26,
+   "pointer": "line 28"
+  },
+  {
+   "data": {
+    "COUNTRY": "NL",
+    "LEGAL_NAME": "Hollow Audio",
+    "ONBOARDED": "19/12/2023",
+    "PAYOUT_ACCOUNT": "PA-8e40ee",
+    "RATING": "4.7",
+    "SELLER_ID": "S-127",
+    "STATUS": "active"
+   },
+   "excerpt": "S-127,\"Hollow Audio\",NL,19/12/2023,PA-8e40ee,4.7,active",
+   "index": 27,
+   "pointer": "line 29"
+  },
+  {
+   "data": {
+    "COUNTRY": "AU",
+    "LEGAL_NAME": "Ivory Parts",
+    "ONBOARDED": "18/02/2023",
+    "PAYOUT_ACCOUNT": "PA-8e8d34",
+    "RATING": "4.5",
+    "SELLER_ID": "S-128",
+    "STATUS": "active"
+   },
+   "excerpt": "S-128,\"Ivory Parts\",AU,18/02/2023,PA-8e8d34,4.5,active",
+   "index": 28,
+   "pointer": "line 30"
+  },
+  {
+   "data": {
+    "COUNTRY": "CA",
+    "LEGAL_NAME": "Jade Direct",
+    "ONBOARDED": "31/01/2024",
+    "PAYOUT_ACCOUNT": "PA-76250f",
+    "RATING": "3.8",
+    "SELLER_ID": "S-129",
+    "STATUS": "active"
+   },
+   "excerpt": "S-129,\"Jade Direct\",CA,31/01/2024,PA-76250f,3.8,active",
+   "index": 29,
+   "pointer": "line 31"
+  }
+ ],
+ "skipped": []
+}

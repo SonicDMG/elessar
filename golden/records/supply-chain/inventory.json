@@ -1,0 +1,44 @@
+{
+ "records": [
+  {
+   "data": {
+    "cover_days": 3.1,
+    "description": "Control board rev 4",
+    "inbound_po": "PO-7781",
+    "on_hand": 620,
+    "part_no": "BRD-CTL-4",
+    "safety_stock": 1500
+   },
+   "excerpt": "[\"BRD-CTL-4\", \"Control board rev 4\", 620, 1500, 3.1, \"PO-7781\"]",
+   "index": 0,
+   "pointer": "rows[0]"
+  },
+  {
+   "data": {
+    "cover_days": 21.0,
+    "description": "Housing 220mm",
+    "inbound_po": "PO-7790",
+    "on_hand": 8400,
+    "part_no": "HSG-220",
+    "safety_stock": 3000
+   },
+   "excerpt": "[\"HSG-220\", \"Housing 220mm\", 8400, 3000, 21.0, \"PO-7790\"]",
+   "index": 1,
+   "pointer": "rows[1]"
+  },
+  {
+   "data": {
+    "cover_days": 40.5,
+    "description": "M4 fastener kit",
+    "inbound_po": null,
+    "on_hand": 51000,
+    "part_no": "FST-M4",
+    "safety_stock": 20000
+   },
+   "excerpt": "[\"FST-M4\", \"M4 fastener kit\", 51000, 20000, 40.5, null]",
+   "index": 2,
+   "pointer": "rows[2]"
+  }
+ ],
+ "skipped": []
+}

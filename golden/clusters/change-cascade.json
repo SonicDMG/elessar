@@ -1,0 +1,1730 @@
+{
+ "clusters": {
+  "activity#0:Actor:1": {
+   "conflicts": [],
+   "fragments": [
+    "activity#0:Actor:1",
+    "activity#1:Actor:1",
+    "directory#1:Actor:0"
+   ],
+   "props": {
+    "badge": [
+     {
+      "provenance": [
+       {
+        "field": "actor",
+        "fragment": "activity#0:Actor:1",
+        "pointer": "line 1",
+        "source": "activity"
+       },
+       {
+        "field": "actor",
+        "fragment": "activity#1:Actor:1",
+        "pointer": "line 2",
+        "source": "activity"
+       },
+       {
+        "field": "BADGE_ID",
+        "fragment": "directory#1:Actor:0",
+        "pointer": "line 3",
+        "source": "directory"
+       }
+      ],
+      "value": "B-5540"
+     }
+    ],
+    "dept": [
+     {
+      "provenance": [
+       {
+        "field": "DEPT",
+        "fragment": "directory#1:Actor:0",
+        "pointer": "line 3",
+        "source": "directory"
+       }
+      ],
+      "value": "Facilities"
+     }
+    ],
+    "email": [
+     {
+      "provenance": [
+       {
+        "field": "EMAIL",
+        "fragment": "directory#1:Actor:0",
+        "pointer": "line 3",
+        "source": "directory"
+       }
+      ],
+      "value": "d.reyes@northwind.example"
+     }
+    ],
+    "employee_id": [
+     {
+      "provenance": [
+       {
+        "field": "EMP_ID",
+        "fragment": "directory#1:Actor:0",
+        "pointer": "line 3",
+        "source": "directory"
+       }
+      ],
+      "value": "E-0203"
+     }
+    ],
+    "last_seen": [
+     {
+      "provenance": [
+       {
+        "field": "t",
+        "fragment": "activity#0:Actor:1",
+        "pointer": "line 1",
+        "source": "activity"
+       }
+      ],
+      "value": "2026-10-15T22:40:00Z"
+     },
+     {
+      "provenance": [
+       {
+        "field": "t",
+        "fragment": "activity#1:Actor:1",
+        "pointer": "line 2",
+        "source": "activity"
+       }
+      ],
+      "value": "2026-10-16T01:15:00Z"
+     }
+    ],
+    "name": [
+     {
+      "provenance": [
+       {
+        "field": "FULL_NAME",
+        "fragment": "directory#1:Actor:0",
+        "pointer": "line 3",
+        "source": "directory"
+       }
+      ],
+      "value": "Dalia Reyes"
+     }
+    ],
+    "role": [
+     {
+      "provenance": [
+       {
+        "field": "ROLE",
+        "fragment": "directory#1:Actor:0",
+        "pointer": "line 3",
+        "source": "directory"
+       }
+      ],
+      "value": "Facilities Lead"
+     }
+    ],
+    "shift": [
+     {
+      "provenance": [
+       {
+        "field": "SHIFT",
+        "fragment": "directory#1:Actor:0",
+        "pointer": "line 3",
+        "source": "directory"
+       }
+      ],
+      "value": "night"
+     }
+    ],
+    "started": [
+     {
+      "provenance": [
+       {
+        "field": "START_DATE",
+        "fragment": "directory#1:Actor:0",
+        "pointer": "line 3",
+        "source": "directory"
+       }
+      ],
+      "value": "2021-02-17"
+     }
+    ]
+   },
+   "sources": [
+    "activity",
+    "directory"
+   ],
+   "title": "Dalia Reyes",
+   "type": "Actor"
+  },
+  "activity#2:Actor:1": {
+   "conflicts": [],
+   "fragments": [
+    "activity#2:Actor:1",
+    "activity#3:Actor:1",
+    "change#0:Actor:7",
+    "directory#0:Actor:0"
+   ],
+   "props": {
+    "badge": [
+     {
+      "provenance": [
+       {
+        "field": "actor",
+        "fragment": "activity#2:Actor:1",
+        "pointer": "line 3",
+        "source": "activity"
+       },
+       {
+        "field": "actor",
+        "fragment": "activity#3:Actor:1",
+        "pointer": "line 4",
+        "source": "activity"
+       },
+       {
+        "field": "BADGE_ID",
+        "fragment": "directory#0:Actor:0",
+        "pointer": "line 2",
+        "source": "directory"
+       }
+      ],
+      "value": "B-2093"
+     }
+    ],
+    "dept": [
+     {
+      "provenance": [
+       {
+        "field": "DEPT",
+        "fragment": "directory#0:Actor:0",
+        "pointer": "line 2",
+        "source": "directory"
+       }
+      ],
+      "value": "Platform Eng"
+     }
+    ],
+    "email": [
+     {
+      "provenance": [
+       {
+        "field": "implementer.@email",
+        "fragment": "change#0:Actor:7",
+        "pointer": "/servicedesk/ticket[1]",
+        "source": "change"
+       },
+       {
+        "field": "EMAIL",
+        "fragment": "directory#0:Actor:0",
+        "pointer": "line 2",
+        "source": "directory"
+       }
+      ],
+      "value": "m.vale@northwind.example"
+     }
+    ],
+    "employee_id": [
+     {
+      "provenance": [
+       {
+        "field": "EMP_ID",
+        "fragment": "directory#0:Actor:0",
+        "pointer": "line 2",
+        "source": "directory"
+       }
+      ],
+      "value": "E-0115"
+     }
+    ],
+    "last_seen": [
+     {
+      "provenance": [
+       {
+        "field": "t",
+        "fragment": "activity#2:Actor:1",
+        "pointer": "line 3",
+        "source": "activity"
+       }
+      ],
+      "value": "2026-10-16T01:52:00Z"
+     },
+     {
+      "provenance": [
+       {
+        "field": "t",
+        "fragment": "activity#3:Actor:1",
+        "pointer": "line 4",
+        "source": "activity"
+       }
+      ],
+      "value": "2026-10-16T01:58:00Z"
+     }
+    ],
+    "name": [
+     {
+      "provenance": [
+       {
+        "field": "FULL_NAME",
+        "fragment": "directory#0:Actor:0",
+        "pointer": "line 2",
+        "source": "directory"
+       }
+      ],
+      "value": "Marcus Vale"
+     }
+    ],
+    "role": [
+     {
+      "provenance": [
+       {
+        "field": "ROLE",
+        "fragment": "directory#0:Actor:0",
+        "pointer": "line 2",
+        "source": "directory"
+       }
+      ],
+      "value": "On-call SRE"
+     }
+    ],
+    "shift": [
+     {
+      "provenance": [
+       {
+        "field": "SHIFT",
+        "fragment": "directory#0:Actor:0",
+        "pointer": "line 2",
+        "source": "directory"
+       }
+      ],
+      "value": "night"
+     }
+    ],
+    "started": [
+     {
+      "provenance": [
+       {
+        "field": "START_DATE",
+        "fragment": "directory#0:Actor:0",
+        "pointer": "line 2",
+        "source": "directory"
+       }
+      ],
+      "value": "2025-11-04"
+     }
+    ]
+   },
+   "sources": [
+    "activity",
+    "change",
+    "directory"
+   ],
+   "title": "Marcus Vale",
+   "type": "Actor"
+  },
+  "activity#3:Service:2": {
+   "conflicts": [],
+   "fragments": [
+    "activity#3:Service:2",
+    "activity#5:Service:2",
+    "metrics#0:Service:9",
+    "metrics#10:Service:9",
+    "metrics#11:Service:9",
+    "metrics#1:Service:9",
+    "metrics#2:Service:9",
+    "metrics#3:Service:9",
+    "metrics#4:Service:9",
+    "metrics#5:Service:9",
+    "metrics#6:Service:9",
+    "metrics#7:Service:9",
+    "metrics#8:Service:9",
+    "metrics#9:Service:9",
+    "change#0:Service:6",
+    "change#1:Service:6",
+    "flow#0:Service:3",
+    "flow#1:Service:3",
+    "flow#3:Service:3",
+    "flow#4:Service:3",
+    "advisory#0:Service:10"
+   ],
+   "props": {
+    "env": [
+     {
+      "provenance": [
+       {
+        "field": "src.env",
+        "fragment": "flow#0:Service:3",
+        "pointer": "data.flows[0]",
+        "source": "flow"
+       },
+       {
+        "field": "src.env",
+        "fragment": "flow#1:Service:3",
+        "pointer": "data.flows[1]",
+        "source": "flow"
+       },
+       {
+        "field": "src.env",
+        "fragment": "flow#3:Service:3",
+        "pointer": "data.flows[3]",
+        "source": "flow"
+       },
+       {
+        "field": "src.env",
+        "fragment": "flow#4:Service:3",
+        "pointer": "data.flows[4]",
+        "source": "flow"
+       }
+      ],
+      "value": "prod"
+     }
+    ],
+    "id": [
+     {
+      "provenance": [
+       {
+        "field": "target",
+        "fragment": "activity#3:Service:2",
+        "pointer": "line 4",
+        "source": "activity"
+       },
+       {
+        "field": "target",
+        "fragment": "activity#5:Service:2",
+        "pointer": "line 6",
+        "source": "activity"
+       },
+       {
+        "field": "device",
+        "fragment": "metrics#0:Service:9",
+        "pointer": "rows[0]",
+        "source": "metrics"
+       },
+       {
+        "field": "device",
+        "fragment": "metrics#10:Service:9",
+        "pointer": "rows[10]",
+        "source": "metrics"
+       },
+       {
+        "field": "device",
+        "fragment": "metrics#11:Service:9",
+        "pointer": "rows[11]",
+        "source": "metrics"
+       },
+       {
+        "field": "device",
+        "fragment": "metrics#1:Service:9",
+        "pointer": "rows[1]",
+        "source": "metrics"
+       },
+       {
+        "field": "device",
+        "fragment": "metrics#2:Service:9",
+        "pointer": "rows[2]",
+        "source": "metrics"
+       },
+       {
+        "field": "device",
+        "fragment": "metrics#3:Service:9",
+        "pointer": "rows[3]",
+        "source": "metrics"
+       },
+       {
+        "field": "device",
+        "fragment": "metrics#4:Service:9",
+        "pointer": "rows[4]",
+        "source": "metrics"
+       },
+       {
+        "field": "device",
+        "fragment": "metrics#5:Service:9",
+        "pointer": "rows[5]",
+        "source": "metrics"
+       },
+       {
+        "field": "device",
+        "fragment": "metrics#6:Service:9",
+        "pointer": "rows[6]",
+        "source": "metrics"
+       },
+       {
+        "field": "device",
+        "fragment": "metrics#7:Service:9",
+        "pointer": "rows[7]",
+        "source": "metrics"
+       },
+       {
+        "field": "device",
+        "fragment": "metrics#8:Service:9",
+        "pointer": "rows[8]",
+        "source": "metrics"
+       },
+       {
+        "field": "device",
+        "fragment": "metrics#9:Service:9",
+        "pointer": "rows[9]",
+        "source": "metrics"
+       },
+       {
+        "field": "ci",
+        "fragment": "change#0:Service:6",
+        "pointer": "/servicedesk/ticket[1]",
+        "source": "change"
+       },
+       {
+        "field": "ci",
+        "fragment": "change#1:Service:6",
+        "pointer": "/servicedesk/ticket[2]",
+        "source": "change"
+       },
+       {
+        "field": "src.service",
+        "fragment": "flow#0:Service:3",
+        "pointer": "data.flows[0]",
+        "source": "flow"
+       },
+       {
+        "field": "src.service",
+        "fragment": "flow#1:Service:3",
+        "pointer": "data.flows[1]",
+        "source": "flow"
+       },
+       {
+        "field": "src.service",
+        "fragment": "flow#3:Service:3",
+        "pointer": "data.flows[3]",
+        "source": "flow"
+       },
+       {
+        "field": "src.service",
+        "fragment": "flow#4:Service:3",
+        "pointer": "data.flows[4]",
+        "source": "flow"
+       },
+       {
+        "field": "subject",
+        "fragment": "advisory#0:Service:10",
+        "pointer": "line 3",
+        "source": "advisory"
+       }
+      ],
+      "value": "svc-ledger"
+     }
+    ],
+    "ip": [
+     {
+      "provenance": [
+       {
+        "field": "src.ip",
+        "fragment": "flow#0:Service:3",
+        "pointer": "data.flows[0]",
+        "source": "flow"
+       },
+       {
+        "field": "src.ip",
+        "fragment": "flow#1:Service:3",
+        "pointer": "data.flows[1]",
+        "source": "flow"
+       },
+       {
+        "field": "src.ip",
+        "fragment": "flow#3:Service:3",
+        "pointer": "data.flows[3]",
+        "source": "flow"
+       },
+       {
+        "field": "src.ip",
+        "fragment": "flow#4:Service:3",
+        "pointer": "data.flows[4]",
+        "source": "flow"
+       }
+      ],
+      "value": "10.4.2.15"
+     }
+    ],
+    "name": [
+     {
+      "provenance": [
+       {
+        "field": "ci.@name",
+        "fragment": "change#0:Service:6",
+        "pointer": "/servicedesk/ticket[1]",
+        "source": "change"
+       },
+       {
+        "field": "ci.@name",
+        "fragment": "change#1:Service:6",
+        "pointer": "/servicedesk/ticket[2]",
+        "source": "change"
+       }
+      ],
+      "value": "Ledger API"
+     }
+    ]
+   },
+   "sources": [
+    "activity",
+    "metrics",
+    "change",
+    "flow",
+    "advisory"
+   ],
+   "title": "Ledger API",
+   "type": "Service"
+  },
+  "activity#4:Actor:1": {
+   "conflicts": [],
+   "fragments": [
+    "activity#4:Actor:1",
+    "activity#5:Actor:1",
+    "change#1:Actor:8",
+    "directory#2:Actor:0"
+   ],
+   "props": {
+    "badge": [
+     {
+      "provenance": [
+       {
+        "field": "actor",
+        "fragment": "activity#4:Actor:1",
+        "pointer": "line 5",
+        "source": "activity"
+       },
+       {
+        "field": "actor",
+        "fragment": "activity#5:Actor:1",
+        "pointer": "line 6",
+        "source": "activity"
+       },
+       {
+        "field": "BADGE_ID",
+        "fragment": "directory#2:Actor:0",
+        "pointer": "line 4",
+        "source": "directory"
+       }
+      ],
+      "value": "B-9004"
+     }
+    ],
+    "dept": [
+     {
+      "provenance": [
+       {
+        "field": "DEPT",
+        "fragment": "directory#2:Actor:0",
+        "pointer": "line 4",
+        "source": "directory"
+       }
+      ],
+      "value": "Platform Eng"
+     }
+    ],
+    "email": [
+     {
+      "provenance": [
+       {
+        "field": "assignee.@email",
+        "fragment": "change#1:Actor:8",
+        "pointer": "/servicedesk/ticket[2]",
+        "source": "change"
+       },
+       {
+        "field": "EMAIL",
+        "fragment": "directory#2:Actor:0",
+        "pointer": "line 4",
+        "source": "directory"
+       }
+      ],
+      "value": "t.kwan@northwind.example"
+     }
+    ],
+    "employee_id": [
+     {
+      "provenance": [
+       {
+        "field": "EMP_ID",
+        "fragment": "directory#2:Actor:0",
+        "pointer": "line 4",
+        "source": "directory"
+       }
+      ],
+      "value": "E-0311"
+     }
+    ],
+    "last_seen": [
+     {
+      "provenance": [
+       {
+        "field": "t",
+        "fragment": "activity#4:Actor:1",
+        "pointer": "line 5",
+        "source": "activity"
+       }
+      ],
+      "value": "2026-10-16T02:09:00Z"
+     },
+     {
+      "provenance": [
+       {
+        "field": "t",
+        "fragment": "activity#5:Actor:1",
+        "pointer": "line 6",
+        "source": "activity"
+       }
+      ],
+      "value": "2026-10-16T02:21:00Z"
+     }
+    ],
+    "name": [
+     {
+      "provenance": [
+       {
+        "field": "FULL_NAME",
+        "fragment": "directory#2:Actor:0",
+        "pointer": "line 4",
+        "source": "directory"
+       }
+      ],
+      "value": "Theo Kwan"
+     }
+    ],
+    "role": [
+     {
+      "provenance": [
+       {
+        "field": "ROLE",
+        "fragment": "directory#2:Actor:0",
+        "pointer": "line 4",
+        "source": "directory"
+       }
+      ],
+      "value": "Incident Commander"
+     }
+    ],
+    "shift": [
+     {
+      "provenance": [
+       {
+        "field": "SHIFT",
+        "fragment": "directory#2:Actor:0",
+        "pointer": "line 4",
+        "source": "directory"
+       }
+      ],
+      "value": "day"
+     }
+    ],
+    "started": [
+     {
+      "provenance": [
+       {
+        "field": "START_DATE",
+        "fragment": "directory#2:Actor:0",
+        "pointer": "line 4",
+        "source": "directory"
+       }
+      ],
+      "value": "2022-08-09"
+     }
+    ]
+   },
+   "sources": [
+    "activity",
+    "change",
+    "directory"
+   ],
+   "title": "Theo Kwan",
+   "type": "Actor"
+  },
+  "activity#6:Actor:1": {
+   "conflicts": [],
+   "fragments": [
+    "activity#6:Actor:1",
+    "change#2:Actor:7",
+    "directory#3:Actor:0"
+   ],
+   "props": {
+    "badge": [
+     {
+      "provenance": [
+       {
+        "field": "actor",
+        "fragment": "activity#6:Actor:1",
+        "pointer": "line 7",
+        "source": "activity"
+       },
+       {
+        "field": "BADGE_ID",
+        "fragment": "directory#3:Actor:0",
+        "pointer": "line 5",
+        "source": "directory"
+       }
+      ],
+      "value": "B-3127"
+     }
+    ],
+    "dept": [
+     {
+      "provenance": [
+       {
+        "field": "DEPT",
+        "fragment": "directory#3:Actor:0",
+        "pointer": "line 5",
+        "source": "directory"
+       }
+      ],
+      "value": "Data"
+     }
+    ],
+    "email": [
+     {
+      "provenance": [
+       {
+        "field": "implementer.@email",
+        "fragment": "change#2:Actor:7",
+        "pointer": "/servicedesk/ticket[3]",
+        "source": "change"
+       },
+       {
+        "field": "EMAIL",
+        "fragment": "directory#3:Actor:0",
+        "pointer": "line 5",
+        "source": "directory"
+       }
+      ],
+      "value": "n.idris@northwind.example"
+     }
+    ],
+    "employee_id": [
+     {
+      "provenance": [
+       {
+        "field": "EMP_ID",
+        "fragment": "directory#3:Actor:0",
+        "pointer": "line 5",
+        "source": "directory"
+       }
+      ],
+      "value": "E-0409"
+     }
+    ],
+    "last_seen": [
+     {
+      "provenance": [
+       {
+        "field": "t",
+        "fragment": "activity#6:Actor:1",
+        "pointer": "line 7",
+        "source": "activity"
+       }
+      ],
+      "value": "2026-10-16T08:30:00Z"
+     }
+    ],
+    "name": [
+     {
+      "provenance": [
+       {
+        "field": "FULL_NAME",
+        "fragment": "directory#3:Actor:0",
+        "pointer": "line 5",
+        "source": "directory"
+       }
+      ],
+      "value": "Nour Idris"
+     }
+    ],
+    "role": [
+     {
+      "provenance": [
+       {
+        "field": "ROLE",
+        "fragment": "directory#3:Actor:0",
+        "pointer": "line 5",
+        "source": "directory"
+       }
+      ],
+      "value": "Data Steward"
+     }
+    ],
+    "shift": [
+     {
+      "provenance": [
+       {
+        "field": "SHIFT",
+        "fragment": "directory#3:Actor:0",
+        "pointer": "line 5",
+        "source": "directory"
+       }
+      ],
+      "value": "day"
+     }
+    ],
+    "started": [
+     {
+      "provenance": [
+       {
+        "field": "START_DATE",
+        "fragment": "directory#3:Actor:0",
+        "pointer": "line 5",
+        "source": "directory"
+       }
+      ],
+      "value": "2024-01-30"
+     }
+    ]
+   },
+   "sources": [
+    "activity",
+    "change",
+    "directory"
+   ],
+   "title": "Nour Idris",
+   "type": "Actor"
+  },
+  "activity#7:Actor:1": {
+   "conflicts": [],
+   "fragments": [
+    "activity#7:Actor:1",
+    "directory#4:Actor:0"
+   ],
+   "props": {
+    "badge": [
+     {
+      "provenance": [
+       {
+        "field": "actor",
+        "fragment": "activity#7:Actor:1",
+        "pointer": "line 8",
+        "source": "activity"
+       },
+       {
+        "field": "BADGE_ID",
+        "fragment": "directory#4:Actor:0",
+        "pointer": "line 6",
+        "source": "directory"
+       }
+      ],
+      "value": "B-7781"
+     }
+    ],
+    "dept": [
+     {
+      "provenance": [
+       {
+        "field": "DEPT",
+        "fragment": "directory#4:Actor:0",
+        "pointer": "line 6",
+        "source": "directory"
+       }
+      ],
+      "value": "Research"
+     }
+    ],
+    "email": [
+     {
+      "provenance": [
+       {
+        "field": "EMAIL",
+        "fragment": "directory#4:Actor:0",
+        "pointer": "line 6",
+        "source": "directory"
+       }
+      ],
+      "value": "j.okonkwo@northwind.example"
+     }
+    ],
+    "employee_id": [
+     {
+      "provenance": [
+       {
+        "field": "EMP_ID",
+        "fragment": "directory#4:Actor:0",
+        "pointer": "line 6",
+        "source": "directory"
+       }
+      ],
+      "value": "E-0042"
+     }
+    ],
+    "last_seen": [
+     {
+      "provenance": [
+       {
+        "field": "t",
+        "fragment": "activity#7:Actor:1",
+        "pointer": "line 8",
+        "source": "activity"
+       }
+      ],
+      "value": "2026-10-16T09:02:00Z"
+     }
+    ],
+    "name": [
+     {
+      "provenance": [
+       {
+        "field": "FULL_NAME",
+        "fragment": "directory#4:Actor:0",
+        "pointer": "line 6",
+        "source": "directory"
+       }
+      ],
+      "value": "Jane Okonkwo"
+     }
+    ],
+    "role": [
+     {
+      "provenance": [
+       {
+        "field": "ROLE",
+        "fragment": "directory#4:Actor:0",
+        "pointer": "line 6",
+        "source": "directory"
+       }
+      ],
+      "value": "Research Engineer"
+     }
+    ],
+    "shift": [
+     {
+      "provenance": [
+       {
+        "field": "SHIFT",
+        "fragment": "directory#4:Actor:0",
+        "pointer": "line 6",
+        "source": "directory"
+       }
+      ],
+      "value": "day"
+     }
+    ],
+    "started": [
+     {
+      "provenance": [
+       {
+        "field": "START_DATE",
+        "fragment": "directory#4:Actor:0",
+        "pointer": "line 6",
+        "source": "directory"
+       }
+      ],
+      "value": "2020-05-12"
+     }
+    ]
+   },
+   "sources": [
+    "activity",
+    "directory"
+   ],
+   "title": "Jane Okonkwo",
+   "type": "Actor"
+  },
+  "advisory#1:Actor:11": {
+   "conflicts": [],
+   "fragments": [
+    "advisory#1:Actor:11"
+   ],
+   "props": {
+    "name": [
+     {
+      "provenance": [
+       {
+        "field": "subject",
+        "fragment": "advisory#1:Actor:11",
+        "pointer": "line 4",
+        "source": "advisory"
+       }
+      ],
+      "value": "Marcus Vayle"
+     }
+    ]
+   },
+   "sources": [
+    "advisory"
+   ],
+   "title": "Marcus Vayle",
+   "type": "Actor"
+  },
+  "advisory#2:Service:10": {
+   "conflicts": [],
+   "fragments": [
+    "advisory#2:Service:10"
+   ],
+   "props": {
+    "id": [
+     {
+      "provenance": [
+       {
+        "field": "subject",
+        "fragment": "advisory#2:Service:10",
+        "pointer": "line 5",
+        "source": "advisory"
+       }
+      ],
+      "value": "svc-mail"
+     }
+    ]
+   },
+   "sources": [
+    "advisory"
+   ],
+   "title": null,
+   "type": "Service"
+  },
+  "change#0:Ticket:5": {
+   "conflicts": [],
+   "fragments": [
+    "change#0:Ticket:5"
+   ],
+   "props": {
+    "id": [
+     {
+      "provenance": [
+       {
+        "field": "@id",
+        "fragment": "change#0:Ticket:5",
+        "pointer": "/servicedesk/ticket[1]",
+        "source": "change"
+       }
+      ],
+      "value": "CH-4471"
+     }
+    ],
+    "kind": [
+     {
+      "provenance": [
+       {
+        "field": "@type",
+        "fragment": "change#0:Ticket:5",
+        "pointer": "/servicedesk/ticket[1]",
+        "source": "change"
+       }
+      ],
+      "value": "change"
+     }
+    ],
+    "priority": [
+     {
+      "provenance": [
+       {
+        "field": "@priority",
+        "fragment": "change#0:Ticket:5",
+        "pointer": "/servicedesk/ticket[1]",
+        "source": "change"
+       }
+      ],
+      "value": "P3"
+     }
+    ],
+    "risk": [
+     {
+      "provenance": [
+       {
+        "field": "risk",
+        "fragment": "change#0:Ticket:5",
+        "pointer": "/servicedesk/ticket[1]",
+        "source": "change"
+       }
+      ],
+      "value": "low"
+     }
+    ],
+    "status": [
+     {
+      "provenance": [
+       {
+        "field": "status",
+        "fragment": "change#0:Ticket:5",
+        "pointer": "/servicedesk/ticket[1]",
+        "source": "change"
+       }
+      ],
+      "value": "approved"
+     }
+    ],
+    "summary": [
+     {
+      "provenance": [
+       {
+        "field": "summary",
+        "fragment": "change#0:Ticket:5",
+        "pointer": "/servicedesk/ticket[1]",
+        "source": "change"
+       }
+      ],
+      "value": "Ledger config v42: rotate FX client endpoint"
+     }
+    ],
+    "window_end": [
+     {
+      "provenance": [
+       {
+        "field": "window.@end",
+        "fragment": "change#0:Ticket:5",
+        "pointer": "/servicedesk/ticket[1]",
+        "source": "change"
+       }
+      ],
+      "value": "2026-10-16T03:00:00Z"
+     }
+    ],
+    "window_start": [
+     {
+      "provenance": [
+       {
+        "field": "window.@start",
+        "fragment": "change#0:Ticket:5",
+        "pointer": "/servicedesk/ticket[1]",
+        "source": "change"
+       }
+      ],
+      "value": "2026-10-16T01:30:00Z"
+     }
+    ]
+   },
+   "sources": [
+    "change"
+   ],
+   "title": "Ledger config v42: rotate FX client endpoint",
+   "type": "Ticket"
+  },
+  "change#1:Ticket:5": {
+   "conflicts": [],
+   "fragments": [
+    "change#1:Ticket:5"
+   ],
+   "props": {
+    "id": [
+     {
+      "provenance": [
+       {
+        "field": "@id",
+        "fragment": "change#1:Ticket:5",
+        "pointer": "/servicedesk/ticket[2]",
+        "source": "change"
+       }
+      ],
+      "value": "INC-9001"
+     }
+    ],
+    "kind": [
+     {
+      "provenance": [
+       {
+        "field": "@type",
+        "fragment": "change#1:Ticket:5",
+        "pointer": "/servicedesk/ticket[2]",
+        "source": "change"
+       }
+      ],
+      "value": "incident"
+     }
+    ],
+    "priority": [
+     {
+      "provenance": [
+       {
+        "field": "@priority",
+        "fragment": "change#1:Ticket:5",
+        "pointer": "/servicedesk/ticket[2]",
+        "source": "change"
+       }
+      ],
+      "value": "P1"
+     }
+    ],
+    "status": [
+     {
+      "provenance": [
+       {
+        "field": "status",
+        "fragment": "change#1:Ticket:5",
+        "pointer": "/servicedesk/ticket[2]",
+        "source": "change"
+       }
+      ],
+      "value": "resolved"
+     }
+    ],
+    "summary": [
+     {
+      "provenance": [
+       {
+        "field": "summary",
+        "fragment": "change#1:Ticket:5",
+        "pointer": "/servicedesk/ticket[2]",
+        "source": "change"
+       }
+      ],
+      "value": "Ledger API 5xx and upstream timeouts"
+     }
+    ]
+   },
+   "sources": [
+    "change"
+   ],
+   "title": "Ledger API 5xx and upstream timeouts",
+   "type": "Ticket"
+  },
+  "change#2:Service:6": {
+   "conflicts": [],
+   "fragments": [
+    "metrics#12:Service:9",
+    "metrics#13:Service:9",
+    "metrics#14:Service:9",
+    "metrics#15:Service:9",
+    "metrics#16:Service:9",
+    "metrics#17:Service:9",
+    "change#2:Service:6",
+    "flow#0:Service:4",
+    "flow#2:Service:4",
+    "flow#4:Service:4"
+   ],
+   "props": {
+    "env": [
+     {
+      "provenance": [
+       {
+        "field": "dst.env",
+        "fragment": "flow#0:Service:4",
+        "pointer": "data.flows[0]",
+        "source": "flow"
+       },
+       {
+        "field": "dst.env",
+        "fragment": "flow#2:Service:4",
+        "pointer": "data.flows[2]",
+        "source": "flow"
+       },
+       {
+        "field": "dst.env",
+        "fragment": "flow#4:Service:4",
+        "pointer": "data.flows[4]",
+        "source": "flow"
+       }
+      ],
+      "value": "prod"
+     }
+    ],
+    "host": [
+     {
+      "provenance": [
+       {
+        "field": "dst.host",
+        "fragment": "flow#0:Service:4",
+        "pointer": "data.flows[0]",
+        "source": "flow"
+       },
+       {
+        "field": "dst.host",
+        "fragment": "flow#2:Service:4",
+        "pointer": "data.flows[2]",
+        "source": "flow"
+       },
+       {
+        "field": "dst.host",
+        "fragment": "flow#4:Service:4",
+        "pointer": "data.flows[4]",
+        "source": "flow"
+       }
+      ],
+      "value": "fx.prod.internal"
+     }
+    ],
+    "id": [
+     {
+      "provenance": [
+       {
+        "field": "device",
+        "fragment": "metrics#12:Service:9",
+        "pointer": "rows[12]",
+        "source": "metrics"
+       },
+       {
+        "field": "device",
+        "fragment": "metrics#13:Service:9",
+        "pointer": "rows[13]",
+        "source": "metrics"
+       },
+       {
+        "field": "device",
+        "fragment": "metrics#14:Service:9",
+        "pointer": "rows[14]",
+        "source": "metrics"
+       },
+       {
+        "field": "device",
+        "fragment": "metrics#15:Service:9",
+        "pointer": "rows[15]",
+        "source": "metrics"
+       },
+       {
+        "field": "device",
+        "fragment": "metrics#16:Service:9",
+        "pointer": "rows[16]",
+        "source": "metrics"
+       },
+       {
+        "field": "device",
+        "fragment": "metrics#17:Service:9",
+        "pointer": "rows[17]",
+        "source": "metrics"
+       },
+       {
+        "field": "ci",
+        "fragment": "change#2:Service:6",
+        "pointer": "/servicedesk/ticket[3]",
+        "source": "change"
+       },
+       {
+        "field": "dst.service",
+        "fragment": "flow#0:Service:4",
+        "pointer": "data.flows[0]",
+        "source": "flow"
+       },
+       {
+        "field": "dst.service",
+        "fragment": "flow#2:Service:4",
+        "pointer": "data.flows[2]",
+        "source": "flow"
+       },
+       {
+        "field": "dst.service",
+        "fragment": "flow#4:Service:4",
+        "pointer": "data.flows[4]",
+        "source": "flow"
+       }
+      ],
+      "value": "svc-fx"
+     }
+    ],
+    "ip": [
+     {
+      "provenance": [
+       {
+        "field": "dst.ip",
+        "fragment": "flow#0:Service:4",
+        "pointer": "data.flows[0]",
+        "source": "flow"
+       },
+       {
+        "field": "dst.ip",
+        "fragment": "flow#2:Service:4",
+        "pointer": "data.flows[2]",
+        "source": "flow"
+       },
+       {
+        "field": "dst.ip",
+        "fragment": "flow#4:Service:4",
+        "pointer": "data.flows[4]",
+        "source": "flow"
+       }
+      ],
+      "value": "10.4.7.9"
+     }
+    ],
+    "name": [
+     {
+      "provenance": [
+       {
+        "field": "ci.@name",
+        "fragment": "change#2:Service:6",
+        "pointer": "/servicedesk/ticket[3]",
+        "source": "change"
+       }
+      ],
+      "value": "FX Rates Service"
+     }
+    ]
+   },
+   "sources": [
+    "metrics",
+    "change",
+    "flow"
+   ],
+   "title": "FX Rates Service",
+   "type": "Service"
+  },
+  "change#2:Ticket:5": {
+   "conflicts": [],
+   "fragments": [
+    "change#2:Ticket:5"
+   ],
+   "props": {
+    "id": [
+     {
+      "provenance": [
+       {
+        "field": "@id",
+        "fragment": "change#2:Ticket:5",
+        "pointer": "/servicedesk/ticket[3]",
+        "source": "change"
+       }
+      ],
+      "value": "CH-4460"
+     }
+    ],
+    "kind": [
+     {
+      "provenance": [
+       {
+        "field": "@type",
+        "fragment": "change#2:Ticket:5",
+        "pointer": "/servicedesk/ticket[3]",
+        "source": "change"
+       }
+      ],
+      "value": "change"
+     }
+    ],
+    "priority": [
+     {
+      "provenance": [
+       {
+        "field": "@priority",
+        "fragment": "change#2:Ticket:5",
+        "pointer": "/servicedesk/ticket[3]",
+        "source": "change"
+       }
+      ],
+      "value": "P4"
+     }
+    ],
+    "risk": [
+     {
+      "provenance": [
+       {
+        "field": "risk",
+        "fragment": "change#2:Ticket:5",
+        "pointer": "/servicedesk/ticket[3]",
+        "source": "change"
+       }
+      ],
+      "value": "low"
+     }
+    ],
+    "status": [
+     {
+      "provenance": [
+       {
+        "field": "status",
+        "fragment": "change#2:Ticket:5",
+        "pointer": "/servicedesk/ticket[3]",
+        "source": "change"
+       }
+      ],
+      "value": "completed"
+     }
+    ],
+    "summary": [
+     {
+      "provenance": [
+       {
+        "field": "summary",
+        "fragment": "change#2:Ticket:5",
+        "pointer": "/servicedesk/ticket[3]",
+        "source": "change"
+       }
+      ],
+      "value": "FX service TLS certificate renewal"
+     }
+    ],
+    "window_end": [
+     {
+      "provenance": [
+       {
+        "field": "window.@end",
+        "fragment": "change#2:Ticket:5",
+        "pointer": "/servicedesk/ticket[3]",
+        "source": "change"
+       }
+      ],
+      "value": "2026-10-14T11:00:00Z"
+     }
+    ],
+    "window_start": [
+     {
+      "provenance": [
+       {
+        "field": "window.@start",
+        "fragment": "change#2:Ticket:5",
+        "pointer": "/servicedesk/ticket[3]",
+        "source": "change"
+       }
+      ],
+      "value": "2026-10-14T10:00:00Z"
+     }
+    ]
+   },
+   "sources": [
+    "change"
+   ],
+   "title": "FX service TLS certificate renewal",
+   "type": "Ticket"
+  },
+  "flow#1:Service:4": {
+   "conflicts": [],
+   "fragments": [
+    "flow#1:Service:4",
+    "flow#3:Service:4"
+   ],
+   "props": {
+    "env": [
+     {
+      "provenance": [
+       {
+        "field": "dst.env",
+        "fragment": "flow#1:Service:4",
+        "pointer": "data.flows[1]",
+        "source": "flow"
+       },
+       {
+        "field": "dst.env",
+        "fragment": "flow#3:Service:4",
+        "pointer": "data.flows[3]",
+        "source": "flow"
+       }
+      ],
+      "value": "staging"
+     }
+    ],
+    "host": [
+     {
+      "provenance": [
+       {
+        "field": "dst.host",
+        "fragment": "flow#1:Service:4",
+        "pointer": "data.flows[1]",
+        "source": "flow"
+       },
+       {
+        "field": "dst.host",
+        "fragment": "flow#3:Service:4",
+        "pointer": "data.flows[3]",
+        "source": "flow"
+       }
+      ],
+      "value": "fx.staging.internal"
+     }
+    ],
+    "id": [
+     {
+      "provenance": [
+       {
+        "field": "dst.service",
+        "fragment": "flow#1:Service:4",
+        "pointer": "data.flows[1]",
+        "source": "flow"
+       },
+       {
+        "field": "dst.service",
+        "fragment": "flow#3:Service:4",
+        "pointer": "data.flows[3]",
+        "source": "flow"
+       }
+      ],
+      "value": "fx-staging"
+     }
+    ],
+    "ip": [
+     {
+      "provenance": [
+       {
+        "field": "dst.ip",
+        "fragment": "flow#1:Service:4",
+        "pointer": "data.flows[1]",
+        "source": "flow"
+       },
+       {
+        "field": "dst.ip",
+        "fragment": "flow#3:Service:4",
+        "pointer": "data.flows[3]",
+        "source": "flow"
+       }
+      ],
+      "value": "10.9.7.9"
+     }
+    ]
+   },
+   "sources": [
+    "flow"
+   ],
+   "title": "fx.staging.internal",
+   "type": "Service"
+  },
+  "flow#2:Service:3": {
+   "conflicts": [],
+   "fragments": [
+    "flow#2:Service:3"
+   ],
+   "props": {
+    "env": [
+     {
+      "provenance": [
+       {
+        "field": "src.env",
+        "fragment": "flow#2:Service:3",
+        "pointer": "data.flows[2]",
+        "source": "flow"
+       }
+      ],
+      "value": "prod"
+     }
+    ],
+    "id": [
+     {
+      "provenance": [
+       {
+        "field": "src.service",
+        "fragment": "flow#2:Service:3",
+        "pointer": "data.flows[2]",
+        "source": "flow"
+       }
+      ],
+      "value": "svc-billing"
+     }
+    ],
+    "ip": [
+     {
+      "provenance": [
+       {
+        "field": "src.ip",
+        "fragment": "flow#2:Service:3",
+        "pointer": "data.flows[2]",
+        "source": "flow"
+       }
+      ],
+      "value": "10.4.2.40"
+     }
+    ]
+   },
+   "sources": [
+    "flow"
+   ],
+   "title": null,
+   "type": "Service"
+  }
+ },
+ "proposals": [
+  {
+   "a": {
+    "cluster": "activity#2:Actor:1",
+    "fragment": "directory#0:Actor:0",
+    "property": "name",
+    "source": "directory",
+    "value": "Marcus Vale"
+   },
+   "b": {
+    "cluster": "advisory#1:Actor:11",
+    "fragment": "advisory#1:Actor:11",
+    "property": "name",
+    "source": "advisory",
+    "value": "Marcus Vayle"
+   },
+   "conflict": [],
+   "id": "advisory#1:Actor:11|directory#0:Actor:0",
+   "score": 0.957,
+   "type": "Actor"
+  }
+ ]
+}

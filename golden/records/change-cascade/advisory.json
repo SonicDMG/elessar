@@ -1,0 +1,44 @@
+{
+ "records": [
+  {
+   "data": {
+    "basis": "vendor bulletin VB-2210",
+    "confidence": "0.74",
+    "record": "AD-0007",
+    "subject": "svc-ledger",
+    "title": "FX client v3: fx.endpoint falls back to staging when region key is absent",
+    "type": "SERVICE"
+   },
+   "excerpt": "record=AD-0007; type=SERVICE; subject=svc-ledger; title=FX client v3: fx.endpoint falls back to staging when region key is absent; confidence=0.74; basis=vendor bulletin VB-2210",
+   "index": 0,
+   "pointer": "line 3"
+  },
+  {
+   "data": {
+    "basis": "partner SOC tip, unverified",
+    "confidence": "0.41",
+    "record": "AD-0011",
+    "subject": "Marcus Vayle",
+    "title": "Credential reuse observed on partner SSO",
+    "type": "PERSON"
+   },
+   "excerpt": "record=AD-0011; type=PERSON; subject=Marcus Vayle; title=Credential reuse observed on partner SSO; confidence=0.41; basis=partner SOC tip, unverified",
+   "index": 1,
+   "pointer": "line 4"
+  },
+  {
+   "data": {
+    "basis": "status page",
+    "confidence": "0.30",
+    "record": "AD-0013",
+    "subject": "svc-mail",
+    "title": "Outbound relay backlog",
+    "type": "SERVICE"
+   },
+   "excerpt": "record=AD-0013; type=SERVICE; subject=svc-mail; title=Outbound relay backlog; confidence=0.30; basis=status page",
+   "index": 2,
+   "pointer": "line 5"
+  }
+ ],
+ "skipped": []
+}

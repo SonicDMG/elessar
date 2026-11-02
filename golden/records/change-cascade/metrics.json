@@ -1,0 +1,221 @@
+{
+ "records": [
+  {
+   "data": {
+    "device": "svc-ledger",
+    "metric": "upstream_timeout_pct",
+    "ts": 1792114800,
+    "unit": "%",
+    "value": 0.2
+   },
+   "excerpt": "[1792114800, \"svc-ledger\", \"upstream_timeout_pct\", 0.2, \"%\"]",
+   "index": 0,
+   "pointer": "rows[0]"
+  },
+  {
+   "data": {
+    "device": "svc-ledger",
+    "metric": "upstream_timeout_pct",
+    "ts": 1792115400,
+    "unit": "%",
+    "value": 0.3
+   },
+   "excerpt": "[1792115400, \"svc-ledger\", \"upstream_timeout_pct\", 0.3, \"%\"]",
+   "index": 1,
+   "pointer": "rows[1]"
+  },
+  {
+   "data": {
+    "device": "svc-ledger",
+    "metric": "upstream_timeout_pct",
+    "ts": 1792116000,
+    "unit": "%",
+    "value": 37.8
+   },
+   "excerpt": "[1792116000, \"svc-ledger\", \"upstream_timeout_pct\", 37.8, \"%\"]",
+   "index": 2,
+   "pointer": "rows[2]"
+  },
+  {
+   "data": {
+    "device": "svc-ledger",
+    "metric": "upstream_timeout_pct",
+    "ts": 1792116300,
+    "unit": "%",
+    "value": 41.2
+   },
+   "excerpt": "[1792116300, \"svc-ledger\", \"upstream_timeout_pct\", 41.2, \"%\"]",
+   "index": 3,
+   "pointer": "rows[3]"
+  },
+  {
+   "data": {
+    "device": "svc-ledger",
+    "metric": "upstream_timeout_pct",
+    "ts": 1792116900,
+    "unit": "%",
+    "value": 39.9
+   },
+   "excerpt": "[1792116900, \"svc-ledger\", \"upstream_timeout_pct\", 39.9, \"%\"]",
+   "index": 4,
+   "pointer": "rows[4]"
+  },
+  {
+   "data": {
+    "device": "svc-ledger",
+    "metric": "upstream_timeout_pct",
+    "ts": 1792117500,
+    "unit": "%",
+    "value": 0.6
+   },
+   "excerpt": "[1792117500, \"svc-ledger\", \"upstream_timeout_pct\", 0.6, \"%\"]",
+   "index": 5,
+   "pointer": "rows[5]"
+  },
+  {
+   "data": {
+    "device": "svc-ledger",
+    "metric": "p99_ms",
+    "ts": 1792114800,
+    "unit": "ms",
+    "value": 118
+   },
+   "excerpt": "[1792114800, \"svc-ledger\", \"p99_ms\", 118, \"ms\"]",
+   "index": 6,
+   "pointer": "rows[6]"
+  },
+  {
+   "data": {
+    "device": "svc-ledger",
+    "metric": "p99_ms",
+    "ts": 1792115400,
+    "unit": "ms",
+    "value": 121
+   },
+   "excerpt": "[1792115400, \"svc-ledger\", \"p99_ms\", 121, \"ms\"]",
+   "index": 7,
+   "pointer": "rows[7]"
+  },
+  {
+   "data": {
+    "device": "svc-ledger",
+    "metric": "p99_ms",
+    "ts": 1792116000,
+    "unit": "ms",
+    "value": 3980
+   },
+   "excerpt": "[1792116000, \"svc-ledger\", \"p99_ms\", 3980, \"ms\"]",
+   "index": 8,
+   "pointer": "rows[8]"
+  },
+  {
+   "data": {
+    "device": "svc-ledger",
+    "metric": "p99_ms",
+    "ts": 1792116300,
+    "unit": "ms",
+    "value": 4210
+   },
+   "excerpt": "[1792116300, \"svc-ledger\", \"p99_ms\", 4210, \"ms\"]",
+   "index": 9,
+   "pointer": "rows[9]"
+  },
+  {
+   "data": {
+    "device": "svc-ledger",
+    "metric": "p99_ms",
+    "ts": 1792116900,
+    "unit": "ms",
+    "value": 4105
+   },
+   "excerpt": "[1792116900, \"svc-ledger\", \"p99_ms\", 4105, \"ms\"]",
+   "index": 10,
+   "pointer": "rows[10]"
+  },
+  {
+   "data": {
+    "device": "svc-ledger",
+    "metric": "p99_ms",
+    "ts": 1792117500,
+    "unit": "ms",
+    "value": 131
+   },
+   "excerpt": "[1792117500, \"svc-ledger\", \"p99_ms\", 131, \"ms\"]",
+   "index": 11,
+   "pointer": "rows[11]"
+  },
+  {
+   "data": {
+    "device": "svc-fx",
+    "metric": "p99_ms",
+    "ts": 1792114800,
+    "unit": "ms",
+    "value": 82
+   },
+   "excerpt": "[1792114800, \"svc-fx\", \"p99_ms\", 82, \"ms\"]",
+   "index": 12,
+   "pointer": "rows[12]"
+  },
+  {
+   "data": {
+    "device": "svc-fx",
+    "metric": "p99_ms",
+    "ts": 1792115400,
+    "unit": "ms",
+    "value": 85
+   },
+   "excerpt": "[1792115400, \"svc-fx\", \"p99_ms\", 85, \"ms\"]",
+   "index": 13,
+   "pointer": "rows[13]"
+  },
+  {
+   "data": {
+    "device": "svc-fx",
+    "metric": "p99_ms",
+    "ts": 1792116000,
+    "unit": "ms",
+    "value": 80
+   },
+   "excerpt": "[1792116000, \"svc-fx\", \"p99_ms\", 80, \"ms\"]",
+   "index": 14,
+   "pointer": "rows[14]"
+  },
+  {
+   "data": {
+    "device": "svc-fx",
+    "metric": "p99_ms",
+    "ts": 1792116300,
+    "unit": "ms",
+    "value": 84
+   },
+   "excerpt": "[1792116300, \"svc-fx\", \"p99_ms\", 84, \"ms\"]",
+   "index": 15,
+   "pointer": "rows[15]"
+  },
+  {
+   "data": {
+    "device": "svc-fx",
+    "metric": "p99_ms",
+    "ts": 1792116900,
+    "unit": "ms",
+    "value": 81
+   },
+   "excerpt": "[1792116900, \"svc-fx\", \"p99_ms\", 81, \"ms\"]",
+   "index": 16,
+   "pointer": "rows[16]"
+  },
+  {
+   "data": {
+    "device": "svc-fx",
+    "metric": "p99_ms",
+    "ts": 1792117500,
+    "unit": "ms",
+    "value": 83
+   },
+   "excerpt": "[1792117500, \"svc-fx\", \"p99_ms\", 83, \"ms\"]",
+   "index": 17,
+   "pointer": "rows[17]"
+  }
+ ],
+ "skipped": []
+}

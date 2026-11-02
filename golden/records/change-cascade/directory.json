@@ -1,0 +1,80 @@
+{
+ "records": [
+  {
+   "data": {
+    "BADGE_ID": "B-2093",
+    "DEPT": "Platform Eng",
+    "EMAIL": "M.Vale@northwind.example",
+    "EMP_ID": "E-0115",
+    "FULL_NAME": "Vale, Marcus",
+    "ROLE": "On-call SRE",
+    "SHIFT": "night",
+    "START_DATE": "04/11/2025"
+   },
+   "excerpt": "E-0115|Vale, Marcus|M.Vale@northwind.example|Platform Eng|On-call SRE|B-2093|night|04/11/2025",
+   "index": 0,
+   "pointer": "line 2"
+  },
+  {
+   "data": {
+    "BADGE_ID": "B-5540",
+    "DEPT": "Facilities",
+    "EMAIL": "d.reyes@northwind.example",
+    "EMP_ID": "E-0203",
+    "FULL_NAME": "Reyes, Dalia",
+    "ROLE": "Facilities Lead",
+    "SHIFT": "night",
+    "START_DATE": "17/02/2021"
+   },
+   "excerpt": "E-0203|Reyes, Dalia|d.reyes@northwind.example|Facilities|Facilities Lead|B-5540|night|17/02/2021",
+   "index": 1,
+   "pointer": "line 3"
+  },
+  {
+   "data": {
+    "BADGE_ID": "B-9004",
+    "DEPT": "Platform Eng",
+    "EMAIL": "T.Kwan@northwind.example",
+    "EMP_ID": "E-0311",
+    "FULL_NAME": "Kwan, Theo",
+    "ROLE": "Incident Commander",
+    "SHIFT": "day",
+    "START_DATE": "09/08/2022"
+   },
+   "excerpt": "E-0311|Kwan, Theo|T.Kwan@northwind.example|Platform Eng|Incident Commander|B-9004|day|09/08/2022",
+   "index": 2,
+   "pointer": "line 4"
+  },
+  {
+   "data": {
+    "BADGE_ID": "B-3127",
+    "DEPT": "Data",
+    "EMAIL": "n.idris@northwind.example",
+    "EMP_ID": "E-0409",
+    "FULL_NAME": "Idris, Nour",
+    "ROLE": "Data Steward",
+    "SHIFT": "day",
+    "START_DATE": "30/01/2024"
+   },
+   "excerpt": "E-0409|Idris, Nour|n.idris@northwind.example|Data|Data Steward|B-3127|day|30/01/2024",
+   "index": 3,
+   "pointer": "line 5"
+  },
+  {
+   "data": {
+    "BADGE_ID": "B-7781",
+    "DEPT": "Research",
+    "EMAIL": "j.okonkwo@northwind.example",
+    "EMP_ID": "E-0042",
+    "FULL_NAME": "Okonkwo, Jane",
+    "ROLE": "Research Engineer",
+    "SHIFT": "day",
+    "START_DATE": "12/05/2020"
+   },
+   "excerpt": "E-0042|Okonkwo, Jane|j.okonkwo@northwind.example|Research|Research Engineer|B-7781|day|12/05/2020",
+   "index": 4,
+   "pointer": "line 6"
+  }
+ ],
+ "skipped": []
+}

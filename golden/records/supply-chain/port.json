@@ -1,0 +1,31 @@
+{
+ "records": [
+  {
+   "data": {
+    "@code": "CNSHA",
+    "@name": "Port of Shanghai",
+    "congestion.@berth_wait_hrs": "9",
+    "congestion.@index": "1.04",
+    "congestion.@trend": "stable",
+    "customs.@backlog_hrs": "6"
+   },
+   "excerpt": "<port code=\"CNSHA\" name=\"Port of Shanghai\">\n    <congestion index=\"1.04\" berth_wait_hrs=\"9\" trend=\"stable\" />\n    <customs backlog_hrs=\"6\" />\n  </port>",
+   "index": 0,
+   "pointer": "/bulletin/port[1]"
+  },
+  {
+   "data": {
+    "@code": "KRPUS",
+    "@name": "Port of Busan",
+    "congestion.@berth_wait_hrs": "31",
+    "congestion.@index": "1.31",
+    "congestion.@trend": "rising",
+    "customs.@backlog_hrs": "4"
+   },
+   "excerpt": "<port code=\"KRPUS\" name=\"Port of Busan\">\n    <congestion index=\"1.31\" berth_wait_hrs=\"31\" trend=\"rising\" />\n    <customs backlog_hrs=\"4\" />\n  </port>",
+   "index": 1,
+   "pointer": "/bulletin/port[2]"
+  }
+ ],
+ "skipped": []
+}

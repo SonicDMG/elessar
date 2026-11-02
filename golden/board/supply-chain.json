@@ -1,0 +1,439 @@
+{
+ "events": 10,
+ "links": [
+  {
+   "a": "container",
+   "b": "kestrel",
+   "weight": 3
+  },
+  {
+   "a": "cnsha",
+   "b": "container",
+   "weight": 2
+  },
+  {
+   "a": "cnsha",
+   "b": "kestrel",
+   "weight": 2
+  }
+ ],
+ "merges_committed": [
+  "shipments#0:Supplier:0|suppliers#0:Supplier:5",
+  "shipments#1:Supplier:0|suppliers#1:Supplier:5"
+ ],
+ "nodes": {
+  "board": {
+   "breakdown": {
+    "final": 0.69032,
+    "inhibit": [],
+    "inhibit_factor": 1.0,
+    "leak": 0.02,
+    "raw": 0.69032,
+    "support": [
+     {
+      "from": "stock-critical",
+      "p": 0.855,
+      "term": 0.684,
+      "w": 0.8
+     }
+    ],
+    "support_p": 0.69032
+   },
+   "p": 0.69032,
+   "present": true,
+   "status": "resolved"
+  },
+  "cnsha": {
+   "breakdown": {
+    "final": 0.8133766400000001,
+    "inhibit": [],
+    "inhibit_factor": 1.0,
+    "leak": 0.02,
+    "raw": 0.8133766400000001,
+    "support": [
+     {
+      "from": "container-hold",
+      "p": 0.81,
+      "term": 0.6480000000000001,
+      "w": 0.8
+     },
+     {
+      "from": "port-normal",
+      "p": 0.765,
+      "term": 0.45899999999999996,
+      "w": 0.6
+     }
+    ],
+    "support_p": 0.8133766400000001
+   },
+   "p": 0.8133766400000001,
+   "present": true,
+   "status": "resolved"
+  },
+  "congestion": {
+   "breakdown": {
+    "divisor": 1.0310634430145575,
+    "final": 0.07261998313480109,
+    "inhibit": [
+     {
+      "factor": 0.25795,
+      "from": "port-normal",
+      "p": 0.765,
+      "w": 0.97
+     },
+     {
+      "factor": 0.3879999999999999,
+      "from": "doc-reason",
+      "p": 0.765,
+      "w": 0.8
+     }
+    ],
+    "inhibit_factor": 0.10008459999999998,
+    "leak": 0.25,
+    "raw": 0.07487580984262711,
+    "support": [
+     {
+      "from": "cnsha",
+      "p": 0.8133766400000001,
+      "term": 0.40668832000000005,
+      "w": 0.5
+     },
+     {
+      "from": "container",
+      "p": 0.8133766400000001,
+      "term": 0.16267532800000004,
+      "w": 0.2
+     },
+     {
+      "from": "container-hold",
+      "p": 0.81,
+      "term": 0.32400000000000007,
+      "w": 0.4
+     }
+    ],
+    "support_p": 0.7481251845201672
+   },
+   "p": 0.07261998313480109,
+   "present": false,
+   "status": "captured"
+  },
+  "container": {
+   "breakdown": {
+    "final": 0.8133766400000001,
+    "inhibit": [],
+    "inhibit_factor": 1.0,
+    "leak": 0.02,
+    "raw": 0.8133766400000001,
+    "support": [
+     {
+      "from": "container-hold",
+      "p": 0.81,
+      "term": 0.6480000000000001,
+      "w": 0.8
+     },
+     {
+      "from": "doc-reason",
+      "p": 0.765,
+      "term": 0.45899999999999996,
+      "w": 0.6
+     }
+    ],
+    "support_p": 0.8133766400000001
+   },
+   "p": 0.8133766400000001,
+   "present": true,
+   "status": "resolved"
+  },
+  "container-hold": {
+   "breakdown": null,
+   "p": 0.81,
+   "present": true,
+   "status": "firing"
+  },
+  "doc-reason": {
+   "breakdown": null,
+   "p": 0.765,
+   "present": true,
+   "status": "firing"
+  },
+  "documents": {
+   "breakdown": {
+    "divisor": 1.0310634430145575,
+    "final": 0.8559319711364437,
+    "inhibit": [],
+    "inhibit_factor": 1.0,
+    "leak": 0.12,
+    "raw": 0.8825201651461786,
+    "support": [
+     {
+      "from": "container",
+      "p": 0.8133766400000001,
+      "term": 0.36601948800000006,
+      "w": 0.45
+     },
+     {
+      "from": "container-hold",
+      "p": 0.81,
+      "term": 0.32400000000000007,
+      "w": 0.4
+     },
+     {
+      "from": "doc-reason",
+      "p": 0.765,
+      "term": 0.6885,
+      "w": 0.9
+     }
+    ],
+    "support_p": 0.8825201651461786
+   },
+   "p": 0.8559319711364437,
+   "present": true,
+   "status": "crownable"
+  },
+  "kestrel": {
+   "breakdown": {
+    "final": 0.41690000000000005,
+    "inhibit": [],
+    "inhibit_factor": 1.0,
+    "leak": 0.02,
+    "raw": 0.41690000000000005,
+    "support": [
+     {
+      "from": "supplier-on-time",
+      "p": 0.81,
+      "term": 0.405,
+      "w": 0.5
+     }
+    ],
+    "support_p": 0.41690000000000005
+   },
+   "p": 0.41690000000000005,
+   "present": true,
+   "status": "resolved"
+  },
+  "port-normal": {
+   "breakdown": null,
+   "p": 0.765,
+   "present": true,
+   "status": "firing"
+  },
+  "shortfall": {
+   "breakdown": {
+    "divisor": 1.0310634430145575,
+    "final": 0.07144804572875516,
+    "inhibit": [
+     {
+      "factor": 0.23050000000000004,
+      "from": "supplier-on-time",
+      "p": 0.81,
+      "w": 0.95
+     },
+     {
+      "factor": 0.541,
+      "from": "doc-reason",
+      "p": 0.765,
+      "w": 0.6
+     }
+    ],
+    "inhibit_factor": 0.12470050000000003,
+    "leak": 0.25,
+    "raw": 0.07366746802575184,
+    "support": [
+     {
+      "from": "kestrel",
+      "p": 0.41690000000000005,
+      "term": 0.20845000000000002,
+      "w": 0.5
+     },
+     {
+      "from": "board",
+      "p": 0.69032,
+      "term": 0.31064400000000003,
+      "w": 0.45
+     }
+    ],
+    "support_p": 0.59075519365
+   },
+   "p": 0.07144804572875516,
+   "present": false,
+   "status": "captured"
+  },
+  "stock-critical": {
+   "breakdown": null,
+   "p": 0.855,
+   "present": true,
+   "status": "firing"
+  },
+  "supplier-on-time": {
+   "breakdown": null,
+   "p": 0.81,
+   "present": true,
+   "status": "firing"
+  }
+ },
+ "signals": {
+  "container-hold": {
+   "activation": 0.81,
+   "confidence": 0.9,
+   "hits": [
+    [
+     {
+      "pointer": "line 4",
+      "source": "shipments"
+     }
+    ]
+   ],
+   "links": [
+    {
+     "hits": 1,
+     "participant": "cnsha",
+     "w": 0.8
+    },
+    {
+     "hits": 1,
+     "participant": "container",
+     "w": 0.8
+    }
+   ],
+   "status": "firing",
+   "strength": 0.9
+  },
+  "doc-reason": {
+   "activation": 0.765,
+   "confidence": 0.9,
+   "hits": [
+    [
+     {
+      "pointer": "line 4",
+      "source": "shipments"
+     }
+    ]
+   ],
+   "links": [
+    {
+     "hits": 1,
+     "participant": "container",
+     "w": 0.6
+    }
+   ],
+   "status": "firing",
+   "strength": 0.85
+  },
+  "port-normal": {
+   "activation": 0.765,
+   "confidence": 0.85,
+   "hits": [
+    [
+     {
+      "pointer": "/bulletin/port[1]",
+      "source": "port"
+     }
+    ]
+   ],
+   "links": [
+    {
+     "hits": 1,
+     "participant": "cnsha",
+     "w": 0.6
+    }
+   ],
+   "status": "firing",
+   "strength": 0.9
+  },
+  "stock-critical": {
+   "activation": 0.855,
+   "confidence": 0.95,
+   "hits": [
+    [
+     {
+      "pointer": "rows[0]",
+      "source": "inventory"
+     }
+    ]
+   ],
+   "links": [
+    {
+     "hits": 1,
+     "participant": "board",
+     "w": 0.8
+    }
+   ],
+   "status": "firing",
+   "strength": 0.9
+  },
+  "supplier-on-time": {
+   "activation": 0.81,
+   "confidence": 0.9,
+   "hits": [
+    [
+     {
+      "pointer": "line 2",
+      "source": "suppliers"
+     },
+     {
+      "pointer": "line 1",
+      "source": "shipments"
+     }
+    ]
+   ],
+   "links": [
+    {
+     "hits": 1,
+     "participant": "kestrel",
+     "w": 0.5
+    }
+   ],
+   "status": "firing",
+   "strength": 0.9
+  }
+ },
+ "stages": [
+  {
+   "container-hold": 0.81,
+   "doc-reason": 0.765,
+   "port-normal": 0.765,
+   "stock-critical": 0.855,
+   "supplier-on-time": 0.81
+  },
+  {
+   "board": 0.69032,
+   "cnsha": 0.8133766400000001,
+   "container": 0.8133766400000001,
+   "container-hold": 0.81,
+   "doc-reason": 0.765,
+   "kestrel": 0.41690000000000005,
+   "port-normal": 0.765,
+   "stock-critical": 0.855,
+   "supplier-on-time": 0.81
+  },
+  {
+   "board": 0.69032,
+   "cnsha": 0.8133766400000001,
+   "congestion": 0.07487580984262711,
+   "container": 0.8133766400000001,
+   "container-hold": 0.81,
+   "doc-reason": 0.765,
+   "documents": 0.8825201651461786,
+   "kestrel": 0.41690000000000005,
+   "port-normal": 0.765,
+   "shortfall": 0.07366746802575184,
+   "stock-critical": 0.855,
+   "supplier-on-time": 0.81
+  },
+  {
+   "board": 0.69032,
+   "cnsha": 0.8133766400000001,
+   "congestion": 0.07261998313480109,
+   "container": 0.8133766400000001,
+   "container-hold": 0.81,
+   "doc-reason": 0.765,
+   "documents": 0.8559319711364437,
+   "kestrel": 0.41690000000000005,
+   "port-normal": 0.765,
+   "shortfall": 0.07144804572875516,
+   "stock-critical": 0.855,
+   "supplier-on-time": 0.81
+  }
+ ],
+ "undated": 3
+}

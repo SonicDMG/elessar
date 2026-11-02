@@ -1,0 +1,806 @@
+{
+ "events": 42,
+ "links": [
+  {
+   "a": "fx-staging",
+   "b": "svc-ledger",
+   "weight": 2
+  },
+  {
+   "a": "kwan",
+   "b": "svc-ledger",
+   "weight": 2
+  },
+  {
+   "a": "svc-fx",
+   "b": "svc-ledger",
+   "weight": 2
+  },
+  {
+   "a": "svc-ledger",
+   "b": "vale",
+   "weight": 2
+  },
+  {
+   "a": "ch-4471",
+   "b": "svc-ledger",
+   "weight": 1
+  },
+  {
+   "a": "ch-4471",
+   "b": "vale",
+   "weight": 1
+  }
+ ],
+ "merges_committed": [
+  "advisory#1:Actor:11|directory#0:Actor:0"
+ ],
+ "nodes": {
+  "approved-change": {
+   "breakdown": null,
+   "p": 0.855,
+   "present": true,
+   "status": "firing"
+  },
+  "authorized-implementer": {
+   "breakdown": null,
+   "p": 0.81,
+   "present": true,
+   "status": "firing"
+  },
+  "ch-4471": {
+   "breakdown": {
+    "final": 0.52274,
+    "inhibit": [],
+    "inhibit_factor": 1.0,
+    "leak": 0.02,
+    "raw": 0.52274,
+    "support": [
+     {
+      "from": "approved-change",
+      "p": 0.855,
+      "term": 0.513,
+      "w": 0.6
+     }
+    ],
+    "support_p": 0.52274
+   },
+   "p": 0.52274,
+   "present": true,
+   "status": "resolved"
+  },
+  "config-advisory": {
+   "breakdown": null,
+   "p": 0.592,
+   "present": true,
+   "status": "firing"
+  },
+  "dependency": {
+   "breakdown": {
+    "divisor": 1.0483071748387007,
+    "final": 0.03123262347545761,
+    "inhibit": [
+     {
+      "factor": 0.21429999999999993,
+      "from": "fx-healthy",
+      "p": 0.81,
+      "w": 0.97
+     },
+     {
+      "factor": 0.27325,
+      "from": "prod-to-staging",
+      "p": 0.855,
+      "w": 0.85
+     },
+     {
+      "factor": 0.7632,
+      "from": "config-advisory",
+      "p": 0.592,
+      "w": 0.4
+     }
+    ],
+    "inhibit_factor": 0.04469106491999999,
+    "leak": 0.2,
+    "raw": 0.03274138327835785,
+    "support": [
+     {
+      "from": "svc-ledger",
+      "p": 0.978234508150485,
+      "term": 0.24455862703762124,
+      "w": 0.25
+     },
+     {
+      "from": "svc-fx",
+      "p": 0.41690000000000005,
+      "term": 0.18760500000000002,
+      "w": 0.45
+     },
+     {
+      "from": "upstream-timeouts",
+      "p": 0.8280000000000001,
+      "term": 0.4554000000000001,
+      "w": 0.55
+     }
+    ],
+    "support_p": 0.7326158671082716
+   },
+   "p": 0.03123262347545761,
+   "present": false,
+   "status": "captured"
+  },
+  "fx-healthy": {
+   "breakdown": null,
+   "p": 0.81,
+   "present": true,
+   "status": "firing"
+  },
+  "fx-staging": {
+   "breakdown": {
+    "final": 0.69032,
+    "inhibit": [],
+    "inhibit_factor": 1.0,
+    "leak": 0.02,
+    "raw": 0.69032,
+    "support": [
+     {
+      "from": "prod-to-staging",
+      "p": 0.855,
+      "term": 0.684,
+      "w": 0.8
+     }
+    ],
+    "support_p": 0.69032
+   },
+   "p": 0.69032,
+   "present": true,
+   "status": "resolved"
+  },
+  "kwan": {
+   "breakdown": {
+    "final": 0.4433600000000001,
+    "inhibit": [],
+    "inhibit_factor": 1.0,
+    "leak": 0.02,
+    "raw": 0.4433600000000001,
+    "support": [
+     {
+      "from": "off-hours",
+      "p": 0.7200000000000001,
+      "term": 0.43200000000000005,
+      "w": 0.6
+     }
+    ],
+    "support_p": 0.4433600000000001
+   },
+   "p": 0.4433600000000001,
+   "present": true,
+   "status": "resolved"
+  },
+  "misconfig": {
+   "breakdown": {
+    "divisor": 1.0483071748387007,
+    "final": 0.8564107393266981,
+    "inhibit": [],
+    "inhibit_factor": 1.0,
+    "leak": 0.12,
+    "raw": 0.8977815226450938,
+    "support": [
+     {
+      "from": "svc-ledger",
+      "p": 0.978234508150485,
+      "term": 0.14673517622257273,
+      "w": 0.15
+     },
+     {
+      "from": "fx-staging",
+      "p": 0.69032,
+      "term": 0.17258,
+      "w": 0.25
+     },
+     {
+      "from": "ch-4471",
+      "p": 0.52274,
+      "term": 0.156822,
+      "w": 0.3
+     },
+     {
+      "from": "upstream-timeouts",
+      "p": 0.8280000000000001,
+      "term": 0.16560000000000002,
+      "w": 0.2
+     },
+     {
+      "from": "prod-to-staging",
+      "p": 0.855,
+      "term": 0.55575,
+      "w": 0.65
+     },
+     {
+      "from": "config-advisory",
+      "p": 0.592,
+      "term": 0.4736,
+      "w": 0.8
+     }
+    ],
+    "support_p": 0.8977815226450938
+   },
+   "p": 0.8564107393266981,
+   "present": true,
+   "status": "crownable"
+  },
+  "off-hours": {
+   "breakdown": null,
+   "p": 0.7200000000000001,
+   "present": true,
+   "status": "firing"
+  },
+  "person-advisory": {
+   "breakdown": null,
+   "p": 0.328,
+   "present": true,
+   "status": "firing"
+  },
+  "planned": {
+   "breakdown": {
+    "divisor": 1.0483071748387007,
+    "final": 0.06181406897518999,
+    "inhibit": [
+     {
+      "factor": 0.586,
+      "from": "upstream-timeouts",
+      "p": 0.8280000000000001,
+      "w": 0.5
+     },
+     {
+      "factor": 0.18775000000000008,
+      "from": "prod-to-staging",
+      "p": 0.855,
+      "w": 0.95
+     },
+     {
+      "factor": 0.704,
+      "from": "config-advisory",
+      "p": 0.592,
+      "w": 0.5
+     }
+    ],
+    "inhibit_factor": 0.07745513600000002,
+    "leak": 0.3,
+    "raw": 0.064800132012666,
+    "support": [
+     {
+      "from": "ch-4471",
+      "p": 0.52274,
+      "term": 0.26137,
+      "w": 0.5
+     },
+     {
+      "from": "approved-change",
+      "p": 0.855,
+      "term": 0.684,
+      "w": 0.8
+     }
+    ],
+    "support_p": 0.836615044
+   },
+   "p": 0.06181406897518999,
+   "present": false,
+   "status": "captured"
+  },
+  "prod-to-staging": {
+   "breakdown": null,
+   "p": 0.855,
+   "present": true,
+   "status": "firing"
+  },
+  "reyes": {
+   "breakdown": {
+    "final": 0.4433600000000001,
+    "inhibit": [],
+    "inhibit_factor": 1.0,
+    "leak": 0.02,
+    "raw": 0.4433600000000001,
+    "support": [
+     {
+      "from": "off-hours",
+      "p": 0.7200000000000001,
+      "term": 0.43200000000000005,
+      "w": 0.6
+     }
+    ],
+    "support_p": 0.4433600000000001
+   },
+   "p": 0.4433600000000001,
+   "present": true,
+   "status": "resolved"
+  },
+  "svc-fx": {
+   "breakdown": {
+    "final": 0.41690000000000005,
+    "inhibit": [],
+    "inhibit_factor": 1.0,
+    "leak": 0.02,
+    "raw": 0.41690000000000005,
+    "support": [
+     {
+      "from": "fx-healthy",
+      "p": 0.81,
+      "term": 0.405,
+      "w": 0.5
+     }
+    ],
+    "support_p": 0.41690000000000005
+   },
+   "p": 0.41690000000000005,
+   "present": true,
+   "status": "resolved"
+  },
+  "svc-ledger": {
+   "breakdown": {
+    "final": 0.978234508150485,
+    "inhibit": [],
+    "inhibit_factor": 1.0,
+    "leak": 0.02,
+    "raw": 0.978234508150485,
+    "support": [
+     {
+      "from": "upstream-timeouts",
+      "p": 0.8280000000000001,
+      "term": 0.6624000000000002,
+      "w": 0.8000000000000002
+     },
+     {
+      "from": "approved-change",
+      "p": 0.855,
+      "term": 0.513,
+      "w": 0.6
+     },
+     {
+      "from": "prod-to-staging",
+      "p": 0.855,
+      "term": 0.684,
+      "w": 0.8
+     },
+     {
+      "from": "fx-healthy",
+      "p": 0.81,
+      "term": 0.27,
+      "w": 0.3333333333333333
+     },
+     {
+      "from": "config-advisory",
+      "p": 0.592,
+      "term": 0.41439999999999994,
+      "w": 0.7
+     }
+    ],
+    "support_p": 0.978234508150485
+   },
+   "p": 0.978234508150485,
+   "present": true,
+   "status": "resolved"
+  },
+  "unsanctioned": {
+   "breakdown": {
+    "divisor": 1.0483071748387007,
+    "final": 0.05054256822265431,
+    "inhibit": [
+     {
+      "factor": 0.487,
+      "from": "approved-change",
+      "p": 0.855,
+      "w": 0.6
+     },
+     {
+      "factor": 0.7632,
+      "from": "config-advisory",
+      "p": 0.592,
+      "w": 0.4
+     },
+     {
+      "factor": 0.21429999999999993,
+      "from": "authorized-implementer",
+      "p": 0.81,
+      "w": 0.97
+     }
+    ],
+    "inhibit_factor": 0.07965068111999997,
+    "leak": 0.05,
+    "raw": 0.05298413690258303,
+    "support": [
+     {
+      "from": "vale",
+      "p": 0.87573849409216,
+      "term": 0.30650847293225597,
+      "w": 0.35
+     },
+     {
+      "from": "reyes",
+      "p": 0.4433600000000001,
+      "term": 0.155176,
+      "w": 0.35
+     },
+     {
+      "from": "kwan",
+      "p": 0.4433600000000001,
+      "term": 0.155176,
+      "w": 0.35
+     },
+     {
+      "from": "off-hours",
+      "p": 0.7200000000000001,
+      "term": 0.28800000000000003,
+      "w": 0.4
+     }
+    ],
+    "support_p": 0.6652063253892115
+   },
+   "p": 0.05054256822265431,
+   "present": false,
+   "status": "captured"
+  },
+  "upstream-timeouts": {
+   "breakdown": null,
+   "p": 0.8280000000000001,
+   "present": true,
+   "status": "firing"
+  },
+  "vale": {
+   "breakdown": {
+    "final": 0.87573849409216,
+    "inhibit": [],
+    "inhibit_factor": 1.0,
+    "leak": 0.02,
+    "raw": 0.87573849409216,
+    "support": [
+     {
+      "from": "off-hours",
+      "p": 0.7200000000000001,
+      "term": 0.43200000000000005,
+      "w": 0.6
+     },
+     {
+      "from": "approved-change",
+      "p": 0.855,
+      "term": 0.513,
+      "w": 0.6
+     },
+     {
+      "from": "person-advisory",
+      "p": 0.328,
+      "term": 0.2296,
+      "w": 0.7
+     },
+     {
+      "from": "authorized-implementer",
+      "p": 0.81,
+      "term": 0.405,
+      "w": 0.5
+     }
+    ],
+    "support_p": 0.87573849409216
+   },
+   "p": 0.87573849409216,
+   "present": true,
+   "status": "resolved"
+  }
+ },
+ "signals": {
+  "approved-change": {
+   "activation": 0.855,
+   "confidence": 0.95,
+   "hits": [
+    [
+     {
+      "pointer": "/servicedesk/ticket[1]",
+      "source": "change"
+     }
+    ]
+   ],
+   "links": [
+    {
+     "hits": 1,
+     "participant": "ch-4471",
+     "w": 0.6
+    },
+    {
+     "hits": 1,
+     "participant": "svc-ledger",
+     "w": 0.6
+    },
+    {
+     "hits": 1,
+     "participant": "vale",
+     "w": 0.6
+    }
+   ],
+   "status": "firing",
+   "strength": 0.9
+  },
+  "authorized-implementer": {
+   "activation": 0.81,
+   "confidence": 0.9,
+   "hits": [
+    [
+     {
+      "pointer": "line 4",
+      "source": "activity"
+     },
+     {
+      "pointer": "/servicedesk/ticket[1]",
+      "source": "change"
+     }
+    ]
+   ],
+   "links": [
+    {
+     "hits": 1,
+     "participant": "vale",
+     "w": 0.5
+    }
+   ],
+   "status": "firing",
+   "strength": 0.9
+  },
+  "config-advisory": {
+   "activation": 0.592,
+   "confidence": 0.8,
+   "hits": [
+    [
+     {
+      "pointer": "line 3",
+      "source": "advisory"
+     }
+    ]
+   ],
+   "links": [
+    {
+     "hits": 1,
+     "participant": "svc-ledger",
+     "w": 0.7
+    }
+   ],
+   "status": "firing",
+   "strength": 0.74
+  },
+  "fx-healthy": {
+   "activation": 0.81,
+   "confidence": 0.9,
+   "hits": [
+    [
+     {
+      "pointer": "data.flows[0]",
+      "source": "flow"
+     }
+    ],
+    [
+     {
+      "pointer": "data.flows[2]",
+      "source": "flow"
+     }
+    ],
+    [
+     {
+      "pointer": "data.flows[4]",
+      "source": "flow"
+     }
+    ]
+   ],
+   "links": [
+    {
+     "hits": 3,
+     "participant": "svc-fx",
+     "w": 0.5
+    },
+    {
+     "hits": 2,
+     "participant": "svc-ledger",
+     "w": 0.3333333333333333
+    }
+   ],
+   "status": "firing",
+   "strength": 0.9
+  },
+  "off-hours": {
+   "activation": 0.7200000000000001,
+   "confidence": 0.9,
+   "hits": [
+    [
+     {
+      "pointer": "line 2",
+      "source": "activity"
+     }
+    ],
+    [
+     {
+      "pointer": "line 4",
+      "source": "activity"
+     }
+    ],
+    [
+     {
+      "pointer": "line 6",
+      "source": "activity"
+     }
+    ]
+   ],
+   "links": [
+    {
+     "hits": 1,
+     "participant": "kwan",
+     "w": 0.6
+    },
+    {
+     "hits": 1,
+     "participant": "reyes",
+     "w": 0.6
+    },
+    {
+     "hits": 1,
+     "participant": "vale",
+     "w": 0.6
+    }
+   ],
+   "status": "firing",
+   "strength": 0.8
+  },
+  "person-advisory": {
+   "activation": 0.328,
+   "confidence": 0.8,
+   "hits": [
+    [
+     {
+      "pointer": "line 4",
+      "source": "advisory"
+     }
+    ]
+   ],
+   "links": [
+    {
+     "hits": 1,
+     "participant": "vale",
+     "w": 0.7
+    }
+   ],
+   "status": "firing",
+   "strength": 0.41
+  },
+  "prod-to-staging": {
+   "activation": 0.855,
+   "confidence": 0.9,
+   "hits": [
+    [
+     {
+      "pointer": "data.flows[1]",
+      "source": "flow"
+     }
+    ],
+    [
+     {
+      "pointer": "data.flows[3]",
+      "source": "flow"
+     }
+    ]
+   ],
+   "links": [
+    {
+     "hits": 2,
+     "participant": "fx-staging",
+     "w": 0.8
+    },
+    {
+     "hits": 2,
+     "participant": "svc-ledger",
+     "w": 0.8
+    }
+   ],
+   "status": "firing",
+   "strength": 0.95
+  },
+  "upstream-timeouts": {
+   "activation": 0.8280000000000001,
+   "confidence": 0.92,
+   "hits": [
+    [
+     {
+      "pointer": "rows[2]",
+      "source": "metrics"
+     }
+    ],
+    [
+     {
+      "pointer": "rows[3]",
+      "source": "metrics"
+     }
+    ],
+    [
+     {
+      "pointer": "rows[4]",
+      "source": "metrics"
+     }
+    ]
+   ],
+   "links": [
+    {
+     "hits": 3,
+     "participant": "svc-ledger",
+     "w": 0.8000000000000002
+    }
+   ],
+   "status": "firing",
+   "strength": 0.9
+  }
+ },
+ "stages": [
+  {
+   "approved-change": 0.855,
+   "authorized-implementer": 0.81,
+   "config-advisory": 0.592,
+   "fx-healthy": 0.81,
+   "off-hours": 0.7200000000000001,
+   "person-advisory": 0.328,
+   "prod-to-staging": 0.855,
+   "upstream-timeouts": 0.8280000000000001
+  },
+  {
+   "approved-change": 0.855,
+   "authorized-implementer": 0.81,
+   "ch-4471": 0.52274,
+   "config-advisory": 0.592,
+   "fx-healthy": 0.81,
+   "fx-staging": 0.69032,
+   "kwan": 0.4433600000000001,
+   "off-hours": 0.7200000000000001,
+   "person-advisory": 0.328,
+   "prod-to-staging": 0.855,
+   "reyes": 0.4433600000000001,
+   "svc-fx": 0.41690000000000005,
+   "svc-ledger": 0.978234508150485,
+   "upstream-timeouts": 0.8280000000000001,
+   "vale": 0.87573849409216
+  },
+  {
+   "approved-change": 0.855,
+   "authorized-implementer": 0.81,
+   "ch-4471": 0.52274,
+   "config-advisory": 0.592,
+   "dependency": 0.03274138327835785,
+   "fx-healthy": 0.81,
+   "fx-staging": 0.69032,
+   "kwan": 0.4433600000000001,
+   "misconfig": 0.8977815226450938,
+   "off-hours": 0.7200000000000001,
+   "person-advisory": 0.328,
+   "planned": 0.064800132012666,
+   "prod-to-staging": 0.855,
+   "reyes": 0.4433600000000001,
+   "svc-fx": 0.41690000000000005,
+   "svc-ledger": 0.978234508150485,
+   "unsanctioned": 0.05298413690258303,
+   "upstream-timeouts": 0.8280000000000001,
+   "vale": 0.87573849409216
+  },
+  {
+   "approved-change": 0.855,
+   "authorized-implementer": 0.81,
+   "ch-4471": 0.52274,
+   "config-advisory": 0.592,
+   "dependency": 0.03123262347545761,
+   "fx-healthy": 0.81,
+   "fx-staging": 0.69032,
+   "kwan": 0.4433600000000001,
+   "misconfig": 0.8564107393266981,
+   "off-hours": 0.7200000000000001,
+   "person-advisory": 0.328,
+   "planned": 0.06181406897518999,
+   "prod-to-staging": 0.855,
+   "reyes": 0.4433600000000001,
+   "svc-fx": 0.41690000000000005,
+   "svc-ledger": 0.978234508150485,
+   "unsanctioned": 0.05054256822265431,
+   "upstream-timeouts": 0.8280000000000001,
+   "vale": 0.87573849409216
+  }
+ ],
+ "undated": 0
+}

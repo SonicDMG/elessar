@@ -1,0 +1,2003 @@
+{
+ "events": 1143,
+ "links": [
+  {
+   "a": "promo",
+   "b": "ring-seller",
+   "weight": 59
+  },
+  {
+   "a": "card-bin",
+   "b": "risk-model",
+   "weight": 30
+  },
+  {
+   "a": "ring-device",
+   "b": "ring-seller",
+   "weight": 25
+  },
+  {
+   "a": "promo",
+   "b": "ring-device",
+   "weight": 22
+  },
+  {
+   "a": "ring-buyer",
+   "b": "ring-seller",
+   "weight": 3
+  },
+  {
+   "a": "promo",
+   "b": "ring-buyer",
+   "weight": 2
+  },
+  {
+   "a": "honest-seller",
+   "b": "promo",
+   "weight": 1
+  },
+  {
+   "a": "ring-seller",
+   "b": "victim",
+   "weight": 1
+  }
+ ],
+ "merges_committed": [
+  "orders#107:Seller:1|partner#17:Seller:16"
+ ],
+ "nodes": {
+  "card-bin": {
+   "breakdown": {
+    "final": 0.42816999999999994,
+    "inhibit": [],
+    "inhibit_factor": 1.0,
+    "leak": 0.02,
+    "raw": 0.42816999999999994,
+    "support": [
+     {
+      "from": "flagged-bin-approved",
+      "p": 0.595,
+      "term": 0.4165,
+      "w": 0.7
+     }
+    ],
+    "support_p": 0.42816999999999994
+   },
+   "p": 0.42816999999999994,
+   "present": true,
+   "status": "resolved"
+  },
+  "decline-spike": {
+   "breakdown": null,
+   "p": 0.7360000000000001,
+   "present": true,
+   "status": "firing"
+  },
+  "false-positives": {
+   "breakdown": {
+    "divisor": 1.1470355752437995,
+    "final": 0.030579035635793173,
+    "inhibit": [
+     {
+      "factor": 0.17920000000000003,
+      "from": "fraud-chargebacks",
+      "p": 0.864,
+      "w": 0.95
+     },
+     {
+      "factor": 0.5835,
+      "from": "flagged-bin-approved",
+      "p": 0.595,
+      "w": 0.7
+     },
+     {
+      "factor": 0.40102499999999996,
+      "from": "shared-payout",
+      "p": 0.9215,
+      "w": 0.65
+     }
+    ],
+    "inhibit_factor": 0.04193245728000001,
+    "leak": 0.2,
+    "raw": 0.035075241730902665,
+    "support": [
+     {
+      "from": "rules-deploy",
+      "p": 0.792,
+      "term": 0.4752,
+      "w": 0.6
+     },
+     {
+      "from": "decline-spike",
+      "p": 0.7360000000000001,
+      "term": 0.44160000000000005,
+      "w": 0.6
+     },
+     {
+      "from": "risk-model",
+      "p": 0.7561534208,
+      "term": 0.30246136832000003,
+      "w": 0.4
+     }
+    ],
+    "support_p": 0.8364699806808618
+   },
+   "p": 0.030579035635793173,
+   "present": false,
+   "status": "captured"
+  },
+  "flagged-bin-approved": {
+   "breakdown": null,
+   "p": 0.595,
+   "present": true,
+   "status": "firing"
+  },
+  "fraud-chargebacks": {
+   "breakdown": null,
+   "p": 0.864,
+   "present": true,
+   "status": "firing"
+  },
+  "honest-seller": {
+   "breakdown": {
+    "final": 0.020000000000000018,
+    "inhibit": [],
+    "inhibit_factor": 1.0,
+    "leak": 0.02,
+    "raw": 0.020000000000000018,
+    "support": [],
+    "support_p": 0.020000000000000018
+   },
+   "p": 0.020000000000000018,
+   "present": true,
+   "status": "resolved"
+  },
+  "new-account-orders": {
+   "breakdown": null,
+   "p": 0.8075,
+   "present": true,
+   "status": "firing"
+  },
+  "not-received": {
+   "breakdown": {
+    "divisor": 1.1470355752437995,
+    "final": 0.011123045613723194,
+    "inhibit": [
+     {
+      "factor": 0.30879999999999996,
+      "from": "fraud-chargebacks",
+      "p": 0.864,
+      "w": 0.8
+     },
+     {
+      "factor": 0.6479999999999999,
+      "from": "unauthorized-tickets",
+      "p": 0.7040000000000001,
+      "w": 0.5
+     }
+    ],
+    "inhibit_factor": 0.20010239999999996,
+    "leak": 0.06,
+    "raw": 0.012758529024000004,
+    "support": [
+     {
+      "from": "honest-seller",
+      "p": 0.020000000000000018,
+      "term": 0.0040000000000000036,
+      "w": 0.2
+     }
+    ],
+    "support_p": 0.06376000000000004
+   },
+   "p": 0.011123045613723194,
+   "present": false,
+   "status": "captured"
+  },
+  "promo": {
+   "breakdown": {
+    "final": 0.49480999999999997,
+    "inhibit": [],
+    "inhibit_factor": 1.0,
+    "leak": 0.02,
+    "raw": 0.49480999999999997,
+    "support": [
+     {
+      "from": "promo-concentration",
+      "p": 0.8075,
+      "term": 0.4845,
+      "w": 0.6
+     }
+    ],
+    "support_p": 0.49480999999999997
+   },
+   "p": 0.49480999999999997,
+   "present": true,
+   "status": "resolved"
+  },
+  "promo-abuse": {
+   "breakdown": {
+    "divisor": 1.1470355752437995,
+    "final": 0.045483354968242476,
+    "inhibit": [
+     {
+      "factor": 0.2627999999999999,
+      "from": "shared-payout",
+      "p": 0.9215,
+      "w": 0.8
+     },
+     {
+      "factor": 0.3952,
+      "from": "fraud-chargebacks",
+      "p": 0.864,
+      "w": 0.7
+     },
+     {
+      "factor": 0.6759999999999999,
+      "from": "shared-device",
+      "p": 0.81,
+      "w": 0.4
+     }
+    ],
+    "inhibit_factor": 0.07020838655999997,
+    "leak": 0.18,
+    "raw": 0.05217102623001593,
+    "support": [
+     {
+      "from": "promo-concentration",
+      "p": 0.8075,
+      "term": 0.4845,
+      "w": 0.6
+     },
+     {
+      "from": "promo",
+      "p": 0.49480999999999997,
+      "term": 0.197924,
+      "w": 0.4
+     },
+     {
+      "from": "new-account-orders",
+      "p": 0.8075,
+      "term": 0.24225,
+      "w": 0.3
+     }
+    ],
+    "support_p": 0.7430882375488099
+   },
+   "p": 0.045483354968242476,
+   "present": false,
+   "status": "captured"
+  },
+  "promo-concentration": {
+   "breakdown": null,
+   "p": 0.8075,
+   "present": true,
+   "status": "firing"
+  },
+  "ring": {
+   "breakdown": {
+    "divisor": 1.1470355752437995,
+    "final": 0.8678487583344247,
+    "inhibit": [],
+    "inhibit_factor": 1.0,
+    "leak": 0.15,
+    "raw": 0.995453399740744,
+    "support": [
+     {
+      "from": "shared-payout",
+      "p": 0.9215,
+      "term": 0.7832749999999999,
+      "w": 0.85
+     },
+     {
+      "from": "shared-device",
+      "p": 0.81,
+      "term": 0.5265000000000001,
+      "w": 0.65
+     },
+     {
+      "from": "promo-concentration",
+      "p": 0.8075,
+      "term": 0.40375,
+      "w": 0.5
+     },
+     {
+      "from": "new-account-orders",
+      "p": 0.8075,
+      "term": 0.44412500000000005,
+      "w": 0.55
+     },
+     {
+      "from": "fraud-chargebacks",
+      "p": 0.864,
+      "term": 0.432,
+      "w": 0.5
+     },
+     {
+      "from": "ring-seller",
+      "p": 0.9911071287420858,
+      "term": 0.5946642772452515,
+      "w": 0.6
+     },
+     {
+      "from": "ring-device",
+      "p": 0.6550400000000001,
+      "term": 0.19651200000000002,
+      "w": 0.3
+     },
+     {
+      "from": "card-bin",
+      "p": 0.42816999999999994,
+      "term": 0.14985949999999998,
+      "w": 0.35
+     }
+    ],
+    "support_p": 0.995453399740744
+   },
+   "p": 0.8678487583344247,
+   "present": true,
+   "status": "crownable"
+  },
+  "ring-buyer": {
+   "breakdown": {
+    "final": 0.82217312,
+    "inhibit": [],
+    "inhibit_factor": 1.0,
+    "leak": 0.02,
+    "raw": 0.82217312,
+    "support": [
+     {
+      "from": "shared-device",
+      "p": 0.81,
+      "term": 0.6480000000000001,
+      "w": 0.8
+     },
+     {
+      "from": "new-account-orders",
+      "p": 0.8075,
+      "term": 0.4845,
+      "w": 0.6
+     }
+    ],
+    "support_p": 0.82217312
+   },
+   "p": 0.82217312,
+   "present": true,
+   "status": "resolved"
+  },
+  "ring-device": {
+   "breakdown": {
+    "final": 0.6550400000000001,
+    "inhibit": [],
+    "inhibit_factor": 1.0,
+    "leak": 0.02,
+    "raw": 0.6550400000000001,
+    "support": [
+     {
+      "from": "shared-device",
+      "p": 0.81,
+      "term": 0.6480000000000001,
+      "w": 0.8
+     }
+    ],
+    "support_p": 0.6550400000000001
+   },
+   "p": 0.6550400000000001,
+   "present": true,
+   "status": "resolved"
+  },
+  "ring-seller": {
+   "breakdown": {
+    "final": 0.9911071287420858,
+    "inhibit": [],
+    "inhibit_factor": 1.0,
+    "leak": 0.02,
+    "raw": 0.9911071287420858,
+    "support": [
+     {
+      "from": "fraud-chargebacks",
+      "p": 0.864,
+      "term": 0.6912,
+      "w": 0.8
+     },
+     {
+      "from": "unauthorized-tickets",
+      "p": 0.7040000000000001,
+      "term": 0.35200000000000004,
+      "w": 0.5
+     },
+     {
+      "from": "promo-concentration",
+      "p": 0.8075,
+      "term": 0.4845,
+      "w": 0.6
+     },
+     {
+      "from": "new-account-orders",
+      "p": 0.8075,
+      "term": 0.4845,
+      "w": 0.6
+     },
+     {
+      "from": "shared-payout",
+      "p": 0.9215,
+      "term": 0.82935,
+      "w": 0.9
+     }
+    ],
+    "support_p": 0.9911071287420858
+   },
+   "p": 0.9911071287420858,
+   "present": true,
+   "status": "resolved"
+  },
+  "risk-model": {
+   "breakdown": {
+    "final": 0.7561534208,
+    "inhibit": [],
+    "inhibit_factor": 1.0,
+    "leak": 0.02,
+    "raw": 0.7561534208,
+    "support": [
+     {
+      "from": "rules-deploy",
+      "p": 0.792,
+      "term": 0.5544,
+      "w": 0.7
+     },
+     {
+      "from": "decline-spike",
+      "p": 0.7360000000000001,
+      "term": 0.44160000000000005,
+      "w": 0.6
+     }
+    ],
+    "support_p": 0.7561534208
+   },
+   "p": 0.7561534208,
+   "present": true,
+   "status": "resolved"
+  },
+  "rules-deploy": {
+   "breakdown": null,
+   "p": 0.792,
+   "present": true,
+   "status": "firing"
+  },
+  "shared-device": {
+   "breakdown": null,
+   "p": 0.81,
+   "present": true,
+   "status": "firing"
+  },
+  "shared-payout": {
+   "breakdown": null,
+   "p": 0.9215,
+   "present": true,
+   "status": "firing"
+  },
+  "takeover": {
+   "breakdown": {
+    "divisor": 1.1470355752437995,
+    "final": 0.04496580544781654,
+    "inhibit": [
+     {
+      "factor": 0.27325,
+      "from": "new-account-orders",
+      "p": 0.8075,
+      "w": 0.9
+     },
+     {
+      "factor": 0.514,
+      "from": "shared-device",
+      "p": 0.81,
+      "w": 0.6
+     },
+     {
+      "factor": 0.53925,
+      "from": "shared-payout",
+      "p": 0.9215,
+      "w": 0.5
+     }
+    ],
+    "inhibit_factor": 0.075737932125,
+    "leak": 0.25,
+    "raw": 0.05157737851813702,
+    "support": [
+     {
+      "from": "unauthorized-tickets",
+      "p": 0.7040000000000001,
+      "term": 0.45760000000000006,
+      "w": 0.65
+     },
+     {
+      "from": "flagged-bin-approved",
+      "p": 0.595,
+      "term": 0.20825,
+      "w": 0.35
+     },
+     {
+      "from": "victim",
+      "p": 0.03189517241379314,
+      "term": 0.00956855172413794,
+      "w": 0.3
+     }
+    ],
+    "support_p": 0.680997976456662
+   },
+   "p": 0.04496580544781654,
+   "present": false,
+   "status": "captured"
+  },
+  "unauthorized-tickets": {
+   "breakdown": null,
+   "p": 0.7040000000000001,
+   "present": true,
+   "status": "firing"
+  },
+  "victim": {
+   "breakdown": {
+    "final": 0.03189517241379314,
+    "inhibit": [],
+    "inhibit_factor": 1.0,
+    "leak": 0.02,
+    "raw": 0.03189517241379314,
+    "support": [
+     {
+      "from": "unauthorized-tickets",
+      "p": 0.7040000000000001,
+      "term": 0.01213793103448276,
+      "w": 0.017241379310344827
+     }
+    ],
+    "support_p": 0.03189517241379314
+   },
+   "p": 0.03189517241379314,
+   "present": true,
+   "status": "resolved"
+  }
+ },
+ "signals": {
+  "decline-spike": {
+   "activation": 0.7360000000000001,
+   "confidence": 0.92,
+   "hits": [
+    [
+     {
+      "pointer": "line 73",
+      "source": "payments"
+     },
+     {
+      "pointer": "line 74",
+      "source": "payments"
+     },
+     {
+      "pointer": "line 81",
+      "source": "payments"
+     },
+     {
+      "pointer": "line 131",
+      "source": "payments"
+     },
+     {
+      "pointer": "line 179",
+      "source": "payments"
+     },
+     {
+      "pointer": "line 195",
+      "source": "payments"
+     },
+     {
+      "pointer": "line 215",
+      "source": "payments"
+     },
+     {
+      "pointer": "line 219",
+      "source": "payments"
+     },
+     {
+      "pointer": "line 222",
+      "source": "payments"
+     },
+     {
+      "pointer": "line 223",
+      "source": "payments"
+     },
+     {
+      "pointer": "line 237",
+      "source": "payments"
+     },
+     {
+      "pointer": "line 238",
+      "source": "payments"
+     },
+     {
+      "pointer": "line 242",
+      "source": "payments"
+     },
+     {
+      "pointer": "line 254",
+      "source": "payments"
+     },
+     {
+      "pointer": "line 263",
+      "source": "payments"
+     },
+     {
+      "pointer": "line 267",
+      "source": "payments"
+     },
+     {
+      "pointer": "line 269",
+      "source": "payments"
+     },
+     {
+      "pointer": "line 271",
+      "source": "payments"
+     },
+     {
+      "pointer": "line 277",
+      "source": "payments"
+     },
+     {
+      "pointer": "line 281",
+      "source": "payments"
+     },
+     {
+      "pointer": "line 285",
+      "source": "payments"
+     },
+     {
+      "pointer": "line 296",
+      "source": "payments"
+     },
+     {
+      "pointer": "line 324",
+      "source": "payments"
+     },
+     {
+      "pointer": "line 325",
+      "source": "payments"
+     },
+     {
+      "pointer": "line 330",
+      "source": "payments"
+     },
+     {
+      "pointer": "line 342",
+      "source": "payments"
+     },
+     {
+      "pointer": "line 352",
+      "source": "payments"
+     },
+     {
+      "pointer": "line 357",
+      "source": "payments"
+     },
+     {
+      "pointer": "line 368",
+      "source": "payments"
+     },
+     {
+      "pointer": "line 379",
+      "source": "payments"
+     }
+    ]
+   ],
+   "links": [
+    {
+     "hits": 1,
+     "participant": "risk-model",
+     "w": 0.6
+    }
+   ],
+   "status": "firing",
+   "strength": 0.8
+  },
+  "flagged-bin-approved": {
+   "activation": 0.595,
+   "confidence": 0.7,
+   "hits": [
+    [
+     {
+      "pointer": "line 3",
+      "source": "partner"
+     },
+     {
+      "pointer": "line 104",
+      "source": "payments"
+     }
+    ],
+    [
+     {
+      "pointer": "line 10",
+      "source": "partner"
+     },
+     {
+      "pointer": "line 117",
+      "source": "payments"
+     }
+    ],
+    [
+     {
+      "pointer": "line 5",
+      "source": "partner"
+     },
+     {
+      "pointer": "line 122",
+      "source": "payments"
+     }
+    ]
+   ],
+   "links": [
+    {
+     "hits": 1,
+     "participant": "card-bin",
+     "w": 0.7
+    }
+   ],
+   "status": "firing",
+   "strength": 0.85
+  },
+  "fraud-chargebacks": {
+   "activation": 0.864,
+   "confidence": 0.96,
+   "hits": [
+    [
+     {
+      "pointer": "rows[0]",
+      "source": "chargebacks"
+     },
+     {
+      "pointer": "rows[1]",
+      "source": "chargebacks"
+     },
+     {
+      "pointer": "rows[4]",
+      "source": "chargebacks"
+     },
+     {
+      "pointer": "rows[5]",
+      "source": "chargebacks"
+     },
+     {
+      "pointer": "rows[6]",
+      "source": "chargebacks"
+     },
+     {
+      "pointer": "rows[11]",
+      "source": "chargebacks"
+     },
+     {
+      "pointer": "rows[12]",
+      "source": "chargebacks"
+     },
+     {
+      "pointer": "rows[14]",
+      "source": "chargebacks"
+     },
+     {
+      "pointer": "rows[15]",
+      "source": "chargebacks"
+     },
+     {
+      "pointer": "rows[19]",
+      "source": "chargebacks"
+     },
+     {
+      "pointer": "rows[20]",
+      "source": "chargebacks"
+     },
+     {
+      "pointer": "rows[21]",
+      "source": "chargebacks"
+     },
+     {
+      "pointer": "rows[23]",
+      "source": "chargebacks"
+     },
+     {
+      "pointer": "rows[25]",
+      "source": "chargebacks"
+     },
+     {
+      "pointer": "rows[26]",
+      "source": "chargebacks"
+     },
+     {
+      "pointer": "rows[27]",
+      "source": "chargebacks"
+     },
+     {
+      "pointer": "rows[28]",
+      "source": "chargebacks"
+     },
+     {
+      "pointer": "rows[29]",
+      "source": "chargebacks"
+     },
+     {
+      "pointer": "rows[30]",
+      "source": "chargebacks"
+     },
+     {
+      "pointer": "rows[31]",
+      "source": "chargebacks"
+     },
+     {
+      "pointer": "rows[33]",
+      "source": "chargebacks"
+     },
+     {
+      "pointer": "rows[35]",
+      "source": "chargebacks"
+     },
+     {
+      "pointer": "rows[36]",
+      "source": "chargebacks"
+     },
+     {
+      "pointer": "rows[42]",
+      "source": "chargebacks"
+     },
+     {
+      "pointer": "rows[46]",
+      "source": "chargebacks"
+     },
+     {
+      "pointer": "rows[47]",
+      "source": "chargebacks"
+     },
+     {
+      "pointer": "rows[48]",
+      "source": "chargebacks"
+     },
+     {
+      "pointer": "rows[49]",
+      "source": "chargebacks"
+     },
+     {
+      "pointer": "rows[51]",
+      "source": "chargebacks"
+     },
+     {
+      "pointer": "rows[52]",
+      "source": "chargebacks"
+     },
+     {
+      "pointer": "rows[53]",
+      "source": "chargebacks"
+     }
+    ],
+    [
+     {
+      "pointer": "rows[10]",
+      "source": "chargebacks"
+     },
+     {
+      "pointer": "rows[13]",
+      "source": "chargebacks"
+     },
+     {
+      "pointer": "rows[16]",
+      "source": "chargebacks"
+     },
+     {
+      "pointer": "rows[17]",
+      "source": "chargebacks"
+     },
+     {
+      "pointer": "rows[22]",
+      "source": "chargebacks"
+     },
+     {
+      "pointer": "rows[24]",
+      "source": "chargebacks"
+     },
+     {
+      "pointer": "rows[32]",
+      "source": "chargebacks"
+     },
+     {
+      "pointer": "rows[34]",
+      "source": "chargebacks"
+     },
+     {
+      "pointer": "rows[41]",
+      "source": "chargebacks"
+     },
+     {
+      "pointer": "rows[44]",
+      "source": "chargebacks"
+     },
+     {
+      "pointer": "rows[45]",
+      "source": "chargebacks"
+     },
+     {
+      "pointer": "rows[54]",
+      "source": "chargebacks"
+     }
+    ]
+   ],
+   "links": [
+    {
+     "hits": 2,
+     "participant": "ring-seller",
+     "w": 0.8
+    }
+   ],
+   "status": "firing",
+   "strength": 0.9
+  },
+  "new-account-orders": {
+   "activation": 0.8075,
+   "confidence": 0.95,
+   "hits": [
+    [
+     {
+      "pointer": "line 117",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 122",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 134",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 137",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 151",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 165",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 181",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 198",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 204",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 207",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 218",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 219",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 222",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 232",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 248",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 259",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 262",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 277",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 299",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 310",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 332",
+      "source": "orders"
+     }
+    ],
+    [
+     {
+      "pointer": "line 119",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 129",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 131",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 136",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 147",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 148",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 156",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 159",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 162",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 177",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 178",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 183",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 184",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 185",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 187",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 191",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 195",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 196",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 208",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 212",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 213",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 220",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 221",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 223",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 227",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 228",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 233",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 235",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 236",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 237",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 245",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 247",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 254",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 255",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 256",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 270",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 274",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 281",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 286",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 287",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 288",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 289",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 292",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 298",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 300",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 301",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 311",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 314",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 315",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 316",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 325",
+      "source": "orders"
+     }
+    ]
+   ],
+   "links": [
+    {
+     "hits": 2,
+     "participant": "ring-buyer",
+     "w": 0.6
+    },
+    {
+     "hits": 2,
+     "participant": "ring-seller",
+     "w": 0.6
+    }
+   ],
+   "status": "firing",
+   "strength": 0.85
+  },
+  "promo-concentration": {
+   "activation": 0.8075,
+   "confidence": 0.95,
+   "hits": [
+    [
+     {
+      "pointer": "line 13",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 67",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 129",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 148",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 156",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 159",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 162",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 177",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 183",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 184",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 185",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 187",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 195",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 196",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 208",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 212",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 213",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 223",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 227",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 228",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 233",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 235",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 236",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 237",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 245",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 247",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 254",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 255",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 256",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 270",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 274",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 281",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 287",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 288",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 289",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 292",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 298",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 301",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 311",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 314",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 315",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 316",
+      "source": "orders"
+     },
+     {
+      "pointer": "line 325",
+      "source": "orders"
+     }
+    ]
+   ],
+   "links": [
+    {
+     "hits": 1,
+     "participant": "promo",
+     "w": 0.6
+    },
+    {
+     "hits": 1,
+     "participant": "ring-seller",
+     "w": 0.6
+    }
+   ],
+   "status": "firing",
+   "strength": 0.85
+  },
+  "rules-deploy": {
+   "activation": 0.792,
+   "confidence": 0.88,
+   "hits": [
+    [
+     {
+      "pointer": "/helpdesk/ticket[1]",
+      "source": "tickets"
+     }
+    ]
+   ],
+   "links": [
+    {
+     "hits": 1,
+     "participant": "risk-model",
+     "w": 0.7
+    }
+   ],
+   "status": "firing",
+   "strength": 0.9
+  },
+  "shared-device": {
+   "activation": 0.81,
+   "confidence": 0.9,
+   "hits": [
+    [
+     {
+      "pointer": "data.sessions[39]",
+      "source": "devices"
+     },
+     {
+      "pointer": "data.sessions[50]",
+      "source": "devices"
+     },
+     {
+      "pointer": "data.sessions[63]",
+      "source": "devices"
+     },
+     {
+      "pointer": "data.sessions[65]",
+      "source": "devices"
+     },
+     {
+      "pointer": "data.sessions[74]",
+      "source": "devices"
+     },
+     {
+      "pointer": "data.sessions[76]",
+      "source": "devices"
+     },
+     {
+      "pointer": "data.sessions[99]",
+      "source": "devices"
+     },
+     {
+      "pointer": "data.sessions[107]",
+      "source": "devices"
+     },
+     {
+      "pointer": "data.sessions[112]",
+      "source": "devices"
+     },
+     {
+      "pointer": "data.sessions[118]",
+      "source": "devices"
+     },
+     {
+      "pointer": "data.sessions[130]",
+      "source": "devices"
+     }
+    ],
+    [
+     {
+      "pointer": "data.sessions[40]",
+      "source": "devices"
+     },
+     {
+      "pointer": "data.sessions[43]",
+      "source": "devices"
+     },
+     {
+      "pointer": "data.sessions[47]",
+      "source": "devices"
+     },
+     {
+      "pointer": "data.sessions[52]",
+      "source": "devices"
+     },
+     {
+      "pointer": "data.sessions[53]",
+      "source": "devices"
+     },
+     {
+      "pointer": "data.sessions[60]",
+      "source": "devices"
+     },
+     {
+      "pointer": "data.sessions[68]",
+      "source": "devices"
+     },
+     {
+      "pointer": "data.sessions[70]",
+      "source": "devices"
+     },
+     {
+      "pointer": "data.sessions[84]",
+      "source": "devices"
+     },
+     {
+      "pointer": "data.sessions[87]",
+      "source": "devices"
+     },
+     {
+      "pointer": "data.sessions[92]",
+      "source": "devices"
+     },
+     {
+      "pointer": "data.sessions[93]",
+      "source": "devices"
+     },
+     {
+      "pointer": "data.sessions[97]",
+      "source": "devices"
+     },
+     {
+      "pointer": "data.sessions[101]",
+      "source": "devices"
+     },
+     {
+      "pointer": "data.sessions[102]",
+      "source": "devices"
+     },
+     {
+      "pointer": "data.sessions[106]",
+      "source": "devices"
+     },
+     {
+      "pointer": "data.sessions[109]",
+      "source": "devices"
+     },
+     {
+      "pointer": "data.sessions[117]",
+      "source": "devices"
+     },
+     {
+      "pointer": "data.sessions[119]",
+      "source": "devices"
+     }
+    ],
+    [
+     {
+      "pointer": "data.sessions[46]",
+      "source": "devices"
+     },
+     {
+      "pointer": "data.sessions[56]",
+      "source": "devices"
+     },
+     {
+      "pointer": "data.sessions[57]",
+      "source": "devices"
+     },
+     {
+      "pointer": "data.sessions[58]",
+      "source": "devices"
+     },
+     {
+      "pointer": "data.sessions[62]",
+      "source": "devices"
+     },
+     {
+      "pointer": "data.sessions[67]",
+      "source": "devices"
+     },
+     {
+      "pointer": "data.sessions[72]",
+      "source": "devices"
+     },
+     {
+      "pointer": "data.sessions[73]",
+      "source": "devices"
+     },
+     {
+      "pointer": "data.sessions[75]",
+      "source": "devices"
+     },
+     {
+      "pointer": "data.sessions[80]",
+      "source": "devices"
+     },
+     {
+      "pointer": "data.sessions[86]",
+      "source": "devices"
+     },
+     {
+      "pointer": "data.sessions[89]",
+      "source": "devices"
+     },
+     {
+      "pointer": "data.sessions[90]",
+      "source": "devices"
+     },
+     {
+      "pointer": "data.sessions[91]",
+      "source": "devices"
+     },
+     {
+      "pointer": "data.sessions[94]",
+      "source": "devices"
+     },
+     {
+      "pointer": "data.sessions[95]",
+      "source": "devices"
+     },
+     {
+      "pointer": "data.sessions[103]",
+      "source": "devices"
+     },
+     {
+      "pointer": "data.sessions[105]",
+      "source": "devices"
+     },
+     {
+      "pointer": "data.sessions[108]",
+      "source": "devices"
+     },
+     {
+      "pointer": "data.sessions[115]",
+      "source": "devices"
+     },
+     {
+      "pointer": "data.sessions[121]",
+      "source": "devices"
+     },
+     {
+      "pointer": "data.sessions[126]",
+      "source": "devices"
+     },
+     {
+      "pointer": "data.sessions[127]",
+      "source": "devices"
+     },
+     {
+      "pointer": "data.sessions[128]",
+      "source": "devices"
+     }
+    ]
+   ],
+   "links": [
+    {
+     "hits": 1,
+     "participant": "ring-buyer",
+     "w": 0.8
+    },
+    {
+     "hits": 1,
+     "participant": "ring-device",
+     "w": 0.8
+    }
+   ],
+   "status": "firing",
+   "strength": 0.9
+  },
+  "shared-payout": {
+   "activation": 0.9215,
+   "confidence": 0.97,
+   "hits": [
+    [
+     {
+      "pointer": "line 3",
+      "source": "sellers"
+     },
+     {
+      "pointer": "line 4",
+      "source": "sellers"
+     }
+    ]
+   ],
+   "links": [
+    {
+     "hits": 1,
+     "participant": "ring-seller",
+     "w": 0.9
+    }
+   ],
+   "status": "firing",
+   "strength": 0.95
+  },
+  "unauthorized-tickets": {
+   "activation": 0.7040000000000001,
+   "confidence": 0.88,
+   "hits": [
+    [
+     {
+      "pointer": "/helpdesk/ticket[13]",
+      "source": "tickets"
+     }
+    ],
+    [
+     {
+      "pointer": "/helpdesk/ticket[15]",
+      "source": "tickets"
+     }
+    ],
+    [
+     {
+      "pointer": "/helpdesk/ticket[20]",
+      "source": "tickets"
+     }
+    ],
+    [
+     {
+      "pointer": "/helpdesk/ticket[22]",
+      "source": "tickets"
+     }
+    ],
+    [
+     {
+      "pointer": "/helpdesk/ticket[24]",
+      "source": "tickets"
+     }
+    ],
+    [
+     {
+      "pointer": "/helpdesk/ticket[25]",
+      "source": "tickets"
+     }
+    ],
+    [
+     {
+      "pointer": "/helpdesk/ticket[30]",
+      "source": "tickets"
+     }
+    ],
+    [
+     {
+      "pointer": "/helpdesk/ticket[31]",
+      "source": "tickets"
+     }
+    ],
+    [
+     {
+      "pointer": "/helpdesk/ticket[32]",
+      "source": "tickets"
+     }
+    ],
+    [
+     {
+      "pointer": "/helpdesk/ticket[33]",
+      "source": "tickets"
+     }
+    ],
+    [
+     {
+      "pointer": "/helpdesk/ticket[34]",
+      "source": "tickets"
+     }
+    ],
+    [
+     {
+      "pointer": "/helpdesk/ticket[35]",
+      "source": "tickets"
+     }
+    ],
+    [
+     {
+      "pointer": "/helpdesk/ticket[40]",
+      "source": "tickets"
+     }
+    ],
+    [
+     {
+      "pointer": "/helpdesk/ticket[42]",
+      "source": "tickets"
+     }
+    ],
+    [
+     {
+      "pointer": "/helpdesk/ticket[43]",
+      "source": "tickets"
+     }
+    ],
+    [
+     {
+      "pointer": "/helpdesk/ticket[45]",
+      "source": "tickets"
+     }
+    ],
+    [
+     {
+      "pointer": "/helpdesk/ticket[50]",
+      "source": "tickets"
+     }
+    ],
+    [
+     {
+      "pointer": "/helpdesk/ticket[51]",
+      "source": "tickets"
+     }
+    ],
+    [
+     {
+      "pointer": "/helpdesk/ticket[53]",
+      "source": "tickets"
+     }
+    ],
+    [
+     {
+      "pointer": "/helpdesk/ticket[54]",
+      "source": "tickets"
+     }
+    ],
+    [
+     {
+      "pointer": "/helpdesk/ticket[57]",
+      "source": "tickets"
+     }
+    ],
+    [
+     {
+      "pointer": "/helpdesk/ticket[60]",
+      "source": "tickets"
+     }
+    ],
+    [
+     {
+      "pointer": "/helpdesk/ticket[63]",
+      "source": "tickets"
+     }
+    ],
+    [
+     {
+      "pointer": "/helpdesk/ticket[65]",
+      "source": "tickets"
+     }
+    ],
+    [
+     {
+      "pointer": "/helpdesk/ticket[66]",
+      "source": "tickets"
+     }
+    ],
+    [
+     {
+      "pointer": "/helpdesk/ticket[68]",
+      "source": "tickets"
+     }
+    ],
+    [
+     {
+      "pointer": "/helpdesk/ticket[69]",
+      "source": "tickets"
+     }
+    ],
+    [
+     {
+      "pointer": "/helpdesk/ticket[74]",
+      "source": "tickets"
+     }
+    ],
+    [
+     {
+      "pointer": "/helpdesk/ticket[77]",
+      "source": "tickets"
+     }
+    ]
+   ],
+   "links": [
+    {
+     "hits": 29,
+     "participant": "ring-seller",
+     "w": 0.5
+    },
+    {
+     "hits": 1,
+     "participant": "victim",
+     "w": 0.017241379310344827
+    }
+   ],
+   "status": "firing",
+   "strength": 0.8
+  }
+ },
+ "stages": [
+  {
+   "decline-spike": 0.7360000000000001,
+   "flagged-bin-approved": 0.595,
+   "fraud-chargebacks": 0.864,
+   "new-account-orders": 0.8075,
+   "promo-concentration": 0.8075,
+   "rules-deploy": 0.792,
+   "shared-device": 0.81,
+   "shared-payout": 0.9215,
+   "unauthorized-tickets": 0.7040000000000001
+  },
+  {
+   "card-bin": 0.42816999999999994,
+   "decline-spike": 0.7360000000000001,
+   "flagged-bin-approved": 0.595,
+   "fraud-chargebacks": 0.864,
+   "honest-seller": 0.020000000000000018,
+   "new-account-orders": 0.8075,
+   "promo": 0.49480999999999997,
+   "promo-concentration": 0.8075,
+   "ring-buyer": 0.82217312,
+   "ring-device": 0.6550400000000001,
+   "ring-seller": 0.9911071287420858,
+   "risk-model": 0.7561534208,
+   "rules-deploy": 0.792,
+   "shared-device": 0.81,
+   "shared-payout": 0.9215,
+   "unauthorized-tickets": 0.7040000000000001,
+   "victim": 0.03189517241379314
+  },
+  {
+   "card-bin": 0.42816999999999994,
+   "decline-spike": 0.7360000000000001,
+   "false-positives": 0.035075241730902665,
+   "flagged-bin-approved": 0.595,
+   "fraud-chargebacks": 0.864,
+   "honest-seller": 0.020000000000000018,
+   "new-account-orders": 0.8075,
+   "not-received": 0.012758529024000004,
+   "promo": 0.49480999999999997,
+   "promo-abuse": 0.05217102623001593,
+   "promo-concentration": 0.8075,
+   "ring": 0.995453399740744,
+   "ring-buyer": 0.82217312,
+   "ring-device": 0.6550400000000001,
+   "ring-seller": 0.9911071287420858,
+   "risk-model": 0.7561534208,
+   "rules-deploy": 0.792,
+   "shared-device": 0.81,
+   "shared-payout": 0.9215,
+   "takeover": 0.05157737851813702,
+   "unauthorized-tickets": 0.7040000000000001,
+   "victim": 0.03189517241379314
+  },
+  {
+   "card-bin": 0.42816999999999994,
+   "decline-spike": 0.7360000000000001,
+   "false-positives": 0.030579035635793173,
+   "flagged-bin-approved": 0.595,
+   "fraud-chargebacks": 0.864,
+   "honest-seller": 0.020000000000000018,
+   "new-account-orders": 0.8075,
+   "not-received": 0.011123045613723194,
+   "promo": 0.49480999999999997,
+   "promo-abuse": 0.045483354968242476,
+   "promo-concentration": 0.8075,
+   "ring": 0.8678487583344247,
+   "ring-buyer": 0.82217312,
+   "ring-device": 0.6550400000000001,
+   "ring-seller": 0.9911071287420858,
+   "risk-model": 0.7561534208,
+   "rules-deploy": 0.792,
+   "shared-device": 0.81,
+   "shared-payout": 0.9215,
+   "takeover": 0.04496580544781654,
+   "unauthorized-tickets": 0.7040000000000001,
+   "victim": 0.03189517241379314
+  }
+ ],
+ "undated": 20
+}

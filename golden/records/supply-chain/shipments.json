@@ -1,0 +1,72 @@
+{
+ "records": [
+  {
+   "data": {
+    "container": "MSCU7781234",
+    "event": "DISPATCHED",
+    "location": "Ningbo DC",
+    "po": "PO-7781",
+    "supplier": "KESTREL COMPONENTS LIMITED",
+    "ts": "2026-10-12T08:10:00Z"
+   },
+   "excerpt": "{\"ts\": \"2026-10-12T08:10:00Z\", \"po\": \"PO-7781\", \"container\": \"MSCU7781234\", \"supplier\": \"KESTREL COMPONENTS LIMITED\", \"event\": \"DISPATCHED\", \"location\": \"Ningbo DC\"}",
+   "index": 0,
+   "pointer": "line 1"
+  },
+  {
+   "data": {
+    "container": "TGHU5512020",
+    "event": "DISPATCHED",
+    "location": "Busan DC",
+    "po": "PO-7790",
+    "supplier": "ALDER & FINCH PLASTICS",
+    "ts": "2026-10-12T09:00:00Z"
+   },
+   "excerpt": "{\"ts\": \"2026-10-12T09:00:00Z\", \"po\": \"PO-7790\", \"container\": \"TGHU5512020\", \"supplier\": \"ALDER & FINCH PLASTICS\", \"event\": \"DISPATCHED\", \"location\": \"Busan DC\"}",
+   "index": 1,
+   "pointer": "line 2"
+  },
+  {
+   "data": {
+    "container": "MSCU7781234",
+    "event": "GATE_IN",
+    "location": "CNSHA",
+    "po": "PO-7781",
+    "supplier": "KESTREL COMPONENTS LIMITED",
+    "ts": "2026-10-13T15:40:00Z"
+   },
+   "excerpt": "{\"ts\": \"2026-10-13T15:40:00Z\", \"po\": \"PO-7781\", \"container\": \"MSCU7781234\", \"supplier\": \"KESTREL COMPONENTS LIMITED\", \"event\": \"GATE_IN\", \"location\": \"CNSHA\"}",
+   "index": 2,
+   "pointer": "line 3"
+  },
+  {
+   "data": {
+    "container": "MSCU7781234",
+    "event": "HOLD",
+    "location": "CNSHA",
+    "note": "commercial invoice HS code does not match packing list",
+    "po": "PO-7781",
+    "reason": "DOC",
+    "supplier": "KESTREL COMPONENTS LIMITED",
+    "ts": "2026-10-14T06:12:00Z"
+   },
+   "excerpt": "{\"ts\": \"2026-10-14T06:12:00Z\", \"po\": \"PO-7781\", \"container\": \"MSCU7781234\", \"supplier\": \"KESTREL COMPONENTS LIMITED\", \"event\": \"HOLD\", \"location\": \"CNSHA\", \"reason\": \"DOC\", \"note\": \"commercial invoice HS code does not match packing list\"}",
+   "index": 3,
+   "pointer": "line 4"
+  },
+  {
+   "data": {
+    "container": "TGHU5512020",
+    "event": "LOADED",
+    "location": "KRPUS",
+    "po": "PO-7790",
+    "supplier": "ALDER & FINCH PLASTICS",
+    "ts": "2026-10-15T11:00:00Z"
+   },
+   "excerpt": "{\"ts\": \"2026-10-15T11:00:00Z\", \"po\": \"PO-7790\", \"container\": \"TGHU5512020\", \"supplier\": \"ALDER & FINCH PLASTICS\", \"event\": \"LOADED\", \"location\": \"KRPUS\"}",
+   "index": 4,
+   "pointer": "line 5"
+  }
+ ],
+ "skipped": []
+}

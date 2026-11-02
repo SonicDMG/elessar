@@ -1,0 +1,44 @@
+{
+ "records": [
+  {
+   "data": {
+    "CONTACT": "ops@kestrel.example",
+    "COUNTRY": "CN",
+    "LEGAL_NAME": "Kestrel Components Ltd.",
+    "ON_TIME_RATE": "0.96",
+    "SUP_ID": "S-118",
+    "TIER": "1"
+   },
+   "excerpt": "S-118,\"Kestrel Components Ltd.\",CN,1,0.96,ops@kestrel.example",
+   "index": 0,
+   "pointer": "line 2"
+  },
+  {
+   "data": {
+    "CONTACT": "orders@alderfinch.example",
+    "COUNTRY": "KR",
+    "LEGAL_NAME": "Alder & Finch Plastics Co.",
+    "ON_TIME_RATE": "0.81",
+    "SUP_ID": "S-131",
+    "TIER": "2"
+   },
+   "excerpt": "S-131,\"Alder & Finch Plastics Co.\",KR,2,0.81,orders@alderfinch.example",
+   "index": 1,
+   "pointer": "line 3"
+  },
+  {
+   "data": {
+    "CONTACT": "sales@brightwater.example",
+    "COUNTRY": "VN",
+    "LEGAL_NAME": "Brightwater Metals",
+    "ON_TIME_RATE": "0.88",
+    "SUP_ID": "S-140",
+    "TIER": "2"
+   },
+   "excerpt": "S-140,Brightwater Metals,VN,2,0.88,sales@brightwater.example",
+   "index": 2,
+   "pointer": "line 4"
+  }
+ ],
+ "skipped": []
+}

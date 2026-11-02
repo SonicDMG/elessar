@@ -1,0 +1,61 @@
+{
+ "records": [
+  {
+   "data": {
+    "@id": "CH-4471",
+    "@priority": "P3",
+    "@type": "change",
+    "ci": "svc-ledger",
+    "ci.@name": "Ledger API",
+    "ci.@type": "service",
+    "implementer.@email": "m.vale@northwind.example",
+    "risk": "low",
+    "status": "approved",
+    "summary": "Ledger config v42: rotate FX client endpoint",
+    "window.@end": "2026-10-16T03:00:00Z",
+    "window.@start": "2026-10-16T01:30:00Z"
+   },
+   "excerpt": "<ticket id=\"CH-4471\" type=\"change\" priority=\"P3\">\n    <summary>Ledger config v42: rotate FX client endpoint</summary>\n    <status>approved</status>\n    <ci type=\"service\" name=\"Ledger API\">svc-ledger</ci>\n    <implementer email=\"m.vale@northwind.example\" />\n    <window start=\"2026-10-16T01:30:00Z\" end=\"2026-10-16T03:00:00Z\" />\n    <risk>low</risk>\n  </ticket>",
+   "index": 0,
+   "pointer": "/servicedesk/ticket[1]"
+  },
+  {
+   "data": {
+    "@id": "INC-9001",
+    "@priority": "P1",
+    "@type": "incident",
+    "assignee.@email": "t.kwan@northwind.example",
+    "ci": "svc-ledger",
+    "ci.@name": "Ledger API",
+    "ci.@type": "service",
+    "opened": "2026-10-16T02:07:00Z",
+    "resolved": "2026-10-16T02:31:00Z",
+    "status": "resolved",
+    "summary": "Ledger API 5xx and upstream timeouts"
+   },
+   "excerpt": "<ticket id=\"INC-9001\" type=\"incident\" priority=\"P1\">\n    <summary>Ledger API 5xx and upstream timeouts</summary>\n    <status>resolved</status>\n    <ci type=\"service\" name=\"Ledger API\">svc-ledger</ci>\n    <assignee email=\"t.kwan@northwind.example\" />\n    <opened>2026-10-16T02:07:00Z</opened>\n    <resolved>2026-10-16T02:31:00Z</resolved>\n  </ticket>",
+   "index": 1,
+   "pointer": "/servicedesk/ticket[2]"
+  },
+  {
+   "data": {
+    "@id": "CH-4460",
+    "@priority": "P4",
+    "@type": "change",
+    "ci": "svc-fx",
+    "ci.@name": "FX Rates Service",
+    "ci.@type": "service",
+    "implementer.@email": "n.idris@northwind.example",
+    "risk": "low",
+    "status": "completed",
+    "summary": "FX service TLS certificate renewal",
+    "window.@end": "2026-10-14T11:00:00Z",
+    "window.@start": "2026-10-14T10:00:00Z"
+   },
+   "excerpt": "<ticket id=\"CH-4460\" type=\"change\" priority=\"P4\">\n    <summary>FX service TLS certificate renewal</summary>\n    <status>completed</status>\n    <ci type=\"service\" name=\"FX Rates Service\">svc-fx</ci>\n    <implementer email=\"n.idris@northwind.example\" />\n    <window start=\"2026-10-14T10:00:00Z\" end=\"2026-10-14T11:00:00Z\" />\n    <risk>low</risk>\n  </ticket>",
+   "index": 2,
+   "pointer": "/servicedesk/ticket[3]"
+  }
+ ],
+ "skipped": []
+}
