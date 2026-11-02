@@ -1,4 +1,5 @@
-//! Phase 3: the acceptance specs (`expect.json`) and property tests, end to end.
+//! Phase 3: the acceptance specs (`expect.json`), end to end. Properties of the
+//! session are in `properties_tests.rs`, the comparison with Python in `python_diff_tests.rs`.
 mod common;
 
 use elessar_core::session::Session;
@@ -39,11 +40,11 @@ fn summary(s: &Session) -> Value {
         "resolved": ids("participant", "resolved"),
         "undated": st.undated.len(),
         "skipped": st.sources.iter().filter(|x| x.skipped > 0).map(|x| (x.id.clone(), json!(x.skipped))).collect::<serde_json::Map<String, Value>>(),
+        "beliefs": st.nodes.iter().map(|n| (n.id.clone(), json!((n.p * 1e6).round() / 1e6))).collect::<serde_json::Map<String, Value>>(),
     })
 }
 
 #[test]
-#[ignore = "phase 3: remove when session is implemented"]
 fn packs_meet_their_expect_json() {
     for id in common::pack_ids() {
         let p = common::pack(&id);
@@ -64,7 +65,6 @@ fn packs_meet_their_expect_json() {
 }
 
 #[test]
-#[ignore = "phase 3: remove when session is implemented"]
 fn connection_order_never_changes_the_final_board() {
     for id in common::pack_ids() {
         let p = common::pack(&id);
@@ -80,6 +80,29 @@ fn connection_order_never_changes_the_final_board() {
         };
         for o in orders {
             assert_eq!(summary(&play(&id, &o, &spec)), base, "{id}: order {o:?} changed the final board");
+        }
+    }
+}
+
+/// Every proposal the spec pins shows up at some point while connecting, with no decision made.
+#[test]
+fn pinned_proposals_are_seen() {
+    for id in common::pack_ids() {
+        let p = common::pack(&id);
+        let Ok(text) = std::fs::read_to_string(p.dir.join("expect.json")) else { continue };
+        let spec: Value = serde_json::from_str(&text).unwrap();
+        let mut s = Session::new(p.clone());
+        let mut seen: Vec<(String, String)> = Vec::new();
+        for sid in &p.source_order {
+            let raw = common::read_source(&s.pack, sid);
+            s.connect(sid, raw, 0);
+            for pr in &s.state().merges.pending {
+                seen.push((elessar_core::store::string_form(&pr.a.value), elessar_core::store::string_form(&pr.b.value)));
+            }
+        }
+        for pair in spec["proposals_seen"].as_array().unwrap() {
+            let (a, b) = (pair[0].as_str().unwrap(), pair[1].as_str().unwrap());
+            assert!(seen.iter().any(|(x, y)| (x == a && y == b) || (x == b && y == a)), "{id}: {a} / {b} never proposed, saw {seen:?}");
         }
     }
 }

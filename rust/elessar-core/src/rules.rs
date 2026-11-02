@@ -124,7 +124,7 @@ fn eval_count(signal: &Signal, ctx: &Context) -> Vec<Hit> {
 
 /// `<source>#<record index>:<Type>:<mapping index>` -> (source, record index).
 /// The first `#` followed by digits and a colon ends the source id.
-fn fragment_record(id: &str) -> Option<(&str, u32)> {
+pub(crate) fn fragment_record(id: &str) -> Option<(&str, u32)> {
     id.match_indices('#').find_map(|(at, _)| {
         let rest = &id[at + 1..];
         let index = rest[..rest.find(':')?].parse().ok()?;
@@ -170,7 +170,7 @@ pub fn evaluate(signal: &Signal, ctx: &Context) -> Vec<Hit> {
 }
 
 /// A field as a float the way Python's `float()` reads it. NaN counts as non-numeric.
-fn as_number(value: &Value) -> Option<f64> {
+pub(crate) fn as_number(value: &Value) -> Option<f64> {
     let n = match value {
         Value::Number(n) => n.as_f64()?,
         Value::String(s) => s.trim().parse().ok()?,
