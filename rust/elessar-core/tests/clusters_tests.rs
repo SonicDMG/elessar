@@ -2,7 +2,8 @@
 mod common;
 
 use elessar_core::pipeline::{fragments, parse, Fragment};
-use elessar_core::resolve::{proposals, resolve};
+use elessar_core::resolve::{fuzzy_norm, proposals, resolve, similarity};
+use elessar_core::store::string_form;
 use indexmap::IndexMap;
 use std::collections::HashSet;
 
@@ -18,7 +19,6 @@ fn all_fragments(id: &str) -> (elessar_core::pack::Pack, Vec<Fragment>) {
 }
 
 #[test]
-#[ignore = "phase 1c: remove when resolve::resolve is implemented"]
 fn clusters_match_the_python_engine() {
     for id in common::pack_ids() {
         let (p, frags) = all_fragments(&id);
@@ -31,11 +31,16 @@ fn clusters_match_the_python_engine() {
             assert_eq!(c.otype, w["type"].as_str().unwrap(), "{id} {cid}: type");
             let wf: Vec<&str> = w["fragments"].as_array().unwrap().iter().map(|v| v.as_str().unwrap()).collect();
             assert_eq!(c.fragments, wf, "{id} {cid}: fragments");
+            let ws: Vec<&str> = w["sources"].as_array().unwrap().iter().map(|v| v.as_str().unwrap()).collect();
+            assert_eq!(c.sources, ws, "{id} {cid}: sources");
             assert_eq!(c.title.as_deref(), w["title"].as_str(), "{id} {cid}: title");
             let wc: Vec<&str> = w["conflicts"].as_array().unwrap().iter().map(|v| v.as_str().unwrap()).collect();
             assert_eq!(c.conflicts, wc, "{id} {cid}: conflicts");
             let wp = w["props"].as_object().unwrap();
-            assert_eq!(c.props.keys().collect::<Vec<_>>(), wp.keys().collect::<Vec<_>>(), "{id} {cid}: property order");
+            // The golden is dumped with sorted keys, so it pins the set of properties, not their order.
+            let mut names: Vec<&String> = c.props.keys().collect();
+            names.sort();
+            assert_eq!(names, wp.keys().collect::<Vec<_>>(), "{id} {cid}: properties");
             for (name, vals) in &c.props {
                 let wv = wp[name].as_array().unwrap();
                 assert_eq!(vals.len(), wv.len(), "{id} {cid}.{name}: value count");
@@ -51,7 +56,6 @@ fn clusters_match_the_python_engine() {
 }
 
 #[test]
-#[ignore = "phase 1c: remove when resolve::proposals is implemented"]
 fn pinned_proposals_are_found() {
     for id in common::pack_ids() {
         let (p, frags) = all_fragments(&id);
@@ -69,5 +73,31 @@ fn pinned_proposals_are_found() {
             });
             assert!(found, "{id}: proposal {a:?} / {b:?} not found; got {:?}", props.iter().map(|p| (p.a.value.clone(), p.b.value.clone(), p.score)).collect::<Vec<_>>());
         }
+    }
+}
+
+/// Spec §3: blocking must not miss a pair that reaches the threshold on today's packs.
+#[test]
+fn blocking_misses_nothing_on_the_packs() {
+    for id in common::pack_ids() {
+        let (p, frags) = all_fragments(&id);
+        let res = resolve(&frags, &p.object_types, &[], &p.source_order);
+        let by_id: IndexMap<String, Fragment> = frags.iter().map(|f| (f.id.clone(), f.clone())).collect();
+        let found: HashSet<(String, String)> = proposals(&res, &by_id, &p.object_types, &HashSet::new()).into_iter().map(|pr| (pr.a.cluster, pr.b.cluster)).collect();
+        let mut want = HashSet::new();
+        for (tname, t) in &p.object_types {
+            let Some(fz) = &t.fuzzy else { continue };
+            let mut cs: Vec<_> = res.clusters.values().filter(|c| &c.otype == tname).collect();
+            cs.sort_by(|a, b| a.id.cmp(&b.id));
+            let names: Vec<Vec<String>> = cs.iter().map(|c| fz.properties.iter().flat_map(|n| c.props.get(n).into_iter().flatten()).map(|v| fuzzy_norm(&string_form(&v.value))).collect()).collect();
+            for i in 0..cs.len() {
+                for j in i + 1..cs.len() {
+                    if names[i].iter().any(|x| names[j].iter().any(|y| similarity(x, y) >= fz.threshold)) {
+                        want.insert((cs[i].id.clone(), cs[j].id.clone()));
+                    }
+                }
+            }
+        }
+        assert_eq!(found, want, "{id}: proposals against all pairs");
     }
 }
